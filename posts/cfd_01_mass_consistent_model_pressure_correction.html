@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Computational Fluid Dynamics 01: Pressure correction as mass consistent flow model | Pyano
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/cfd_01_mass_consistent_model_pressure_correction.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="The pressure correction method is presented as Lagrange multiplier method to satisfy mass conservation">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="Pyano">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">Pyano</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Computational Fluid Dynamics 01: Pressure correction as mass consistent flow model
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-09-02T08:30:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Sa. 02 September 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/computationalfluiddynamics.html">ComputationalFluidDynamics</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/flow-model.html">#flow model</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/lagrange-multiplier.html">#Lagrange multiplier</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/pressure-corection.html">#pressure corection</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <h2>Mathematische Herleitung eines massen-konsistenten Strömungsmodelles</h2>
+<h3>Fragestellung</h3>
+<p>Bei der numerischen Lösung der <strong>Navier-Stockes-Gleichung</strong> wird im einzelnen Integrationschhritt das Flussfeld nicht divergenzfrei. Wird das nicht korrigiert, würde durch den numerischen Vorgang künstlich Masse entfernt oder zugeführt, was die Ergbenisse verfälscht. </p>
+<p>Eine ähnliche Fragsellung tritt bei der räumlichen Interpolation von <strong>meteorologischen Windfeld-Daten auf</strong>. Durch eine geomterische/trigonometrische Interpolationsformel wird das berechnete Windfeld nicht divergenzfrei. Hüglige Topographie beispielsweise, die von der Interpolation "nicht gesehen wird", beeinflusst den Massenfluss.</p>
+<p>In beiden Fällen liegt ein geschätzes Wind- oder Flussfeld vor, das wir mit <span class="math">\(\mathbf{u_o}\)</span> bezeichnen. Es soll ein neues Flussfeld <span class="math">\(\mathbf{u}\)</span> gefunden werden. Die Änderung gegenüber <span class="math">\(\mathbf{u_o}\)</span> soll klein sein, und sie soll unter der Randbedingung gefunden werden, dass <span class="math">\(\mathbf{u}\)</span> divergenzfrei ist (d.h. die Masse bleibt konstant).</p>
+<p>Die Fragestellung kann als <strong>Lagrange'sche Optimierungsaufgabe</strong> formuliert werden, wobei <strong> <span class="math">\(\lambda\)</span> </strong> der Lagrange-Multplikator ist.</p>
+<p>Es ist zu beachten, dass das Windfeld/die Flussgrösse <span class="math">\(\mathbf{u}\)</span> <strong>3-dimensional</strong> ist, d.h. es hat drei Komponenten in x-, y- und z-Richtung, die oft mit <span class="math">\(\mathbf{u} = (u,v,w)\)</span> notiert werden. Ferner ist zu beachten, dass <span class="math">\(\mathbf{u}\)</span> mit seinen drei Komponenten an hunderten bis tausenden von Gitternpunkten vorliegen kann. Es handelt sich hier um eine Optimierungsaufgabe, die numerisch gelöst werden muss.</p>
+<h3>Die Lagrange Formulierung</h3>
+<div class="math">$$
+\begin{equation}
+\begin{array}{rcccl}
+&amp;  &amp;  \textrm{Die Änderung}    &amp;  &amp; \textrm {unter der RB, dass}  \\
+&amp;  &amp;  \textrm{soll klein sein} &amp;  &amp; \textrm {$\mathbf{u}$ divergenzfrei ist}  \\
+L&amp; = &amp;  \iiint \limits_{\Delta V}  \mathbf{A}(\mathbf{u}-\mathbf{u}_o )^2 \, \mathrm{d}V &amp; - &amp; \iiint \limits_{\Delta V} \lambda \cdot \nabla \mathbf{u}  \cdot \mathrm{d}V
+\end{array}
+\end{equation}
+$$</div>
+<p>Wenn ein <span class="math">\(\mathbf{u}\)</span> gefunden wird, das <span class="math">\(L\)</span> minimiert, dann gilt
+</p>
+<div class="math">$$
+L(\mathbf{u}) = L_{min} = \iiint \limits_{\Delta V}  \mathbf{A}(\mathbf{u}-\mathbf{u}_o )^2
+$$</div>
+<h3>Herleitung der Lösung</h3>
+<p>Zur Bestimmung von <span class="math">\(\mathbf{u}\)</span> wählen wir einen <strong>Variationsansatz</strong>. Wir nehmen an, dass wir eine Näherungslösung <span class="math">\((\mathbf{u}+ \delta \mathbf{u} )\)</span> haben, die nahe bei <span class="math">\( \mathbf{u}\)</span> liegt, d.h. <span class="math">\(\delta \mathbf{u}\)</span> sei klein. Mit der Berücksichtigung von <span class="math">\(\delta \mathbf{u}\)</span> wird das Funktional <span class="math">\(L\)</span> zu:</p>
+<div class="math">$$\begin{array}{lll}
+L(\mathbf{u} + \delta \mathbf{u}) &amp; = &amp; L_{min} + \delta L \\
+                                  &amp; = &amp; L(\mathbf{u}) + \delta L(\mathbf{u}) \\
+\end{array}
+$$</div>
+<p>Ziel ist es, eine Lösung <span class="math">\(\delta L(\mathbf{u}) = 0\)</span> finden. Dazu setzen wir <span class="math">\(L(\mathbf{u} + \delta \mathbf{u})\)</span> in Gleichung (1) ein:</p>
+<div class="math">$$\begin{array}{rll}
+L(\mathbf{u} + \delta \mathbf{u}) &amp; = &amp; L_1 + L_2  \\
+L1&amp; = &amp;  \iiint \limits_{\Delta V}  \mathbf{A}((\mathbf{u} + \delta \mathbf{u})-\mathbf{u}_o )^2 \, \mathrm{d}V  \\
+  &amp; = &amp;  \iiint \limits_{\Delta V}  \mathbf{A}((\mathbf{u} - \mathbf{u}_o )+ \delta \mathbf{u})^2 \, \mathrm{d}V \\
+  &amp; = &amp; \iiint \limits_{\Delta V}  (\mathbf{A} (\mathbf{u} - \mathbf{u}_o)^2 + 2 \mathbf{A} \delta \mathbf{u} (\mathbf{u} - \mathbf{u}_o ) + \mathbf{A}\delta\mathbf{u}^2 )\, \mathrm{d}V \\
+L2&amp; = &amp;  - \iiint \limits_{\Delta V} \lambda \cdot \nabla (\mathbf{u} + \delta \mathbf{u})  \cdot \mathrm{d}V \\
+  &amp; = &amp;  - \iiint \limits_{\Delta V} \lambda \cdot \nabla \delta \mathbf{u}  \cdot \mathrm{d}V \\
+  &amp; = &amp;  \iiint \limits_{\Delta V} \nabla \lambda \cdot \delta \mathbf{u}   \, \mathrm{d}V  -   \iint \limits_{\Delta \Omega} \lambda \cdot \delta \mathbf{u} \cdot \mathbf{n}\cdot \mathrm{d}S  \\
+\end{array}
+$$</div>
+<p>In L1 werden wir den Term 2. Ordnung <span class="math">\(\mathbf{A}\delta\mathbf{u}^2\)</span> vernachlässigen. In L2 setzten wir die getroffene Voraussetzung ein, dass die Divergenz des gesuchten Flussfeldes gleich null ist (<span class="math">\(\mathbf{\nabla u = 0}\)</span>).
+Danach kam das Divergenz-Theorem zur Anwendung. Fassen wir die Terme gemäss dem Variationsansatz zusammen, so erhalten wir:</p>
+<div class="math">$$\begin{array}{rll}
+L(\mathbf{u} + \delta \mathbf{u}) &amp; = &amp; L_{min} + \delta L \\
+                                  &amp; = &amp; L(\mathbf{u}) + \delta L(\mathbf{u}) \\
+L(\mathbf{u})                     &amp; = &amp;  \iiint \limits_{\Delta V}  (\mathbf{A} (\mathbf{u} - \mathbf{u}_o)^2  )\, \mathrm{d}V\\
+\delta L(\mathbf{u}) &amp; = &amp;\iiint \limits_{\Delta V}  2 \mathbf{A} \delta \mathbf{u} (\mathbf{u} - \mathbf{u}_o ) + 
+ \nabla \lambda \cdot \delta \mathbf{u}   \, \mathrm{d}V  -   \iint \limits_{\Delta \Omega} \lambda \cdot  \delta \mathbf{u} \cdot \mathbf{n}\cdot \mathrm{d}S  \begin{equation} \end{equation} \\
+\end{array}
+$$</div>
+<p>Um eine Lösung <span class="math">\(\delta L(\mathbf{u}) = 0\)</span> finden, müssen beide Terme in Gleichung (2) gleich null sein. Für den ersten Term verwenden wir wieder die getroffene Voraussetzung, dass die Divergenz des gesuchten Flussfeldes gleich null ist (<span class="math">\(\mathbf{\nabla u = 0}\)</span>). Um das praktisch ausnutzen zu können, wird vom ganzen Term der Gradient verwendet, was die Bestimmungsgleichung zur Berechnung des Flussfeldes ergibt. Der zweite Term stellt den Rand dar. Hier gibt es zwei Möglichkeiten, um die Null-Lösung zu erreichen. Entweder wird das Flussfeld am Rand nicht verändert, und dann ist <span class="math">\(\mathbf{\delta u = 0}\)</span>, oder <span class="math">\(\lambda = 0\)</span>, was eine Flussänderung am Rand ergibt.</p>
+<h3>Die numerisch zu lösenden Gleichungen</h3>
+<p>Der Gradient des ersten Termes von <span class="math">\(\delta L(\mathbf{u})\)</span> von (2) ergibt folgende <strong>Bestimmungsgleichung</strong> für das Flussfeld</p>
+<div class="math">$$
+\begin{equation}
+ \nabla^2 \lambda = 2 \mathbf{A}  \nabla\mathbf{u}_o 
+\end{equation}
+$$</div>
+<p>Die <strong>Gleichung für das up-date von u</strong> ergibt sich aus dem ersten Term von <span class="math">\(\delta L(\mathbf{u})\)</span> von (2)</p>
+<div class="math">$$
+\begin{equation}
+\mathbf{u} = \mathbf{u_o} -\frac{1}{2A}\nabla\lambda 
+\end{equation}
+$$</div>
+<p>Die <strong>Randbedingung für <span class="math">\(\lambda\)</span> </strong> kann über die up-date-Funktion hergeleitet werden. Sie bestimmt, wie <span class="math">\(\mathbf{u_o}\)</span> an den Rändern festgelegt wird:</p>
+<div class="math">\begin{equation}
+\begin{array}{llll}
+\nabla \lambda = 0 &amp; \rightarrow &amp; \mathbf{u} = \mathbf{u_o} &amp;\textrm{keine Änderung von }\mathbf{u_o}\\
+\nabla \lambda = value &amp; \rightarrow &amp; \mathbf{u} = \mathbf{u_{value}} &amp;\textrm{Änderung auf vorgegebenen Wert }\mathbf{u_{value}}\\
+\lambda = 0 &amp; \rightarrow &amp; \nabla \lambda \neq 0 &amp;\textrm{offener Rand mit Änderung von }\mathbf{u_o}\\
+\end{array}
+\end{equation}</div>
+<h3>Zur algorithmischen Umsetzung</h3>
+<p>Zur Herleitung haben wir eine koordinaten-freie Darstellung verwendet. Für die Erstellung eines lauffähigen Computer-Programmes muss indessen ein Koordinatensystem gewählt werden. Wir geben hier die Notierung in kartesischen Koordinaten. Es ist allerdings darauf hin zu weisen, dass kaum ein Problem von Relevanz in kartesischen Koordinaten gelöst werden kann, denn das Gitter muss auf geeignete Weise den Oberflächenformen angepasst werden. Der Ausweg dazu ist, dass entweder gekrümmte Koordinaten verwendet werden, oder dass unstrukturierte Gitter verwendet werden, die nicht mehr der logischen Struktur eines strukturierten, rechtwinkligen Gitters folgen.</p>
+<div class="math">$$
+\nabla^2 \lambda  =    \nabla\mathbf{u}_o
+$$</div>
+<div class="math">$$
+\frac{\partial^2 \lambda}{\partial x^2} + \frac{\partial^2 \lambda}{\partial y^2} + \frac{\partial^2 \lambda}{\partial z^2} = \frac{\partial u_o}{\partial x} +  \frac{\partial v_o}{\partial y} +  \frac{\partial w_o}{\partial z}  
+$$</div>
+<div class="math">$$
+\mathbf{u} = \mathbf{u_o} - \nabla\lambda 
+$$</div>
+<div class="math">$$
+u = u^o -\frac{\partial \lambda}{\partial x}
+$$</div>
+<div class="math">$$
+v = v^o -\frac{\partial \lambda}{\partial y}
+$$</div>
+<div class="math">$$
+w = w^o -\frac{\partial \lambda}{\partial z}
+$$</div>
+<div class="math">$$
+\frac{\partial^2 \lambda}{\partial x^2} = (\lambda_{i+1,j,k} - 2\lambda_{i,j,k} + \lambda_{i-1,j,k} )\;/\; (dx^2)
+$$</div>
+<div class="math">$$
+\frac{\partial u_o}{\partial x} = (u^o_{i+1,j,k} - u^o_{i-1,j,k} ) \;/ \;(2 dx)
+$$</div>
+<h3>Anhang</h3>
+<div class="math">$$\begin{array}{rllll}
+\iiint \limits_{\Delta V} \nabla (\lambda \cdot \delta u ) \, \mathrm{d}V &amp; = &amp; \iiint \limits_{\Delta V}( \nabla \lambda \cdot \delta u  +  \lambda \cdot \nabla\delta u ) \, \mathrm{d}V &amp;  &amp;\textrm{Produktregel}\\
+\iiint \limits_{\Delta V} \nabla (\lambda \cdot \delta u ) \, \mathrm{d}V &amp; = &amp; \iint \limits_{\Delta \Omega} \lambda \cdot \delta u \cdot \mathbf{n}\cdot \mathrm{d}S &amp;  &amp; \textrm{Divergenz-Theorem} \\
+\iint \limits_{\Delta \Omega} \lambda \cdot \delta u \cdot \mathbf{n}\cdot \mathrm{d}S &amp; = &amp; \iiint \limits_{\Delta V} \nabla \lambda \cdot \delta u    \, \mathrm{d}V  + \iiint \limits_{\Delta V}\lambda \cdot \nabla\delta u \, \mathrm{d}V &amp;  &amp; \textrm{partielle Integration}\\
+-\iiint \limits_{\Delta V}\lambda \cdot \nabla (\mathbf{u} + \delta \mathbf{u}) \, \mathrm{d}V &amp; = &amp; \iiint \limits_{\Delta V} \nabla \lambda \cdot (\mathbf{u} + \delta \mathbf{u})   \, \mathrm{d}V  -   \iint \limits_{\Delta \Omega} \lambda \cdot (\mathbf{u} + \delta \mathbf{u}) \cdot \mathbf{n}\cdot \mathrm{d}S  &amp; &amp; \textrm{partielle Integration}\\
+\end{array}$$</div>
+<h6>Postprocessing for the numbering of the equations</h6>
+<div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">javascript</span>
+<span class="n">MathJax</span><span class="o">.</span><span class="n">Hub</span><span class="o">.</span><span class="n">Config</span><span class="p">({</span><span class="n">TeX</span><span class="p">:</span> <span class="p">{</span> <span class="n">equationNumbers</span><span class="p">:</span> <span class="p">{</span> <span class="n">autoNumber</span><span class="p">:</span> <span class="s2">"AMS"</span> <span class="p">}</span> <span class="p">}</span> <span class="p">});</span>
+</pre></div>
+<div class="highlight"><pre><span></span>&lt;IPython.core.display.Javascript object&gt;
+</pre></div>
+<div class="highlight"><pre><span></span><span class="o">%%</span><span class="n">javascript</span>
+<span class="n">MathJax</span><span class="o">.</span><span class="n">Hub</span><span class="o">.</span><span class="n">Queue</span><span class="p">([</span><span class="s2">"resetEquationNumbers"</span><span class="p">,</span> <span class="n">MathJax</span><span class="o">.</span><span class="n">InputJax</span><span class="o">.</span><span class="n">TeX</span><span class="p">],[</span><span class="s2">"PreProcess"</span><span class="p">,</span> <span class="n">MathJax</span><span class="o">.</span><span class="n">Hub</span><span class="p">],[</span><span class="s2">"Reprocess"</span><span class="p">,</span> <span class="n">MathJax</span><span class="o">.</span><span class="n">Hub</span><span class="p">]);</span>
+</pre></div>
+<div class="highlight"><pre><span></span>&lt;IPython.core.display.Javascript object&gt;
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

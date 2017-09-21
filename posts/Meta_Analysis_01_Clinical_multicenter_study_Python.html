@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Meta Analysis 01: Clinical multi center study | Pyano
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/Meta_Analysis_01_Clinical_multicenter_study_Python.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="We simulate a multi center study of a diastolic blood pressure decreasing drug.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="Pyano">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">Pyano</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Meta Analysis 01: Clinical multi center study
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-09-11T08:45:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Mo. 11 September 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/metaanalysis.html">MetaAnalysis</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#Python</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/statistics.html">#Statistics</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/effect-size.html">#Effect size</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>We follow the following publication:</p>
+<blockquote class="blockquote">
+<p>Ding-Geng (Din) Chen, Karl E. Peace (2013): <strong>Applied Meta-Analysis with R.</strong> CRC Press, Taylor &amp; Francis Group, Boca Raton (FL), 321pp. ISBN-10: 1466505990, ISBN-13: 978-1466505995. See also <a href="http://www.amazon.com/Applied-Meta-Analysis-Chapman-Hall-Biostatistics/dp/1466505990?ie=UTF8&amp;me=&amp;ref_=mt_hardcover">here</a></p>
+</blockquote>
+<p>The applications in this publication are programmed in R. We do it in <strong>Python</strong> here. We will describe the cases in a minimalistic way only. For details consult the book please.</p>
+<h3>The case</h3>
+<p>The example in chapter 1 mimics a multi center study of a diastolic blood pressure decreasing drug. The data are generated by ading random noise to a normal distribution. The generated data are concatenated to a data framework which allows for queries, statistical analysis and graphical displays. As a result we get a running workflow for a typical type of analysis.</p>
+<p>The example generates for each of the 5 clinical centers the data series for the control group and for the treated group. A series includes the variables age, base pressure, endpoint pressure, difference between them, the number of the clinical center and the type of treament ('drug' = yes, 'ctrl' = no)</p>
+<h3>Implementation with Python</h3>
+<h4>Import the Python librarys</h4>
+<p>The add-on libraries to the core of <a href="https://www.python.org/">Python</a> are  <a href="http://www.numpy.org/">NumPy</a> for the matrix/array data types, and <a href="http://pandas.pydata.org/">Pandas</a> for data structures and prelimnary data analysis. The statistical package <a href="http://statsmodels.sourceforge.net/stable/">StatsModels</a> is used for the regression model and the analysis of variances. <a href="http://stanford.edu/~mwaskom/software/seaborn/index.html">Seaborn</a> is used for the grafics which is based on <a href="http://matplotlib.org/">Matplotlib</a></p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span>  <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="kn">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="kn">as</span> <span class="nn">smf</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">"ticks"</span><span class="p">)</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+<h4>Define the functions to generate the data</h4>
+<p>The first 2 moments - mean and sdev - are used as input to generate a normal distributed data series.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generateData</span><span class="p">(</span><span class="n">nobs</span><span class="p">,</span><span class="n">center</span><span class="p">,</span><span class="n">treatment</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span> <span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ</span><span class="p">,</span> <span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">):</span>
+                <span class="c1"># nobs = n observations     </span>
+                <span class="c1"># bp_μ = blood pressure mean</span>
+                <span class="c1"># bp_σ = blood pressure sdev</span>
+                <span class="c1"># bp_δμ= mean change of blood pressure due to drug; = 0 for no drug</span>
+                <span class="c1"># bp_Δ = difference between endpoint and baseline of the clinical trial</span>
+    <span class="n">bp_base</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">bp_μ</span>        <span class="p">,</span> <span class="n">bp_σ</span><span class="p">,</span> <span class="n">nobs</span><span class="p">)</span>   <span class="c1"># random normal</span>
+    <span class="n">bp_end</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">bp_μ</span> <span class="o">-</span> <span class="n">bp_δμ</span><span class="p">,</span> <span class="n">bp_σ</span><span class="p">,</span> <span class="n">nobs</span><span class="p">)</span>   <span class="c1"># random normal</span>
+    <span class="n">bp_Δ</span>    <span class="o">=</span> <span class="n">bp_end</span> <span class="o">-</span> <span class="n">bp_base</span>
+
+    <span class="n">age</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">,</span> <span class="n">nobs</span><span class="p">)</span>  <span class="c1"># age, random normal</span>
+    <span class="n">cen</span>     <span class="o">=</span> <span class="n">center</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">age</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">)</span> <span class="c1"># number of the clinical center</span>
+    <span class="n">trt</span>     <span class="o">=</span> <span class="p">[</span><span class="n">treatment</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nobs</span><span class="p">)]</span>      <span class="c1"># treatment: with drug or ctrl</span>
+    <span class="n">index</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nobs</span><span class="p">)</span>                       <span class="c1"># data index</span>
+
+    <span class="n">myDataStack</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'bp_base'</span><span class="p">:</span> <span class="n">bp_base</span><span class="p">,</span><span class="s1">'bp_end'</span><span class="p">:</span><span class="n">bp_end</span><span class="p">,</span> <span class="s1">'bp_Δ'</span><span class="p">:</span><span class="n">bp_Δ</span><span class="p">,</span>
+                   <span class="s1">'age'</span><span class="p">:</span><span class="n">age</span><span class="p">,</span><span class="s1">'cen'</span><span class="p">:</span><span class="n">cen</span><span class="p">,</span><span class="s1">'trt'</span><span class="p">:</span><span class="n">trt</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">myDataStack</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+<h4>Set the input data</h4>
+<p>In this example it is assumed that 5 clinical centers are involved in the multi center study and that  <em>bp_δμ</em> (change of mean blood pressure) is the only parameter that varies between the centers. For the control group <em>bp_δμ_ctrl = 0</em></p>
+<div class="highlight"><pre><span></span><span class="c1">#------ main --------------------------------</span>
+<span class="c1">#---- data we keep constant in this example:</span>
+<span class="n">nObs</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span>  <span class="c1"># n observations </span>
+<span class="n">trt_ctrl</span>   <span class="o">=</span> <span class="s1">'ctrl'</span>  <span class="c1"># control group</span>
+<span class="n">trt_drug</span>   <span class="o">=</span> <span class="s1">'drug'</span>  <span class="c1"># group with treatment</span>
+<span class="n">bp_δμ_ctrl</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c1"># change of mean blood pressure in the ctrl-group</span>
+<span class="n">bp_μ</span>  <span class="o">=</span> <span class="mi">100</span>          <span class="c1"># mean blood pressure</span>
+<span class="n">bp_σ</span>  <span class="o">=</span> <span class="mi">10</span>           <span class="c1"># sdev blood pressure</span>
+<span class="n">age_μ</span> <span class="o">=</span> <span class="mi">50</span>           <span class="c1"># mean age</span>
+<span class="n">age_σ</span> <span class="o">=</span> <span class="mi">10</span>           <span class="c1"># sdev age</span>
+<span class="c1">#----- data we change to build the series</span>
+<span class="n">center1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="n">bp_δμ_1</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># clinical center; mean treatment effect </span>
+<span class="n">center2</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>  <span class="n">bp_δμ_2</span> <span class="o">=</span> <span class="mi">13</span>
+<span class="n">center3</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>  <span class="n">bp_δμ_3</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">center4</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>  <span class="n">bp_δμ_4</span> <span class="o">=</span>  <span class="mi">8</span>
+<span class="n">center5</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>  <span class="n">bp_δμ_5</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+<h4>Now generate the data series and build a DataFrame</h4>
+<p>Each clinical center has a data series of the same length for the control group and the treated group. All data are concatenated into 1 data frame.</p>
+<div class="highlight"><pre><span></span><span class="c1"># series 1</span>
+<span class="n">dat4ctrl</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center1</span><span class="p">,</span><span class="n">trt_ctrl</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_ctrl</span><span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">dat4drug</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center1</span><span class="p">,</span><span class="n">trt_drug</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_1</span>   <span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">d1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">dat4ctrl</span><span class="p">,</span><span class="n">dat4drug</span><span class="p">],</span><span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># series 2</span>
+<span class="n">dat4ctrl</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center2</span><span class="p">,</span><span class="n">trt_ctrl</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_ctrl</span><span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">dat4drug</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center2</span><span class="p">,</span><span class="n">trt_drug</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_2</span>   <span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">dat4ctrl</span><span class="p">,</span><span class="n">dat4drug</span><span class="p">],</span><span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># series 3</span>
+<span class="n">dat4ctrl</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center3</span><span class="p">,</span><span class="n">trt_ctrl</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_ctrl</span><span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">dat4drug</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center3</span><span class="p">,</span><span class="n">trt_drug</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_3</span>   <span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">d3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">dat4ctrl</span><span class="p">,</span><span class="n">dat4drug</span><span class="p">],</span><span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># series 4</span>
+<span class="n">dat4ctrl</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center4</span><span class="p">,</span><span class="n">trt_ctrl</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_ctrl</span><span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">dat4drug</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center4</span><span class="p">,</span><span class="n">trt_drug</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_4</span>   <span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">d4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">dat4ctrl</span><span class="p">,</span><span class="n">dat4drug</span><span class="p">],</span><span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># series 5</span>
+<span class="n">dat4ctrl</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center5</span><span class="p">,</span><span class="n">trt_ctrl</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_ctrl</span><span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">dat4drug</span> <span class="o">=</span> <span class="n">generateData</span><span class="p">(</span><span class="n">nObs</span><span class="p">,</span><span class="n">center5</span><span class="p">,</span><span class="n">trt_drug</span><span class="p">,</span><span class="n">bp_μ</span><span class="p">,</span><span class="n">bp_σ</span><span class="p">,</span><span class="n">bp_δμ_5</span>   <span class="p">,</span><span class="n">age_μ</span><span class="p">,</span> <span class="n">age_σ</span><span class="p">)</span>
+<span class="n">d5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">dat4ctrl</span><span class="p">,</span><span class="n">dat4drug</span><span class="p">],</span><span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># build 1 DataFrame with all data</span>
+<span class="n">dAll</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">d1</span><span class="p">,</span><span class="n">d2</span><span class="p">,</span><span class="n">d3</span><span class="p">,</span><span class="n">d4</span><span class="p">,</span><span class="n">d5</span><span class="p">],</span><span class="n">ignore_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+<p>Let's have a look at the head of the first few lines of the data frame:</p>
+<div class="highlight"><pre><span></span><span class="n">dAll</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="table table-striped dataframe table-hover">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>age</th>
+<th>bp_base</th>
+<th>bp_end</th>
+<th>bp_Δ</th>
+<th>cen</th>
+<th>trt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>60.720858</td>
+<td>111.664456</td>
+<td>99.437909</td>
+<td>-12.226547</td>
+<td>1</td>
+<td>ctrl</td>
+</tr>
+<tr>
+<th>1</th>
+<td>36.035688</td>
+<td>89.109796</td>
+<td>88.445715</td>
+<td>-0.664080</td>
+<td>1</td>
+<td>ctrl</td>
+</tr>
+<tr>
+<th>2</th>
+<td>38.823806</td>
+<td>92.925221</td>
+<td>97.549218</td>
+<td>4.623998</td>
+<td>1</td>
+<td>ctrl</td>
+</tr>
+<tr>
+<th>3</th>
+<td>38.783952</td>
+<td>91.520139</td>
+<td>104.185235</td>
+<td>12.665097</td>
+<td>1</td>
+<td>ctrl</td>
+</tr>
+<tr>
+<th>4</th>
+<td>65.327808</td>
+<td>93.283620</td>
+<td>104.308016</td>
+<td>11.024396</td>
+<td>1</td>
+<td>ctrl</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4>Print the statistics of the data</h4>
+<div class="highlight"><pre><span></span><span class="n">dAll</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'cen'</span><span class="p">,</span> <span class="s1">'trt'</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">'count'</span><span class="p">,</span><span class="s1">'mean'</span><span class="p">,</span><span class="s1">'std'</span><span class="p">])</span>
+</pre></div>
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="table table-striped dataframe table-hover">
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th colspan="3" halign="left">age</th>
+<th colspan="3" halign="left">bp_base</th>
+<th colspan="3" halign="left">bp_end</th>
+<th colspan="3" halign="left">bp_Δ</th>
+</tr>
+<tr>
+<th></th>
+<th></th>
+<th>count</th>
+<th>mean</th>
+<th>std</th>
+<th>count</th>
+<th>mean</th>
+<th>std</th>
+<th>count</th>
+<th>mean</th>
+<th>std</th>
+<th>count</th>
+<th>mean</th>
+<th>std</th>
+</tr>
+<tr>
+<th>cen</th>
+<th>trt</th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th rowspan="2" valign="top">1</th>
+<th>ctrl</th>
+<td>100</td>
+<td>48.467260</td>
+<td>10.194531</td>
+<td>100</td>
+<td>98.567163</td>
+<td>11.792550</td>
+<td>100</td>
+<td>99.793300</td>
+<td>9.211106</td>
+<td>100</td>
+<td>1.226136</td>
+<td>13.389781</td>
+</tr>
+<tr>
+<th>drug</th>
+<td>100</td>
+<td>49.628733</td>
+<td>9.628830</td>
+<td>100</td>
+<td>99.935044</td>
+<td>10.373236</td>
+<td>100</td>
+<td>87.838175</td>
+<td>9.571521</td>
+<td>100</td>
+<td>-12.096870</td>
+<td>14.092291</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">2</th>
+<th>ctrl</th>
+<td>100</td>
+<td>49.215135</td>
+<td>10.550840</td>
+<td>100</td>
+<td>98.480676</td>
+<td>10.410645</td>
+<td>100</td>
+<td>99.435871</td>
+<td>10.324950</td>
+<td>100</td>
+<td>0.955195</td>
+<td>14.974590</td>
+</tr>
+<tr>
+<th>drug</th>
+<td>100</td>
+<td>50.154245</td>
+<td>10.313113</td>
+<td>100</td>
+<td>98.144471</td>
+<td>9.870396</td>
+<td>100</td>
+<td>86.472468</td>
+<td>10.531072</td>
+<td>100</td>
+<td>-11.672004</td>
+<td>14.280153</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">3</th>
+<th>ctrl</th>
+<td>100</td>
+<td>47.850356</td>
+<td>9.693100</td>
+<td>100</td>
+<td>99.867286</td>
+<td>9.946296</td>
+<td>100</td>
+<td>99.712728</td>
+<td>9.894162</td>
+<td>100</td>
+<td>-0.154558</td>
+<td>14.311047</td>
+</tr>
+<tr>
+<th>drug</th>
+<td>100</td>
+<td>49.427241</td>
+<td>10.435070</td>
+<td>100</td>
+<td>98.287170</td>
+<td>10.428239</td>
+<td>100</td>
+<td>86.059913</td>
+<td>10.143901</td>
+<td>100</td>
+<td>-12.227257</td>
+<td>14.219824</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">4</th>
+<th>ctrl</th>
+<td>100</td>
+<td>48.263132</td>
+<td>9.648512</td>
+<td>100</td>
+<td>99.514863</td>
+<td>9.863520</td>
+<td>100</td>
+<td>99.043574</td>
+<td>9.933129</td>
+<td>100</td>
+<td>-0.471289</td>
+<td>13.328751</td>
+</tr>
+<tr>
+<th>drug</th>
+<td>100</td>
+<td>49.930536</td>
+<td>10.266096</td>
+<td>100</td>
+<td>99.877485</td>
+<td>10.086439</td>
+<td>100</td>
+<td>91.581340</td>
+<td>9.771715</td>
+<td>100</td>
+<td>-8.296145</td>
+<td>13.936570</td>
+</tr>
+<tr>
+<th rowspan="2" valign="top">5</th>
+<th>ctrl</th>
+<td>100</td>
+<td>50.424546</td>
+<td>9.768934</td>
+<td>100</td>
+<td>99.979968</td>
+<td>10.454416</td>
+<td>100</td>
+<td>100.016502</td>
+<td>10.191461</td>
+<td>100</td>
+<td>0.036535</td>
+<td>14.902816</td>
+</tr>
+<tr>
+<th>drug</th>
+<td>100</td>
+<td>49.665251</td>
+<td>10.003291</td>
+<td>100</td>
+<td>98.986446</td>
+<td>9.906621</td>
+<td>100</td>
+<td>90.535263</td>
+<td>9.178024</td>
+<td>100</td>
+<td>-8.451183</td>
+<td>13.524656</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h4>Play around with the different types of plots</h4>
+<p>This first plot contains all data, age vs base blood pressure, treated and untreated over all 5 clinical centers. On the east and the north side of the graph you should recognize the generated normal distributions in the bar plots, whereas the plotted lines are nice looking splines over the bar data only. The plotted line in the graph with y = base blood pressure should be horizontal most of the time and have a value of about 100 beceause this the mean given as input.</p>
+<p>Each data series has 100 observations, so 1'000 data points are included in this graph.</p>
+<div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"age"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"bp_base"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span> <span class="n">dAll</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s2">"reg"</span><span class="p">);</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3010/output_16_0.png"/></p>
+<p>The next graph displays the change of blood pressure vs age for each center. The change of blood pressure should be more negative for the treated groups than for the control group hopefully, beceause this corresponds to the mean given as input.</p>
+<div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"age"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"bp_Δ"</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s2">"cen"</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="s2">"trt"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">dAll</span><span class="p">,</span>
+           <span class="n">ci</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">"muted"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+           <span class="n">scatter_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"s"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"alpha"</span><span class="p">:</span> <span class="mi">1</span> <span class="p">});</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3010/output_18_0.png"/></p>
+<p>The change of blood pressure, displayed for the ctrl-group and the trt-group for each clinical center, is summarized in a box plot.</p>
+<div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">"cen"</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">"bp_Δ"</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">"trt"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">dAll</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">"PRGn"</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">despine</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">trim</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3010/output_20_0.png"/></p>
+<h3>Data analysis of each center</h3>
+<p>With these preliminary graphical illustrations, we now proceed to data analysis. We start with the individual center effects. We subset the data from each center to perform an analysis of variance. We consider a treament effect as statistically significant at p-value <span class="math">\(&lt;0.05\)</span> e.g.</p>
+<div class="highlight"><pre><span></span><span class="n">e_c1</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ trt'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">[</span><span class="n">dAll</span><span class="p">[</span><span class="s2">"cen"</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">t_c1</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_c1</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Center = 1'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">t_c1</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="n">e_c2</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ trt'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">[</span><span class="n">dAll</span><span class="p">[</span><span class="s2">"cen"</span><span class="p">]</span><span class="o">==</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">t_c2</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_c2</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Center = 2"</span><span class="p">);</span>  <span class="k">print</span><span class="p">(</span><span class="n">t_c2</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="n">e_c3</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ trt'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">[</span><span class="n">dAll</span><span class="p">[</span><span class="s2">"cen"</span><span class="p">]</span><span class="o">==</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">t_c3</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_c3</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Center = 3"</span><span class="p">);</span>  <span class="k">print</span><span class="p">(</span><span class="n">t_c3</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="n">e_c4</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ trt'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">[</span><span class="n">dAll</span><span class="p">[</span><span class="s2">"cen"</span><span class="p">]</span><span class="o">==</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">t_c4</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_c4</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Center = 4"</span><span class="p">);</span>  <span class="k">print</span><span class="p">(</span><span class="n">t_c4</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="n">e_c5</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ trt'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">[</span><span class="n">dAll</span><span class="p">[</span><span class="s2">"cen"</span><span class="p">]</span><span class="o">==</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">t_c5</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_c5</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Center = 5"</span><span class="p">);</span>  <span class="k">print</span><span class="p">(</span><span class="n">t_c5</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>Center = 1
+             df        sum_sq      mean_sq         F        PR(&gt;F)
+trt         1.0   8875.124407  8875.124407  46.97338  8.913676e-11
+Residual  198.0  37410.010029   188.939445       NaN           NaN
+
+Center = 2
+             df        sum_sq      mean_sq          F        PR(&gt;F)
+trt         1.0   7972.307055  7972.307055  37.239755  5.404231e-09
+Residual  198.0  42387.948440   214.080548        NaN           NaN
+
+Center = 3
+             df        sum_sq      mean_sq          F        PR(&gt;F)
+trt         1.0   7287.503584  7287.503584  35.809995  1.003735e-08
+Residual  198.0  40293.937324   203.504734        NaN           NaN
+
+Center = 4
+             df        sum_sq      mean_sq          F    PR(&gt;F)
+trt         1.0   3061.418522  3061.418522  16.464392  0.000071
+Residual  198.0  36816.473763   185.941787        NaN       NaN
+
+Center = 5
+             df        sum_sq      mean_sq          F    PR(&gt;F)
+trt         1.0   3602.067373  3602.067373  17.787537  0.000038
+Residual  198.0  40096.015373   202.505128        NaN       NaN
+</pre></div>
+<h3>Data Analysis with pooled data from five centers</h3>
+<p>Remember data generation: Different treatment effects has been assigned to the different clinical centers but treatment has not been related to age. We hope to recognize that in the analysis again of course. We start to fit a model for the blood pressure difference bp_Δ with 3-way interactions among treatment, center and age including the covariates as follows:</p>
+<div class="math">$$
+bp_Δ = a_0\cdot + a_1\cdot TRT + a_2\cdot CEN + a_3\cdot AGE + a_4\cdot TRT\cdot AGR + a_5\cdot TRT \cdot CEN + a_6\cdot CEN \cdot AGE + a_7\cdot TRT \cdot CEN \cdot AGE + \epsilon
+$$</div>
+<p>We perform an analysis of variance on that model and reduce the complexity of the model afterwards motivated by the p-values as a ranking parameter. This gives the following series of models
+</p>
+<div class="math">$$
+\begin{eqnarray}
+     e_{Pool1} &amp; := &amp; bp_Δ \sim trt*cen*age \\
+     e_{Pool2} &amp; := &amp; bp_Δ \sim cen + trt*age \\
+     e_{Pool3} &amp; := &amp; bp_Δ \sim cen + trt + age \\
+     e_{Pool4} &amp; := &amp; bp_Δ \sim cen + trt 
+  \end{eqnarray}
+$$</div>
+<p>Since the increase of the <em>squared sums of the residuals</em> (ssr) is moderate we may conclud that the simplest model is still accurate.</p>
+<div class="highlight"><pre><span></span><span class="n">e_pool1</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ trt*cen*age'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">t_pool1</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_pool1</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Pool = all"</span><span class="p">);</span>
+<span class="k">print</span><span class="p">(</span><span class="n">t_pool1</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"PR(&gt;F)"</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="c1"># output table sorted by PR(&gt;F)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>Pool = all
+                df         sum_sq       mean_sq           F        PR(&gt;F)
+trt            1.0   29523.440890  29523.440890  149.114727  4.754130e-32
+trt:cen        1.0    1047.327006   1047.327006    5.289759  2.165806e-02
+trt:age        1.0     555.765934    555.765934    2.807020  9.416772e-02
+trt:cen:age    1.0     370.249746    370.249746    1.870029  1.717815e-01
+cen            1.0     235.404079    235.404079    1.188961  2.758041e-01
+cen:age        1.0     111.981001    111.981001    0.565585  4.521971e-01
+age            1.0      86.740679     86.740679    0.438103  5.081931e-01
+Residual     992.0  196407.518177    197.991450         NaN           NaN
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">e_pool2</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ cen + trt*age'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">e_pool3</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ cen + trt + age'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">e_pool4</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="s1">'bp_Δ ~ cen + trt '</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">dAll</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_pool1</span><span class="p">,</span> <span class="n">e_pool2</span><span class="p">,</span> <span class="n">e_pool3</span><span class="p">,</span> <span class="n">e_pool4</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>   df_resid            ssr  df_diff      ss_diff         F  Pr(&gt;F)
+0     992.0  196407.518177      0.0          NaN       NaN     NaN
+1     995.0  197953.658419     -3.0 -1546.140243  2.587547     NaN
+2     996.0  198479.145133     -1.0  -525.486714  2.638289     NaN
+3     997.0  198579.582543     -1.0  -100.437410  0.504262     NaN
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
