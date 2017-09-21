@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://localhost:8000/posts/Meta_Analysis_01_Clinical_multicenter_study_Python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/Meta_Analysis_01_Clinical_multicenter_study_Python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/cfd_01_mass_consistent_model_pressure_correction.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/cfd_01_mass_consistent_model_pressure_correction.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/numerical_stats_03_linear_regression_monte_carlo_method.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/numerical_stats_03_linear_regression_monte_carlo_method.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/numerical_stats_02_monte_carlo_integration.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/numerical_stats_02_monte_carlo_integration.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/numerical_stats_01_bootstrapping_mean_std_ci_python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/numerical_stats_01_bootstrapping_mean_std_ci_python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/cfd-03-grids-for-airfoils.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/cfd-03-grids-for-airfoils.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/cfd-02-body-fitted-grid-genereation-python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/cfd-02-body-fitted-grid-genereation-python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/cfd-01-rectangular-grid-genereation-python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/cfd-01-rectangular-grid-genereation-python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/Basic_Stats_32_Multipe_Linear_Regression_Python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/Basic_Stats_32_Multipe_Linear_Regression_Python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/Basic_Stats_31_Linear_Regression_Python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/Basic_Stats_31_Linear_Regression_Python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/basic_stats_03_distributions_python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/basic_stats_03_distributions_python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/basic_stats_02_mechanical_approach_to_bayesian_rule.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/basic_stats_02_mechanical_approach_to_bayesian_rule.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/posts/basic_stats_01_rules_of_probability_bridge_to_bayesian_formula_python.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/basic_stats_01_rules_of_probability_bridge_to_bayesian_formula_python.html</loc>
     <priority>0.8</priority>
   </url>
 </urlset>
