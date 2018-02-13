@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>A Python Website & Blog with Pelican and Jupyter | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://healthynumerics.blog/posts/python-pelican-website-with-jupyter-part-1.html">
+
+
+  <link rel="apple-touch-icon" href="https://healthynumerics.blog/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://healthynumerics.blog/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://healthynumerics.blog/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://healthynumerics.blog/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/style.css">
+ 
+
+<meta name="description" content="A short guide how to create a Pelican website for blogs with Jupyter">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://healthynumerics.blog/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://healthynumerics.blog/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://healthynumerics.blog/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://healthynumerics.blog">
+            <img class="img-fluid" src=https://healthynumerics.blog/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://healthynumerics.blog">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>A Python Website & Blog with Pelican and Jupyter
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-08-06T21:30:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        So. 06 August 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://healthynumerics.blog/category/devtec.html">devTec</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://healthynumerics.blog/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://healthynumerics.blog/tag/pelican.html">#Pelican</a>,         <a href="https://healthynumerics.blog/tag/jupyter.html">#Jupyter</a>,         <a href="https://healthynumerics.blog/tag/python.html">#Python</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>This post is rather an <strong>overview</strong> than a detailled tutorial. It summarizes the different steps you have to take to run a Pelican website where you use Jupyter to write the blogs.</p>
+<p>Ressource #1 is always <strong>http://docs.getpelican.com/en/stable/</strong></p>
+<p>Here some other interesting sources:  http://marpat.github.io/python-anaconda-and-pelican-on-windows.html and http://nafiulis.me/making-a-static-blog-with-pelican.html</p>
+<h3>The overall Workflow</h3>
+<p>This is a general overview over all steps needed until you can run your Pelican website in your local browser. The sections below give some details to the single steps.</p>
+<ol>
+<li>Install the pelican software following http://docs.getpelican.com/en/stable/</li>
+<li><code>!pelican-quickstart</code>    (starts a new pelican project)</li>
+<li>modify <strong><code>pelicanconf.py</code></strong> to choose a <strong>theme</strong> you like</li>
+<li><strong>write an article</strong> with Jupyter (see below)</li>
+<li>from Jupyter export your article as <code>myArticleName.md</code> or <code>myArticleName.rst</code></li>
+<li>edit <code>myArticleName.md</code> and delete the blanc lines at the top of the files</li>
+<li>deposit your articles in directory <code>content</code> as <code>myArticleName.md</code> or <code>myArticleName.rst</code></li>
+<li>Run pelican to transform the content into HTML with<code>!pelican content -s my_pelicanconf.py -t /projects/your-site/themes/your-theme</code> ; or simpler: <code>!pelican content</code> if your configuration file has the default name <code>pelicanconf.py</code></li>
+<li>change to the folder where te output is: <code>!cd ~/projects/yoursite/output</code></li>
+<li>run your local web server <code>!python -m pelican.server</code>   ; or alternatively: <code>!python -m http.server</code> </li>
+<li>start your browser with    <code>http://localhost:8000/</code> to see the created website</li>
+</ol>
+<h3>Appearence, themes, pelicanconf.py</h3>
+<p>The <code>pelicanconf.py</code> file is the controlling configuration file of your perlican website. There are some dozens of prepared themes you can download. Each theme comes with two directories (<code>static</code>, <code>templates</code>). In <code>pelicanconf.py</code> you have to set the path to your choosen theme. It might be helpful that you have a  <code>pelicanconf_myTheme.py</code> for each of our prefered theme.</p>
+<ol>
+<li>download the pelican themes from http://www.pelicanthemes.com/</li>
+<li>place your favorite theme in in your pelican directory and set in  <code>pelicanconf_myTheme.py</code> the path and the name. e.g.  <code>THEME = 'themes/myTheme'</code></li>
+</ol>
+<h3>Write an Article</h3>
+<ol>
+<li>Use Jupyter to write your article</li>
+<li>
+<p>Write into the first Jupyter cell of your article the pelican head:</p>
+<div class="highlight"><pre><span></span><span class="n">Title</span><span class="o">:</span> <span class="n">My</span> <span class="n">everything</span> <span class="n">telling</span> <span class="n">title</span>
+<span class="n">Date</span><span class="o">:</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">03</span> <span class="mi">10</span><span class="o">:</span><span class="mi">20</span>
+<span class="n">Modified</span><span class="o">:</span> <span class="mi">2018</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">15</span> <span class="mi">19</span><span class="o">:</span><span class="mi">30</span>
+<span class="n">Category</span><span class="o">:</span> <span class="n">Python</span>
+<span class="n">Tags</span><span class="o">:</span> <span class="n">pelican</span><span class="o">,</span> <span class="n">publishing</span>
+<span class="n">Slug</span><span class="o">:</span> <span class="n">my</span><span class="o">-</span><span class="n">universal</span><span class="o">-</span><span class="n">post</span>
+<span class="n">Authors</span><span class="o">:</span> <span class="n">John</span> <span class="n">Devil</span><span class="o">,</span> <span class="n">Lydia</span> <span class="n">Angel</span>
+<span class="n">Cover</span><span class="o">:</span> <span class="sr">/p001/img001/</span><span class="n">pic1</span><span class="o">.</span><span class="na">png</span>
+<span class="n">Summary</span><span class="o">:</span> <span class="n">All</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">know</span> <span class="n">about</span> <span class="n">pelican</span>
+</pre></div>
+</li>
+<li>
+<p>export/transform the Jupyter file to a Markdown file (or to a rST file) with <code>file -&gt; download as</code></p>
+</li>
+<li>edit the Markdown file and delete the trailing blank line at the top</li>
+<li>if not already done: deposit the Markdown file in the <code>content</code> directory</li>
+</ol>
+<h3>Structure of the Content directory and Categories</h3>
+<h5>Variante: <code>USE_FOLDER_AS_CATEGORY = True</code></h5>
+<p>You can use the content directory as a classifier which assigns the articles to a category. For that in  <code>pelicanconf.py</code> you must set <code>USE_FOLDER_AS_CATEGORY = True</code>.  That means that <em>Politics</em>, <em>QuantsNumerics</em> and <em>Technics</em> will appear as categories in your pelican website.</p>
+<div class="highlight"><pre><span></span>website/
+├── content
+│   ├── Politics/
+│   │   └── pArticle01.md
+│   │   └── pArticle02.md
+│   ├── QuantsNumerics/
+│   │   └── qArticle01.md
+│   │   └── qArticle02.md    
+│   ├── Technics/
+│   │   └── tArticle01.md
+│   │   └── tArticle02.md
+│   ├── article20.md
+│   ├── article21.md
+│   └── pages
+│       └── AboutUs.md
+│       └── furtherProjects.md
+└── pelicanconf.py
+</pre></div>
+<h5>Variante: <code>USE_FOLDER_AS_CATEGORY = False</code></h5>
+<p>In the head section of your article you can give explicitely the article a category with 
+        <code>Category: Python</code>
+You can now structure your content directory as you prefer it, e.g. a directory for each article which is helpful if you have pictures and other static files which belong to the article:</p>
+<div class="highlight"><pre><span></span>website/
+├── content
+│   ├── p001/
+│   │   └── pArticle001.md
+│   │   └── img001
+│   │       ├── pic1.png
+│   │       ├── pic2.png
+│   │       └── movie.mp4
+│   ├── p002/
+│   │   └── pArticle002.md
+│   │   └── img002
+│   │       ├── pic1.png
+│   │       └── pic2.png
+│   └── pages
+│       └── AboutUs.md
+│       └── furtherProjects.md
+└── pelicanconf.py
+</pre></div>
+<p>In  <code>pelicanconf.py</code> you must set </p>
+<div class="highlight"><pre><span></span>  STATIC_PATHS  = ['p001','p002',]
+</pre></div>
+<h3>How to include Images into the Article</h3>
+<p>For detaiiled instructions follow <a href="http://docs.getpelican.com/en/3.6.3/content.html#attaching-static-files">this</a>:</p>
+<p>In <code>pelicanconfig.py</code> set:</p>
+<div class="highlight"><pre><span></span>PATH = 'content'
+STATIC_PATHS = ['p001','p002']
+ARTICLE_PATHS = STATIC_PATHS
+</pre></div>
+<p>Open the <code>md</code>-file and have a look where the pictures are. You will find something like <code>output_3_0.png</code>. Replace that by</p>
+<div class="highlight"><pre><span></span>![pic_A1]({attach}img001/myPic1.png)
+![pic_A2]({attach}img001/myPic2.png)
+</pre></div>
+<p>and</p>
+<div class="highlight"><pre><span></span>![pic_B1]({attach}img002/myPic1.png)
+![pic_B2]({attach}img002/myPic2.png)
+</pre></div>
+<h3>Add an Image to the Summary</h3>
+<p>In the Jupyter head section, <code>cover</code> is a picture that is added to the summary in the table of content.</p>
+<ul>
+<li>if you have images in your article, use
+        Cover: /posts/img001/pic1.png</li>
+<li>if do not have images in your article, use
+        Cover: /p001/img001/pic1.png</li>
+</ul>
+<p>Note that <span class="math">\(posts\)</span> has to correspond to the setting  in <em>myPelicanConf.py </em>:</p>
+<div class="highlight"><pre><span></span>ARTICLE_URL = 'posts/{slug}.html'
+</pre></div>
+<p>and <span class="math">\(p001\)</span> corresponds to the structure of your content directory</p>
+<p>In order to include the cover, make an extension there where <code>article.summary</code> already is used. I use pelican-theme <strong>alchemy</strong>  (that uses bootstrap) and  <code>article.summary</code> is in <code>index.html</code>. I extended it as follows: </p>
+<div class="highlight"><pre><span></span>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h4</span> <span class="na">class=</span><span class="s">"title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">article.url</span> <span class="cp">}}</span><span class="s">"</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">article.title</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/h4&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+      <span class="cp">{{</span> <span class="nv">article.summary</span><span class="o">|</span><span class="nf">striptags</span> <span class="cp">}}</span>
+      <span class="cp">{%</span> <span class="k">if</span> <span class="nv">article.cover</span> <span class="cp">%}</span>           
+         <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"col-md-6"</span> <span class="na">style=</span><span class="s">"padding-left: 0px;  padding-right: 0px;"</span><span class="nt">&gt;</span>
+           <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"</span><span class="cp">{{</span> <span class="nv">article.cover</span> <span class="cp">}}</span><span class="s">"</span> <span class="na">class=</span><span class="s">"img-fluid"</span><span class="nt">&gt;</span>
+           <span class="nt">&lt;/div&gt;&lt;/div&gt;</span>   
+      <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span> 
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+</pre></div>
+<h3>Pages</h3>
+<p>If you create a folder named <code>pages</code> inside the content folder, all the files in it will be used to generate static pages, such as <em>About</em> or <em>Contact</em> pages.</p>
+<p>You can use the <em>DISPLAY_PAGES_ON_MENU</em> setting in <code>pelicanconfig.py</code> to control whether all those pages are displayed in the primary navigation menu. (Default is True.)</p>
+<p>If you want to exclude any pages from being linked to or listed in the menu then add a <em>status: hidden</em> attribute to its metadata. This is useful for things like making error pages that fit the generated theme of your site.</p>
+<h3>Development or production state</h3>
+<p>During the <strong>development</strong> we set in _myPelicanConf.py _</p>
+<div class="highlight"><pre><span></span>#--- development stage ----------------
+SITEURL = 'http://localhost:8000' 
+LOAD_CONTENT_CACHE = False
+</pre></div>
+<p>Comment out these lines when you want to pblish your site (<strong>production</strong>) and set in <em>myPelicanConf.py</em> instead</p>
+<div class="highlight"><pre><span></span>#------ production stage ------------------
+SITEURL = 'https://www.myDomainName.com'
+RELATIVE_URLS = False
+</pre></div>
+<h3>Run your Pelican Website</h3>
+<h4>with command line (CMD window)</h4>
+<ol>
+<li>change to your Pelican project as your current directory </li>
+<li>let Pelican transform your content into output with</li>
+<li><code>pelican content</code>, if your setting file is named as <code>pelicanconf.py</code></li>
+<li><code>pelican /path/to/your/content/ -s path/to/your/myPelicanConf.py</code> in the general case</li>
+<li>run a webserver with <code>python -m http.server</code></li>
+<li>start in your browser http://localhost:8000/ to see the result</li>
+</ol>
+<h4>with Jupyter and  command line (CMD window)</h4>
+<ol>
+<li>change to your Pelican project as your current directory </li>
+<li>in Jupyter run</li>
+<li><code>!pelican content</code>, if your setting file is named as <code>pelicanconf.py</code></li>
+<li><code>!pelican -s path/to/your/myPelicanConf.py</code> in the general case</li>
+<li>have a CMD window open with running a webserver permanentely with <code>python -m http.server</code></li>
+<li>
+<p>refresh/reload your browser http://localhost:8000/ to see the result</p>
+<p>pelican pyanoB/content -s pyanoB/pelicanconf_alchemy.py</p>
+<p>pelican content -s pelicanconf_alchemy.py</p>
+<p>cd C:\path\to\myPelicanDirectory\output</p>
+<p>python -m http.server</p>
+<p>http://localhost:8000/</p>
+</li>
+</ol>
+<h3>Deployment</h3>
+<p>--&gt; see an other post for
+- github as publication server
+- Discus as an added discussion plattform
+- fabric3 for further automatisation</p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://healthynumerics.blog/posts/python-pelican-website-with-jupyter-part-1.html';
+    this.page.identifier = 'python-pelican-website-with-jupyter-part-1';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://healthynumerics.blog/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://healthynumerics.blog/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://healthynumerics.blog/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://healthynumerics.blog/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

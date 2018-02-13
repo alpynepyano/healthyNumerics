@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Computational Fluid Dynamics: An explict Python Schema for the 2dim Diffusion Equation | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://healthynumerics.blog/posts/CFD-python-diffusion-2dim-FD-explict.html">
+
+
+  <link rel="apple-touch-icon" href="https://healthynumerics.blog/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://healthynumerics.blog/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://healthynumerics.blog/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://healthynumerics.blog/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://healthynumerics.blog/theme/css/style.css">
+ 
+
+<meta name="description" content="We introduce a basic schema in computational fluid dynamics for solving the 2dimensional heat equation with a source term and constant diffusivities on an equidistant rectangular grid.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://healthynumerics.blog/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://healthynumerics.blog/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://healthynumerics.blog/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://healthynumerics.blog">
+            <img class="img-fluid" src=https://healthynumerics.blog/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://healthynumerics.blog">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://healthynumerics.blog/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Computational Fluid Dynamics: An explict Python Schema for the 2dim Diffusion Equation
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-09-08T09:45:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Fr. 08 September 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://healthynumerics.blog/category/computationalfluiddynamics.html">ComputationalFluidDynamics</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://healthynumerics.blog/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://healthynumerics.blog/tag/python.html">#Python</a>,         <a href="https://healthynumerics.blog/tag/finite-differences.html">#finite differences</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <h3>Stationary equation</h3>
+<p>The stationary <strong>diffusion equation</strong> with constant diffusion coefficients is given in coordinate free representaion as
+</p>
+<div class="math">$$
+\begin{eqnarray}
+- K \cdot\nabla^2 u &amp;=&amp; S_{diff}
+\end{eqnarray}
+$$</div>
+<p>Using cartesian coordinates we can write
+</p>
+<div class="math">$$
+\begin{eqnarray}
+- K^x \frac {\partial^2 u}{\partial{x}^2} - K^y \frac {\partial^2 u}{\partial{y}^2} &amp;=&amp; S_{diff}\\
+- K^x u_{xx} - K^y u_{yy} &amp;=&amp; S_{diff}
+\end{eqnarray}
+$$</div>
+<h3>Time dependent equation</h3>
+<p>The time dependent diffusion equation is given as
+</p>
+<div class="math">$$
+\begin{eqnarray}
+\frac {\partial u}{\partial{t}}- K \cdot\nabla^2 u &amp;=&amp; S_{diff} \\
+u_t - K^x u_{xx} - K^y u_{yy} &amp;=&amp; S_{diff}
+\end{eqnarray}
+$$</div>
+<h3>Explicit finite difference (FD) discretization  with equidistant cartesian grid</h3>
+<h4>Time dependent solution</h4>
+<div class="math">$$
+\frac{u_{i,j}^{n+1} - u_{i,j}^{n}}{\Delta t}
+-K^x \frac{u_{i+1,j}^{n} - 2u_{i,j}^{n}  + u_{i-1,j}^{n}}{(\Delta x)^2}
+-K^y \frac{u_{i,j+1}^{n} - 2u_{i,j}^{n}  + u_{i,j-1}^{n}}{(\Delta y)^2}
+= S^{diff}_{i,j}
+$$</div>
+<div class="math">$$
+u_{i,j}^{n+1}
+=
+u_{i,j}^{n} + \Delta t \bigg(
+K^x \frac{u_{i+1,j}^{n} - 2u_{i,j}^{n}  + u_{i-1,j}^{n}}{(\Delta x)^2}
++K^y \frac{u_{i,j+1}^{n} - 2u_{i,j}^{n}  + u_{i,j-1}^{n}}{(\Delta y)^2}
++ S^{diff}_{i,j} \bigg)
+$$</div>
+<div class="math">$$
+u_{i,j}^{n+1}
+=
+u_{i,j}^{n} + \Delta t \cdot d u^n
+$$</div>
+<p>The numerical solution can be found by propagating <span class="math">\(u\)</span> from one timpstep <span class="math">\(n\)</span> to the next timesptep <span class="math">\(n+1\)</span></p>
+<h4>Stationary solution</h4>
+<div class="math">$$
+-\frac{K^x }{(\Delta x)^2} \bigg(u_{i+1,j}^{n+1} - 2u_{i,j}^{n+1}  + u_{i-1,j}^{n+1} \bigg)
+-\frac{K^y }{(\Delta y)^2} \bigg(u_{i,j+1}^{n+1} - 2u_{i,j}^{n+1}  + u_{i,j-1}^{n+1} \bigg)
+=
+S^{diff}_{i,j}
+$$</div>
+<p>Using compass notation we can write
+</p>
+<div class="math">$$
+A^E \cdot u_{i+1,j}^{n+1} + A^W \cdot u_{i-1,j}^{n+1} + A^N \cdot u_{i,j+1}^{n+1} + A^S \cdot u_{i,j-1}^{n+1} - A^P \cdot u_{i,j}^{n+1} 
+=  RHS_{diff}
+$$</div>
+<p>with
+</p>
+<div class="math">$$
+\begin{eqnarray}
+A^E &amp;=&amp; -\frac{K^x }{(\Delta x)^2} \\
+A^W &amp;=&amp; -\frac{K^x }{(\Delta x)^2} \\
+A^N &amp;=&amp; -\frac{K^y }{(\Delta y)^2} \\
+A^S &amp;=&amp; -\frac{K^y }{(\Delta y)^2} \\
+A^P &amp;=&amp; A^E + A^W + A^N + A^S\\
+RHS_{diff}  &amp;=&amp; S^{diff}_{i,j}
+\end{eqnarray}
+$$</div>
+<p>To find a solution the following equation system for the unknown <span class="math">\(u\)</span> at all grid points has to be solved simultaneously:</p>
+<div class="math">$$
+\begin{eqnarray}
+\mathbf{A \cdot u} &amp;=&amp; \mathbf{RHS}
+\end{eqnarray}
+$$</div>
+<p>We will adress that in a seperate post.</p>
+<h3>Boundary condtions (BC) for the explicit schema</h3>
+<p>When using the explicit schema only the interior (red) points of the grid are evaluated usually. So the (orange) points at the boundary  can be used to store fiexed values, or they can be upgraded at each time step in such a way that some flux boundary conditions are fullfilled.</p>
+<div class="highlight"><pre><span></span><span class="n">ComputationalDomain</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://healthynumerics.blog/posts/img5200/output_5_0.png"/></p>
+<h4>Fixed values at the boundary (Dirichlet BC)</h4>
+<p>Let's assume we want a fixed value <span class="math">\(uBC\)</span> at the east boundary. So we just store this value in u[nx,iy]:
+</p>
+<div class="math">$$
+u[nx,iy] = uBC
+$$</div>
+<h4>Prescribed flux at the boundary (Neuman BC)</h4>
+<p>Let's assume we want a prescribed flux <span class="math">\(F^e\)</span> at the east boundary. We use the discretized form of the flux and solve it so that we can update u[nx,iy] at each iteration: </p>
+<div class="math">$$
+\begin{eqnarray}
+K^x\frac{\partial {u} }{\partial {x}} &amp;=&amp;K^x\frac{u[nx,iy] - u[nx-1,iy]}{\Delta x} &amp;=&amp; F^e \\
+u[nx,iy] &amp;=&amp; u[nx-1,iy] + \frac{F^e\Delta x}{K^x}
+\end{eqnarray}
+$$</div>
+<p>For the most often used flux <span class="math">\(F^e = 0\)</span> the update becomes
+</p>
+<div class="math">$$u[nx,iy] = u[nx-1,iy]$$</div>
+<h3>An example</h3>
+<ul>
+<li>Equation: <span class="math">\(\frac {\partial u}{\partial{t}}- K \cdot\nabla^2 u = S_{diff}\)</span></li>
+<li>Domain: <span class="math">\(D = [-1 \enspace x \enspace 1]^2\)</span></li>
+<li>fix BC at west boundary: <span class="math">\(u = 0.2*exp(-20\cdot y^2)\)</span>, where y is the y-coordinate of D</li>
+<li>fix BC at north and south boundary: <span class="math">\(u = 0\)</span></li>
+<li>grad BC at east boundary: <span class="math">\(u_x = 0\)</span></li>
+<li>Source : <span class="math">\(S = round(1-R)\)</span> with <span class="math">\(R = \sqrt{(x^2 + y^2)}\)</span></li>
+<li>Diffusivities: <span class="math">\(K^x = K^y = 1\)</span></li>
+<li>Interior initial condition: <span class="math">\(u=0\)</span></li>
+<li>Discretization: Finite Differences (FD) on an equidistant cartesian grid</li>
+<li>since the boundary conditions do not change, the solution converges to a stationary state</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="kn">as</span> <span class="nn">mclr</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span> <span class="c1">##library for 3d projection plots</span>
+<span class="kn">from</span> <span class="nn">IPython.core.pylabtools</span> <span class="kn">import</span> <span class="n">figsize</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">'float'</span><span class="p">:</span> <span class="s1">'{: 0.3f}'</span><span class="o">.</span><span class="n">format</span><span class="p">})</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">grafics</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span><span class="n">titel</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">22</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="s1">'3d'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">plasma</span><span class="p">,</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">antialiased</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'$x$'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'$y$'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">titel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<h2>Python code for the 2dimensional explicit time dependent diffusion equation</h2>
+<div class="highlight"><pre><span></span><span class="c1">#---- input section ----------------------------</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="mi">46</span><span class="p">;</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">46</span><span class="p">;</span>         <span class="c1"># number of grig points</span>
+<span class="n">Lx</span> <span class="o">=</span>  <span class="mi">2</span><span class="p">;</span> <span class="n">Ly</span> <span class="o">=</span>  <span class="mi">2</span><span class="p">;</span>         <span class="c1"># lenght of domain</span>
+<span class="n">nt</span> <span class="o">=</span> <span class="mi">9000</span>                 <span class="c1"># number of iterations</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.0001</span>               <span class="c1"># time step</span>
+<span class="n">Kx</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="n">Ky</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>       <span class="c1"># diffusivities</span>
+
+<span class="c1">#---- evaluate input ---------------------------</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">Lx</span><span class="o">/</span><span class="p">(</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="n">dx2</span> <span class="o">=</span> <span class="n">dx</span><span class="o">*</span><span class="n">dx</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">Ly</span><span class="o">/</span><span class="p">(</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="n">dy2</span> <span class="o">=</span> <span class="n">dy</span><span class="o">*</span><span class="n">dy</span>
+
+<span class="c1">#---- generate grid for grafics ----------------</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="p">,</span><span class="n">nx</span><span class="p">)</span><span class="o">-</span><span class="mf">0.5</span>
+<span class="n">iy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ny</span><span class="p">)</span><span class="o">-</span><span class="mf">0.5</span>
+<span class="n">x</span>  <span class="o">=</span> <span class="n">Lx</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">iy</span><span class="p">))</span>  
+<span class="n">y</span>  <span class="o">=</span> <span class="n">Ly</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">ix</span><span class="p">),</span><span class="n">iy</span><span class="p">)</span>  
+
+<span class="k">def</span> <span class="nf">set_InitialValue</span><span class="p">():</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+    <span class="n">Sdiff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">));</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">Sdiff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">R</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">Sdiff</span>
+
+<span class="k">def</span> <span class="nf">set_FixBC</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="c1">#--- west boundary ---</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">jy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="p">);</span>  <span class="n">u</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="o">*</span><span class="n">iy</span><span class="p">[</span><span class="n">jy</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">u</span>
+
+<span class="k">def</span> <span class="nf">set_GradBC</span><span class="p">(</span><span class="n">u</span><span class="p">):</span>
+    <span class="c1">#--- east boundary ---</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">jxm</span> <span class="o">=</span> <span class="n">jx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">jy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="p">);</span>  <span class="n">u</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">jxm</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">u</span>
+
+<span class="k">def</span> <span class="nf">du</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">Sdiff</span><span class="p">):</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="n">jxm</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span> <span class="n">jxp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nx</span><span class="p">)</span>
+    <span class="n">jy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="n">jym</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span> <span class="n">jyp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span>
+    <span class="n">DU</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">DU</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">jxp</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="n">jxm</span><span class="p">,</span><span class="n">jy</span><span class="p">])</span><span class="o">*</span><span class="n">Kx</span><span class="o">/</span><span class="n">dx2</span> <span class="o">+</span> \
+                <span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jyp</span><span class="p">]</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jym</span><span class="p">])</span><span class="o">*</span><span class="n">Ky</span><span class="o">/</span><span class="n">dy2</span> <span class="o">+</span> \
+                <span class="n">Sdiff</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">DU</span>
+
+<span class="c1">#------- initialize -------------------------</span>
+<span class="n">u</span><span class="p">,</span> <span class="n">Sdiff</span> <span class="o">=</span> <span class="n">set_InitialValue</span><span class="p">()</span>
+<span class="n">u</span> <span class="o">=</span> <span class="n">set_FixBC</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+
+<span class="c1">#---- graphical display --------------</span>
+<span class="n">grafics</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="s2">"u Initial condition"</span><span class="p">)</span>
+
+<span class="c1">#------- iterate -------------------------</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">set_GradBC</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">un</span> <span class="o">=</span> <span class="n">u</span> <span class="o">+</span> <span class="n">dt</span><span class="o">*</span><span class="n">du</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="n">Sdiff</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">un</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://healthynumerics.blog/posts/img5200/output_11_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="c1">#---- graphical display --------------</span>
+<span class="n">grafics</span><span class="p">(</span><span class="n">Sdiff</span><span class="p">,</span> <span class="s2">"Source term Sdiff"</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://healthynumerics.blog/posts/img5200/output_12_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="c1">#---- graphical display --------------</span>
+<span class="n">grafics</span><span class="p">(</span><span class="n">u</span><span class="p">,</span><span class="s2">"Diffusion(u)"</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://healthynumerics.blog/posts/img5200/output_13_0.png"/></p>
+<h3>Grafics for the computational domain</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ComputationalDomain</span><span class="p">():</span>
+
+    <span class="n">nx</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">6</span>
+
+    <span class="c1">#---- set the 1-dimensional index arrays in x- and y-direction</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">nx</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">iy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="c1">#---- define the grid using the outer product -----------</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">iy</span><span class="p">))</span>  <span class="c1"># X = ix.T * ones(iy)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">ix</span><span class="p">),</span><span class="n">iy</span><span class="p">)</span>  <span class="c1"># Y = ones(ix) * iy.T</span>
+
+    <span class="n">ss</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">figsize</span><span class="p">(</span><span class="n">ss</span><span class="o">*</span><span class="n">nx</span><span class="p">,</span><span class="n">ss</span><span class="o">*</span><span class="n">ny</span><span class="p">)</span>
+    <span class="n">area</span> <span class="o">=</span> <span class="mi">150</span>
+
+    <span class="n">myCmap</span> <span class="o">=</span> <span class="n">mclr</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="s1">'white'</span><span class="p">,</span><span class="s1">'white'</span><span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">myCmap</span><span class="p">)</span>
+
+    <span class="c1">#--- sw corner ----------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="n">jxp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">jy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="n">jyp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>  
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'yellow'</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">)</span>
+
+    <span class="c1">#--- se corner ----------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">jxm</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span> 
+    <span class="n">jy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>    <span class="n">jyp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'yellow'</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">)</span>
+
+    <span class="c1">#--- nw corner ----------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>     <span class="n">jxp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> 
+    <span class="n">jy</span> <span class="o">=</span> <span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>  <span class="n">jym</span> <span class="o">=</span> <span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'yellow'</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">)</span>
+
+    <span class="c1">#--- ne corner ----------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>  <span class="n">jxm</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span> 
+    <span class="n">jy</span> <span class="o">=</span> <span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>  <span class="n">jym</span> <span class="o">=</span> <span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'yellow'</span><span class="p">,</span><span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">)</span>
+
+    <span class="c1">#--- south boundary -----------------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>  <span class="n">jxm</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>  <span class="n">jxp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nx</span><span class="p">);</span>  
+    <span class="n">jy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">jyp</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)</span>
+
+    <span class="c1">#--- north boundary -----------------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="n">jxm</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>  <span class="n">jxp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nx</span><span class="p">);</span>  
+    <span class="n">jy</span> <span class="o">=</span> <span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">jym</span> <span class="o">=</span> <span class="n">ny</span><span class="o">-</span><span class="mi">2</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>  
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)</span>
+
+    <span class="c1">#--- west boundary -----------------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>   <span class="n">jxp</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  
+    <span class="n">jy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>  <span class="n">jym</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>  <span class="n">jyp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">ny</span><span class="p">);</span> 
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)</span>
+
+    <span class="c1">#--- east boundary -----------------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>   <span class="n">jxm</span> <span class="o">=</span> <span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">;</span>  
+    <span class="n">jy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>  <span class="n">jym</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span>  <span class="n">jyp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">ny</span><span class="p">);</span> 
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)</span>
+
+    <span class="c1">#--- interior area ---------------------------------</span>
+    <span class="n">jx</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="n">jxm</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span> <span class="n">jxp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">nx</span><span class="p">)</span>
+    <span class="n">jy</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span> <span class="n">jym</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">2</span><span class="p">);</span> <span class="n">jyp</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span>   <span class="n">yp</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span> <span class="p">];</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">yp</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">area</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'red'</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'y'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Computational domain'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+    <span class="c1">#plt.axes().set_facecolor("black")</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://healthynumerics.blog/posts/CFD-python-diffusion-2dim-FD-explict.html';
+    this.page.identifier = 'CFD-python-diffusion-2dim-FD-explict';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://healthynumerics.blog/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://healthynumerics.blog/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://healthynumerics.blog/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://healthynumerics.blog/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
