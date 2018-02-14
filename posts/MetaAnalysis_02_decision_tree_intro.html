@@ -7,7 +7,7 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
-  <title>MetaAnalysis 02: A Decision Tree Intro | HealthyNumerics
+  <title>MetaAnalysis 02: A Medical Decision Tree Intro | HealthyNumerics
 </title>
   <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/MetaAnalysis_02_decision_tree_intro.html">
 
@@ -113,7 +113,7 @@
 
   <div class="main">
     <div class="container">
-      <h1>MetaAnalysis 02: A Decision Tree Intro
+      <h1>MetaAnalysis 02: A Medical Decision Tree Intro
 </h1>
       <hr>
 <article class="article">
@@ -138,8 +138,8 @@
   <div class="content">
     <h2>Decision tree for state of health</h2>
 <p>We denote different states of health, e.g., healthy, ill, dead, with <span class="math">\(H^h, H^i, H^d\)</span>. We can assume that <span class="math">\(H^i\)</span> can be any health state bewteen <span class="math">\(H^h\)</span> and <span class="math">\(H^d\)</span>. But this choice is not mandatory. We can choose any state of health <span class="math">\(H^A, H^B, H^C\)</span>.</p>
-<p>An individual may be confronted with the choice between <span class="math">\(H_0^i\)</span> and the uncertain prospect <span class="math">\([H_1^h, H_1^d]^T\)</span> or  <span class="math">\([H_1^h, H_1^i, H_1^d]^T\)</span> due to a therapy. <span class="math">\(p\)</span>, <span class="math">\(q\)</span>, and <span class="math">\((1-p-q)\)</span> are the probablities for the different outcomes. A decision tree is concerned with the problem of changing the state of health from <span class="math">\(\mathbf{H}_0\)</span> to  <span class="math">\(\mathbf{H}_1\)</span> including the uncertainities of the different outcomes.</p>
-<h2>The 2-states model</h2>
+<p>Let's assume an individual has at time <span class="math">\(t_o\)</span> a health state <span class="math">\(i\)</span>, which is denoted as <span class="math">\(H_0^i\)</span>. The individual may be confronted with the choice between <span class="math">\(H_0^i\)</span> and the uncertain prospect <span class="math">\([H_1^h, H_1^d]^T\)</span> or  <span class="math">\([H_1^h, H_1^i, H_1^d]^T\)</span> due to a therapy. <span class="math">\(p\)</span>, <span class="math">\(q\)</span>, and <span class="math">\((1-p-q)\)</span> are the probablities for the different outcomes. A decision tree is concerned with the problem of changing the state of health from <span class="math">\(\mathbf{H}_0\)</span> to  <span class="math">\(\mathbf{H}_1\)</span> including the uncertainities of the different outcomes.</p>
+<h2>The 2-states model of a therapy</h2>
 <p>A simpler model may comprise two states of health as prospect of a therapy <span class="math">\(T\)</span></p>
 <div class="math">$$
 \begin{equation}
@@ -167,7 +167,7 @@ $$</div>
 \end{array}
 \end{equation}
 $$</div>
-<p>and we can now write the decison tree as a <strong>Markov chain model</strong> with one time step as</p>
+<p>and we can now write the decision tree as a <strong>Markov chain model</strong> with one time step as</p>
 <div class="math">$$
 \begin{equation}
 \begin{array}{rcl}
@@ -176,9 +176,7 @@ H_0^i &amp; \xrightarrow[]{T} &amp; \mathbf{P}\cdot\mathbf{H}_1  \\
 \end{array}
 \end{equation}
 $$</div>
-<p>With </p>
-<div class="math">$$\mathbf{p} = \left[\begin{matrix}p &amp; (1-p)\end{matrix}\right] =  \left[\begin{matrix}0.45 &amp; 0.55\end{matrix}\right]$$</div>
-<p> this model has this tree:</p>
+<p>With <span class="math">\(\mathbf{p} = \left[<div class="math">\begin{matrix}p &amp; (1-p)\end{matrix}</div>\right] =  \left[<div class="math">\begin{matrix}0.45 &amp; 0.55\end{matrix}</div>\right]\)</span> this model has this tree:</p>
 <div class="highlight"><pre><span></span><span class="n">tree_2</span><span class="p">()</span>
 </pre></div>
 <p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3011/output_2_1.png"/></p>
@@ -203,13 +201,11 @@ H_0^i &amp; \xrightarrow[]{T} &amp; \mathbf{P}\cdot\mathbf{H}_1  \\
 \end{array}
 \end{equation}
 $$</div>
-<p>With </p>
-<div class="math">$$\mathbf{p} = \left[\begin{matrix}p &amp; q &amp;(1-p-q)\end{matrix}\right] =  \left[\begin{matrix}0.35 &amp; 0.25 &amp; 0.40\end{matrix}\right]$$</div>
-<p> this model has this tree:</p>
+<p>With <span class="math">\(\mathbf{p} = \left[<div class="math">\begin{matrix}p &amp; q &amp;(1-p-q)\end{matrix}</div>\right] =  \left[<div class="math">\begin{matrix}0.35 &amp; 0.25 &amp; 0.40\end{matrix}</div>\right]\)</span> this model has this tree:</p>
 <div class="highlight"><pre><span></span><span class="n">tree_3</span><span class="p">()</span>
 </pre></div>
 <p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3011/output_4_1.png"/></p>
-<h2>A compounded 2-level model</h2>
+<h2>A 2-level model of a compounded therapy or diagnosis</h2>
 <p>If a diagnostic test and/or a therapeutical intervention is compounded by two distinguishable steps the model becomes:</p>
 <div class="math">$$
 \begin{equation}
@@ -233,7 +229,7 @@ $$</div>
 </pre></div>
 <p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3011/output_6_1.png"/></p>
 <h4>Evaluation of the tree</h4>
-<p>On right side of the tree are 6 end points, called foils. A branche is the connection between a foil and the root. On each of this 6 branches the probabilities of <strong>p</strong> and <strong>r</strong> are multiplied. In order to evaluate all probablities of the foils one can imagine that <strong>p</strong> and <strong>r</strong> build a grid that can be computed by the <strong>outer product</strong> as demonstrated  <a href="/healthyNumerics/posts/cfd-01-rectangular-grid-genereation-python.html">here</a> and  <a href="cfd-02-body-fitted-grid-genereation-python.html">here</a> in a different context.</p>
+<p>On right side of the tree are 6 end points, called foils. A branche is the connection between a foil and the root. On each of this 6 branches the probabilities of <strong>p</strong> and <strong>r</strong> are multiplied. In order to evaluate all probablities of the foils one can imagine that <strong>p</strong> and <strong>r</strong> build a grid that can be computed by the <strong>outer product</strong> as demonstrated  <a href="/posts/healthyNumerics/cfd-01-rectangular-grid-genereation-python.html">here</a> and  <a href="cfd-02-body-fitted-grid-genereation-python.html">here</a> in a different context.</p>
 <p>The matrix <span class="math">\(\mathbf{\Pi}\)</span> with the probabilities of the foils can be computed by</p>
 <div class="math">$$
 \begin{equation}
@@ -243,7 +239,7 @@ $$</div>
 \end{array}
 \end{equation}
 $$</div>
-<p>Analytically this can be shown with SymPy, a Python library for symbolic mathematic.</p>
+<p>Analytically this can be shown with SymPy, a Python library for symbolic mathematic</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">s</span>
 <span class="n">s</span><span class="o">.</span><span class="n">init_printing</span><span class="p">()</span>
 <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span>
@@ -270,6 +266,7 @@ $$</div>
 [[ 0.035  0.025  0.04 ]
  [ 0.315  0.225  0.36 ]]
 </pre></div>
+<p>All branches of the decision tree that connect the root with the foils are evaluatetd now.</p>
 <h3><em>The Python code</em></h3>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
@@ -277,15 +274,18 @@ $$</div>
 </pre></div>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">treeGrafics</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">figX</span><span class="p">,</span><span class="n">figY</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">IPython.core.pylabtools</span> <span class="kn">import</span> <span class="n">figsize</span>
-    <span class="n">figsize</span><span class="p">(</span><span class="n">figX</span><span class="p">,</span><span class="n">figY</span><span class="p">)</span>
-    <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="s1">'pos'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Decision Tree'</span><span class="p">)</span>
-    <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">arrows</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1900</span><span class="p">)</span>
-    <span class="n">edge_labels</span> <span class="o">=</span><span class="nb">dict</span><span class="p">([((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">d</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span> 
+
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figX</span><span class="p">,</span><span class="n">figY</span><span class="p">))</span>
+        <span class="n">axes1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="s1">'pos'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Decision Tree'</span><span class="p">)</span>
+        <span class="n">nx</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">with_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">arrows</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">1900</span><span class="p">)</span>
+        <span class="n">edge_labels</span> <span class="o">=</span><span class="nb">dict</span><span class="p">([((</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">),</span> <span class="n">d</span><span class="p">[</span><span class="s1">'label'</span><span class="p">])</span> 
                    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">edges</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">True</span><span class="p">)])</span>
-    <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">edge_labels</span><span class="o">=</span><span class="n">edge_labels</span><span class="p">,</span><span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edge_labels</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">edge_labels</span><span class="o">=</span><span class="n">edge_labels</span><span class="p">,</span><span class="n">font_size</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setTriage_00</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">nodeIn</span><span class="p">,</span><span class="n">pn</span><span class="p">,</span><span class="n">ps</span><span class="p">,</span><span class="n">dx</span><span class="p">,</span><span class="n">dy</span><span class="p">,</span><span class="n">f</span><span class="p">,):</span>
     <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="s1">'pos'</span><span class="p">)</span>
@@ -314,11 +314,12 @@ $$</div>
     <span class="n">pn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">p</span><span class="p">,</span>    <span class="mi">1</span><span class="o">-</span><span class="n">p</span><span class="p">]</span>  <span class="p">)</span>
     <span class="n">ps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">'p'</span><span class="p">,</span> <span class="s1">'(1-p)'</span><span class="p">])</span>
 
-    <span class="n">G</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
-    <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"ROOT"</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-    <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="s1">'pos'</span><span class="p">)</span>
-    <span class="n">G</span> <span class="o">=</span> <span class="n">setTriage_00</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="s2">"ROOT"</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span><span class="n">ps</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
-    <span class="n">treeGrafics</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">figX</span><span class="p">,</span><span class="n">figY</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">G</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+        <span class="n">G</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"ROOT"</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">pos</span><span class="o">=</span><span class="n">nx</span><span class="o">.</span><span class="n">get_node_attributes</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="s1">'pos'</span><span class="p">)</span>
+        <span class="n">G</span> <span class="o">=</span> <span class="n">setTriage_00</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="s2">"ROOT"</span><span class="p">,</span> <span class="n">pn</span><span class="p">,</span><span class="n">ps</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">)</span>
+        <span class="n">treeGrafics</span><span class="p">(</span><span class="n">G</span><span class="p">,</span><span class="n">figX</span><span class="p">,</span><span class="n">figY</span><span class="p">)</span>
 </pre></div>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">tree_3</span><span class="p">():</span>
     <span class="c1">#--- input --------</span>
