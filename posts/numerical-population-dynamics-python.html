@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Time-dependent integration of a one-generation model | HealthyNumerics
+</title>
+  <link rel="canonical" href="http://localhost:8000/posts/numerical-population-dynamics-python.html">
+
+
+  <link rel="apple-touch-icon" href="http://localhost:8000/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="http://localhost:8000/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="http://localhost:8000/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="http://localhost:8000/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/style.css">
+ 
+
+<meta name="description" content="We check out which numerical schema is most useful for the temporal integration of one generation of a population.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(http://localhost:8000/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(http://localhost:8000/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="http://localhost:8000/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="http://localhost:8000">
+            <img class="img-fluid" src=http://localhost:8000/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="http://localhost:8000">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="http://localhost:8000/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="http://localhost:8000/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="http://localhost:8000/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="http://localhost:8000/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Time-dependent integration of a one-generation model
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-10-06T21:30:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Fr. 06 Oktober 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="http://localhost:8000/category/devtec.html">devTec,</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="http://localhost:8000/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="http://localhost:8000/tag/numerical-analysis.html">#numerical analysis</a>,         <a href="http://localhost:8000/tag/python.html">#Python</a>,         <a href="http://localhost:8000/tag/population-dynamics.html">#population dynamics</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>Even the most simple model of a generation of a population is an <strong>ordinary differential equation (ODE) with varying coefficients</strong>. Therefore in any case some numerical methods are used to solve it.
+If we use data to drive a numerical integration the discretization might be coarse and cause problems. We check out different numerical schemas for that task.</p>
+<h1>A basic model of one generation</h1>
+<p>The change of the number of members of a generation (cohort) is given by</p>
+<div class="math">$$
+\Delta P = P^1 - P^0
+$$</div>
+<p><span class="math">\(\Delta P\)</span> is the number of the deceased in the time period <span class="math">\(t_1 - t_0\)</span>. This can be transformed into a prognostic equation</p>
+<div class="math">$$
+P^1 = p^0 + \Delta P
+$$</div>
+<p>In this formulation <span class="math">\(\Delta P\)</span> must have a negative value.</p>
+<h3>A. Progression expressed by the death rate</h3>
+<p>We can express the number of the deceased (<span class="math">\(\Delta P\)</span>) as a fraction of the existing population. The factor <span class="math">\(d\)</span> is called <em>death rate</em>. In the following formulation <span class="math">\(d\)</span> must have a negative value:</p>
+<div class="math">$$
+\Delta^0 P = P^0 \cdot d^0
+$$</div>
+<p>This is the discrete formulation. Note the that continuos formulation is (with <span class="math">\(\dot{P} = \frac{dP}{dt}\)</span>)</p>
+<div class="math">$$
+\dot{P} = d \cdot P
+$$</div>
+<p>Given the time series of P the death rate of P can be evaluated at each point of time <span class="math">\(n\)</span>:</p>
+<div class="math">$$
+d^n = \frac{\Delta^n P}{P^n}
+$$</div>
+<p>Given the time series of <span class="math">\(d\)</span> the progression of <span class="math">\(P\)</span> can be reconstructed</p>
+<div class="math">$$\begin{array}{lll}
+P^1 &amp; = &amp; P^0 +  \Delta^0 P = P^0 + d^0P = P^0(1+d^0 )\\
+P^2 &amp; = &amp; P^1(1+d^1)= P^0(1+d^0)(1+d^1) \\
+P^3 &amp; = &amp; ...
+\end{array}
+$$</div>
+<p>The general expression is</p>
+<div class="math">$$
+P_n  =  P_0 \cdot \prod_{k=0}^{n}(1+d_k)
+$$</div>
+<p>Reconstructing <span class="math">\(P\)</span> backward starting with the last element <span class="math">\(P_N\)</span></p>
+<div class="math">$$
+P_n  = P_N \cdot \prod_{k=N}^{n}(1-d_k)
+$$</div>
+<h3>B. Progression expressed by the survival rate</h3>
+<p>We can express the number of survivors as a fraction of the existing population:</p>
+<div class="math">$$
+P^1 = l^0 \cdot P^0
+$$</div>
+<p>Together with the prognostic equation <span class="math">\(P^1 = P^0 + \Delta^0 P\)</span>  the <em>survival rate</em> <span class="math">\(l\)</span> can be evaluated at each point of time <span class="math">\(n\)</span></p>
+<div class="math">$$\begin{array}{lll}
+l^n &amp; = &amp; \frac{P^n + \Delta^n P}{P^n}\\
+    &amp; = &amp; 1 + \frac{\Delta_nP}{P_n} = 1 + d^n
+\end{array}
+$$</div>
+<p>Note that the last expression (where <span class="math">\(d^n\)</span> must be negative) expresses the consistency</p>
+<div class="math">$$
+l^n - d^n \equiv 1
+$$</div>
+<h3>C. Conclusion for the point of time of the suvival or the death rate</h3>
+<p>Note that
+- with the mathematical framework presented here there is no necessety to express the survival rate or the death rate as fraction of the population in the middle of the year <span class="math">\(P^{\frac{1}{2}}= 0.5\cdot(P^0 + P^1)\)</span>
+- on contrary: if you have a data set where the survial and the death rates <em>are</em> evaluated as fraction of <span class="math">\(P^{\frac{1}{2}}\)</span> you have to think about wether this time shift can be disturbant</p>
+<h1>Example of a data driven solution</h1>
+<p>With the following code we simply 
+- implement the discretisized mathematical framework
+- illustrate the time series of the death rate given some simple time series of the generation</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+<p>This is the graphical part:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_pop</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">Prec</span><span class="p">,</span><span class="n">dP</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+        <span class="n">ax1</span><span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span>   <span class="s1">'o-'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'P data'</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="mf">0.0</span><span class="o">*</span><span class="n">P</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'grey'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Prec</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'P reconstructed'</span><span class="p">,</span><span class="n">ls</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'cyan'</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Population $P/P_o$'</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Time $t/t_{max}$'</span><span class="p">)</span>
+
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">dP</span><span class="p">,</span>  <span class="n">label</span><span class="o">=</span><span class="s1">'$\Delta$P'</span><span class="p">,</span>  <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">d</span><span class="p">,</span>   <span class="n">label</span><span class="o">=</span><span class="s1">'d'</span><span class="p">,</span>   <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">'lightgreen'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Rates   $d = \Delta P/P$'</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">360</span><span class="p">);</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">);</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">minorticks_on</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'A one Generation Model'</span><span class="p">,</span>  <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span> 
+        <span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p>We generate 2 data sets of a generation,</p>
+<ol>
+<li>(A) the generation diminishes linearly with time</li>
+<li>(B) the generation diminishes as a quadratic function of time</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">set_generation</span><span class="p">(</span><span class="n">case</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">case</span><span class="o">==</span><span class="s1">'A'</span><span class="p">:</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>   <span class="n">b</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">P</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">t</span><span class="p">;</span>
+    <span class="k">if</span> <span class="n">case</span><span class="o">==</span><span class="s1">'B'</span><span class="p">:</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>   <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">R</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">P</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">b</span>
+    <span class="k">return</span> <span class="n">P</span>      
+</pre></div>
+<p>We simply
+1. compute the death rate
+2. re-contruct the time series of the generation again</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">analyticModel</span><span class="p">(</span><span class="n">case</span><span class="p">,</span><span class="n">nt</span><span class="p">):</span>
+    <span class="c1">#--- generate population data ---------------</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nt</span><span class="p">)</span> 
+    <span class="n">P</span> <span class="o">=</span> <span class="n">set_generation</span><span class="p">(</span><span class="n">case</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+    <span class="c1">#--- compute the death rate ---------------</span>
+    <span class="n">dP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="mi">0</span><span class="p">],</span><span class="n">dP</span><span class="o">/</span><span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1">#--- reconstruct the time series of the generation ---</span>
+    <span class="n">Prec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumprod</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">d</span><span class="p">)</span>
+    <span class="c1">#--- plot the result ----------------------</span>
+    <span class="n">plot_pop</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">Prec</span><span class="p">,</span><span class="n">dP</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+
+<span class="n">analyticModel</span><span class="p">(</span><span class="s1">'A'</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6003/output_13_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="n">analyticModel</span><span class="p">(</span><span class="s1">'B'</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6003/output_14_0.png"/></p>
+<h3>Conclusion</h3>
+<p>Even when the generation diminishes linearly with time, the time series of the death rate is some exponential function of time.</p>
+<h1>Numerical schemas for integration over time</h1>
+<p>Several discretization schemes exist for solving numerically an ODE (ordinary differential equation) of the type
+</p>
+<div class="math">$$
+\dot{P} = d \cdot P
+$$</div>
+<p>Here only the temporal term <span class="math">\(\dot{P} = \frac{dP}{dt}\)</span> has to be considerd (since no derivatives in space are existent). Without going into the details we scetch the following 3 types
+- forward Euler schema
+- backward Euler schema
+- Crank Nicolson schema (generalized as \theta -schema)
+- ....and there are more sophisticated schemas not mentioned here</p>
+<p>Each discretization schema is an approximation only to the original ODE. It depends on the type of application which one the best suited is.</p>
+<h2>A. Forward Euler schema or explicit schema</h2>
+<div class="math">$$
+\frac{P^{n+1}-P^n}{t^{n+1}-t^n} = d \cdot P^n
+$$</div>
+<p>Asuming a constant time step <span class="math">\(\Delta t = t^{n+1}-t^n\)</span> we can solve for <span class="math">\(P^{n+1}\)</span>:</p>
+<div class="math">$$
+P^{n+1} = P^n (1+d^n\Delta t)
+$$</div>
+<h2>B. Backward Euler schema or implicit schema</h2>
+<div class="math">$$
+\frac{P^{n+1}-P^n}{\Delta t} = d^{n+1} \cdot P^{n+1}
+$$</div>
+<div class="math">$$
+P^{n+1} = \frac{1}{1-d^{n+1}\Delta t} P^n 
+$$</div>
+<h2>C. Crank Nicolson schema or <span class="math">\(\theta\)</span>-schema</h2>
+<p>The temporal term  <span class="math">\(\dot{P} = \frac{dP}{dt}\)</span>  is a derivative. Its slope is perfectely described by the discretized form <span class="math">\((P^{n+1}-P^n)/(t^{n+1}-t^n)\)</span>. But this slope is valid between  <span class="math">\(P^{n+1}\)</span> and <span class="math">\(P^n\)</span>, not necessarily however at its endpoints <span class="math">\(P^{n+1}\)</span> or <span class="math">\(P^n\)</span>. An obvious approach is to evaluate the right hand side of the ODE (<span class="math">\(d\cdot P\)</span>) inbewteen too, e.g. at <span class="math">\(d^{n+\frac{1}{2}}P^{n+\frac{1}{2}}\)</span>.
+The generalized <span class="math">\(\theta\)</span>-schema allows to switch seamlessly between the explicit and implicit schema. With <span class="math">\(\theta=\frac{1}{2}\)</span> its called Crank Nicolson schema.</p>
+<div class="math">$$
+\frac{P^{n+1}-P^n}{\Delta t} =  (1-\theta)\:d^{n} P^{n} + \theta\: d^{n+1}P^{n+1} 
+$$</div>
+<div class="math">$$
+P^{n+1} = \frac{1+(1-\theta)d^n\Delta t}{1-\theta\:d^{n+1}\Delta t} P^n 
+$$</div>
+<h2>D. Implementation of the 3 numerical ODE solvers</h2>
+<p>Numerical solvers sometimes need  a finer resolution than the data are given. An implementaion has to be prepared to interpolate the parameters given as data. In the following section
+- we generate the distribution of the population (=times series of a generation)
+- we derive the death rate
+- we interpolate the data to the resolution given by the timestep of integration
+- we solve the ODE by the <strong>explicit</strong>, the <strong>implicit</strong> and the <strong>Crank Nicolson</strong> schema</p>
+<h4>Main results</h4>
+<ul>
+<li>Even with few data (n=100) all three solvers produce the same results. </li>
+<li>If we have very few data (n=20) only the explicit schema is acurate for this (smooth) type of problem. The discretization errors due to very few data points affect the solution of the solvers with an implicit part.  This problem vanishes with an increased number of data points.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">threeSolvers</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span><span class="n">NT</span><span class="p">):</span>
+    <span class="c1">#--- generate population data ---------------</span>
+    <span class="c1">#nt = 20</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nt</span><span class="p">)</span> 
+    <span class="n">P</span> <span class="o">=</span> <span class="n">set_generation</span><span class="p">(</span><span class="s1">'B'</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1">#--- compute the death rate ---------------</span>
+    <span class="n">dP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dP</span><span class="o">/</span><span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1">#--- initialize the solution arrays ---</span>
+    <span class="c1">#NT = 20</span>
+    <span class="n">tt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">NT</span><span class="p">)</span>
+    <span class="n">qe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
+    <span class="n">qi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
+    <span class="n">qc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span>
+
+    <span class="n">dri</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">'cubic'</span><span class="p">)</span>
+    <span class="n">Dt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">tt</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">NT</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">qe</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="n">qi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="n">qc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="n">ji</span><span class="p">,</span><span class="n">tv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="n">ti</span> <span class="o">=</span> <span class="n">ji</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">fExplicit</span> <span class="o">=</span>      <span class="n">Dt</span><span class="o">*</span><span class="n">dri</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="n">ti</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">fImplicit</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">Dt</span><span class="o">*</span><span class="n">dri</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="n">ti</span>  <span class="p">]))</span><span class="o">**-</span><span class="mi">1</span>
+        <span class="n">fCrancNic</span> <span class="o">=</span>  <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">Dt</span><span class="o">*</span><span class="n">dri</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="n">ti</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">theta</span><span class="o">*</span><span class="n">Dt</span><span class="o">*</span><span class="n">dri</span><span class="p">(</span><span class="n">tt</span><span class="p">[</span><span class="n">ti</span>  <span class="p">]))</span>
+
+        <span class="n">qe</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">qe</span><span class="p">[</span><span class="n">ti</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">fExplicit</span>
+        <span class="n">qi</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">qe</span><span class="p">[</span><span class="n">ti</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">fImplicit</span>
+        <span class="n">qc</span><span class="p">[</span><span class="n">ti</span><span class="p">]</span> <span class="o">=</span> <span class="n">qe</span><span class="p">[</span><span class="n">ti</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">fCrancNic</span>
+
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+        <span class="n">ax1</span><span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">P</span><span class="p">,</span><span class="s1">'o-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'P data'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">qe</span><span class="p">,</span> <span class="s1">'D-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'P explicit'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">qi</span><span class="p">,</span> <span class="s1">'D-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'P implicit'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">qc</span><span class="p">,</span> <span class="s1">'D-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'P CrancNic'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">dri</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">':'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'death rate+1'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p>The death rate has to be negativ [0 .. -1] due to our mathematical framework. In order to simplify the graphical implementation we plot  <span class="math">\((death rate + 1)\)</span> in the following graphics.</p>
+<div class="highlight"><pre><span></span><span class="n">threeSolvers</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6003/output_24_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="n">threeSolvers</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6003/output_25_0.png"/></p>
+<h2>E. Numerical ODE solution with scipy</h2>
+<p>We try now the ODE solver of scipy in an arangement with temporal changing parameters. We will see again that </p>
+<ul>
+<li>the discretization error due to few input data (n=20) affects the numrical solution. </li>
+<li>This problem vanishes with an increased number of data points.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scipySolver</span><span class="p">(</span><span class="n">nt</span><span class="p">,</span><span class="n">NT</span><span class="p">):</span>
+    <span class="c1">#--- generate population data ---------------</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nt</span><span class="p">)</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">nt</span><span class="o">*</span><span class="n">t0</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">set_generation</span><span class="p">(</span><span class="s1">'B'</span><span class="p">,</span><span class="n">t0</span><span class="p">)</span>
+
+    <span class="c1">#--- compute the death rate ---------------</span>
+    <span class="n">dP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">P</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">dP</span><span class="o">/</span><span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1">#--- prepare the interpolation of the death rate</span>
+    <span class="n">tt0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.99</span><span class="p">,</span> <span class="n">NT</span><span class="p">)</span>
+    <span class="n">tt</span> <span class="o">=</span> <span class="n">tt0</span><span class="o">*</span><span class="n">nt</span>
+    <span class="n">dri</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="c1">#--- the ODE to solve ----</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">dr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">*</span><span class="n">dri</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+    <span class="c1">#--- inital conditin and solver ------</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">dri</span><span class="p">,)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">integrate</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">tt</span> <span class="p">,</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="c1">#--- grafics ------</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+        <span class="n">ax1</span><span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">P</span><span class="p">,</span><span class="s1">'o-'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'P data'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">'D-'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'P scipy'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">d</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'-'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'death rate + 1'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">dri</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'o:'</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'death rate interpolated + 1'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">scipySolver</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="output_27_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="n">scipySolver</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span><span class="mi">110</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="output_28_0.png"/></p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'http://localhost:8000/posts/numerical-population-dynamics-python.html';
+    this.page.identifier = 'numerical-population-dynamics-python';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="http://localhost:8000/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="http://localhost:8000/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="http://localhost:8000/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="http://localhost:8000/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
