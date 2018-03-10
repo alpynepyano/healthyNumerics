@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Computational Fluid Dynamics : Estimation of the atmospheric surface fluxes | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/atmospheric-surface-fluxes-with-python.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="A highly parametrized schema to estimate the energy fluxes of the atmospheric surface layer">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Computational Fluid Dynamics :  Estimation of the atmospheric surface fluxes
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-12-06T08:40:00+01:00">
+        <i class="fa fa-clock-o"></i>
+        Mi. 06 Dezember 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/computationalfluiddynamics.html">ComputationalFluidDynamics</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/atmospheric-boundary-layer.html">#atmospheric boundary layer</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">MultipleLocator</span> 
+
+<span class="n">float_formatter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">"</span><span class="si">%8.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">x</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">'float_kind'</span><span class="p">:</span><span class="n">float_formatter</span><span class="p">})</span>
+</pre></div>
+<h2>Solar elevation and irradiation</h2>
+<p>We give here a procedure to compute the elevation and irraditaion of the sun</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solarRadiation</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
+    <span class="n">Latit</span> <span class="o">=</span> <span class="mf">47.</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span>
+    <span class="n">NumberOfDay</span> <span class="o">=</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">7</span><span class="p">]</span>                                           <span class="c1"># number of days since 1st January</span>
+    <span class="n">TMST</span> <span class="o">=</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">3600.0</span> <span class="o">+</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span> <span class="mf">60.0</span> <span class="o">+</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">5</span><span class="p">]</span> <span class="c1"># True mean solar time in sec</span>
+    <span class="n">declin</span> <span class="o">=</span> <span class="n">rad</span><span class="o">*</span><span class="mf">23.45</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rad</span><span class="o">*</span><span class="p">(</span><span class="mf">280.1</span> <span class="o">+</span> <span class="mf">0.987</span><span class="o">*</span><span class="n">NumberOfDay</span><span class="p">));</span>                <span class="c1"># Declination</span>
+    <span class="n">Ht</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="mf">43200.0</span><span class="o">-</span><span class="n">TMST</span><span class="p">)</span><span class="o">/</span><span class="mf">43200.0</span><span class="p">;</span>                                        <span class="c1"># hourley angel                                        </span>
+    <span class="n">sinHs</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rad</span><span class="o">*</span><span class="n">Latit</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">declin</span><span class="p">)</span>  \
+           <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rad</span><span class="o">*</span><span class="n">Latit</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">declin</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">Ht</span><span class="p">);</span>
+    <span class="n">sElevation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">sinHs</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">sinHs</span><span class="o">*</span><span class="n">sinHs</span><span class="p">));</span>                    <span class="c1"># elevation of sun</span>
+    <span class="n">sAzimut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">declin</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">Ht</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sElevation</span><span class="p">);</span>                    <span class="c1"># azimuth of sun</span>
+    <span class="n">kn</span> <span class="o">=</span> <span class="n">NumberOfDay</span> <span class="o">*</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">365.0</span><span class="p">;</span>
+    <span class="n">I0</span> <span class="o">=</span> <span class="mf">1353.0</span> <span class="o">+</span> <span class="mf">45.33</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">kn</span><span class="p">)</span>   <span class="o">+</span> <span class="mf">0.88</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span> \
+                <span class="o">+</span> <span class="mf">0.005</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">kn</span><span class="p">)</span>   \
+                <span class="o">+</span> <span class="mf">0.10</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span><span class="o">+</span> <span class="mf">0.184</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span>                       <span class="c1"># solar constant</span>
+    <span class="c1">#S0:= I0 * sinHs                                                            # extraterrestrial radiation</span>
+    <span class="k">return</span> <span class="n">I0</span><span class="o">*</span><span class="n">sinHs</span><span class="p">,</span> <span class="n">Ht</span>
+</pre></div>
+<h2>Daily course of solar radition for some selected months</h2>
+<p>For March, June, September and December of a year we take day 21 and plot the daily corse of the solar extraterestrial raditaion</p>
+<div class="highlight"><pre><span></span><span class="n">firstDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lastDate</span>  <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">daySteps</span>  <span class="o">=</span> <span class="mi">1</span>
+<span class="n">monthSteps</span><span class="o">=</span> <span class="mi">3</span>
+<span class="n">secSteps</span>  <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mi">3600</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span> <span class="o">=</span> <span class="n">secSteps</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span> 
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">date</span> <span class="o">=</span> <span class="n">firstDate</span>
+<span class="k">while</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">lastDate</span><span class="p">:</span>
+    <span class="n">nextDay</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'date : '</span><span class="p">,</span><span class="n">date</span><span class="p">)</span>
+
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">d0</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span> <span class="o">=</span> <span class="n">nextDay</span><span class="p">)</span>    
+    <span class="n">Time</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+
+    <span class="n">A</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="n">solarRadiation</span><span class="p">(</span><span class="n">Time</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Time</span><span class="p">))]</span> <span class="p">)</span>
+    <span class="n">I</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>   <span class="c1">#B[B &lt; 0] = 0</span>
+    <span class="n">Ht</span> <span class="o">=</span> <span class="n">A</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Ht</span><span class="p">,</span><span class="n">I</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="c1">#date += datetime.timedelta(days=daySteps)</span>
+    <span class="n">date</span> <span class="o">+=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span> <span class="n">monthSteps</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Extraterrestrial Radiation'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'Hour angel'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$[W/m^2]$'</span><span class="p">,</span>  <span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">tickFontsize</span><span class="o">=</span><span class="mi">40</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="n">tickFontsize</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">320</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="n">tickFontsize</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">'major'</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">'Mar'</span><span class="p">,</span> <span class="s1">'Jun'</span><span class="p">,</span> <span class="s1">'Sep'</span><span class="p">,</span> <span class="s1">'Dec'</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">60</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">date</span> <span class="o">:</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="o">:</span><span class="mi">00</span><span class="o">:</span><span class="mi">00</span>
+<span class="n">date</span> <span class="o">:</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="o">:</span><span class="mi">00</span><span class="o">:</span><span class="mi">00</span>
+<span class="n">date</span> <span class="o">:</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="o">:</span><span class="mi">00</span><span class="o">:</span><span class="mi">00</span>
+<span class="n">date</span> <span class="o">:</span>  <span class="mi">2017</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">21</span> <span class="mi">00</span><span class="o">:</span><span class="mi">00</span><span class="o">:</span><span class="mi">00</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img5300/output_5_1.png"/></p>
+<h2>Estimation of the atmospheric surface fluxes</h2>
+<p><code>I</code> represents the <strong>extraterrestrial radiation</strong> at the outer bound of the earth atmosphere. So the transmission through the atmosphere still has to be included. For the moment we ommit this step. To get a first impression of the <strong>energy balance at the earth surface</strong> we use the following model, which was designed to calculate the energy balance from routine weather data. </p>
+<blockquote class="blockquote">
+<div class="highlight"><pre><span></span> A.A.M.Holtslag, A.P.VanUlden:
+ A simple scheme for daytime estimates of the surface fluxes from routine weather data
+ J Clim Appl Met 22 (1983) 517-529
+
+ A.P.VanUlden, A.A.M.Holtslag:
+ Estimation of atmospheric boundary layer parameters for diffusion applications
+ J Cli Appl Met 24 (1985) 1196-1207
+</pre></div>
+</blockquote>
+<p>We will use <code>I</code> as a parameter for the global raditaion, and we will simulate roughly the temperature <code>T</code> based on <code>I</code>. <code>T</code> shall ondulate between 15 and 25 degree centigrade following the form of <code>I</code> , shifted by 3 hours from noon to 3 p.m.</p>
+<div class="highlight"><pre><span></span>T = 272. + 15. + 10. * np.roll(I , int((3.*3600.)/secSteps))/max(I)
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#----- Energy balance model---------------------------------</span>
+<span class="k">def</span> <span class="nf">EB2</span><span class="p">(</span><span class="n">Gl</span><span class="p">,</span><span class="n">T10</span><span class="p">):</span>
+    <span class="sd">''' Input:</span>
+<span class="sd">    z10:  measurement hight,          z0:  roughness length,</span>
+<span class="sd">    a  :  albedo,                     Gl:  global radiation,</span>
+<span class="sd">    T10:  temperature at 10 m,        N :  degree of cloudines</span>
+<span class="sd">    LEfrac: part of evaporating area</span>
+<span class="sd">    '''</span>
+    <span class="c1">#Gl = 750;        T10 = 15. + 273.15;</span>
+    <span class="n">z10</span> <span class="o">=</span> <span class="mf">10.0</span><span class="p">;</span>        <span class="n">z0</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>                   
+    <span class="n">a</span>   <span class="o">=</span>  <span class="mf">0.7</span><span class="p">;</span>         <span class="n">N</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">;</span>                                  
+    <span class="n">LEfrac</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span>   <span class="n">sigma</span> <span class="o">=</span> <span class="mf">5.67E-8</span><span class="p">;</span> <span class="c1">#Stefan-Boltzmann constant</span>
+
+    <span class="c1">#---- radiation balance-----------------------------------</span>
+    <span class="n">c1</span>  <span class="o">=</span> <span class="mf">5.31E-13</span><span class="p">;</span>                <span class="n">c2</span> <span class="o">=</span> <span class="mf">60.0</span><span class="p">;</span>     <span class="n">c3</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">;</span>
+    <span class="n">T3</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">3.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">T10</span><span class="p">));</span> <span class="n">T4</span> <span class="o">=</span> <span class="n">T3</span><span class="o">*</span><span class="n">T10</span><span class="p">;</span>   <span class="n">T6</span> <span class="o">=</span> <span class="n">T3</span><span class="o">*</span><span class="n">T3</span><span class="p">;</span>
+    <span class="n">Qstar</span> <span class="o">=</span> <span class="p">((</span><span class="mf">1.0</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">Gl</span> <span class="o">+</span> <span class="n">c1</span><span class="o">*</span><span class="n">T6</span> <span class="o">-</span> <span class="n">sigma</span><span class="o">*</span><span class="n">T4</span> <span class="o">+</span> <span class="n">c2</span><span class="o">*</span><span class="n">N</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">c3</span><span class="p">);</span>
+
+    <span class="c1">#---- ground heat flux -----------------------------------</span>
+    <span class="n">Ag</span>   <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>     <span class="n">S</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">0.055</span><span class="o">*</span><span class="p">(</span><span class="n">T10</span><span class="o">-</span><span class="mf">279.0</span><span class="p">));</span>
+    <span class="n">alfa</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>     <span class="n">Ch</span> <span class="o">=</span> <span class="mf">0.38</span><span class="o">*</span>  <span class="p">((</span><span class="mf">1.0</span><span class="o">-</span><span class="n">alfa</span><span class="p">)</span><span class="o">*</span><span class="n">S</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mf">1.0</span><span class="p">);</span>
+    <span class="n">G</span>    <span class="o">=</span> <span class="n">Ag</span><span class="o">/</span><span class="p">(</span><span class="mf">4.0</span><span class="o">*</span><span class="n">sigma</span><span class="o">*</span><span class="n">T3</span><span class="p">)</span><span class="o">*</span><span class="n">Ch</span><span class="o">*</span><span class="n">Qstar</span><span class="p">;</span>
+
+    <span class="c1">#---- latent heat flux ---------------------------------------</span>
+    <span class="n">LE</span>   <span class="o">=</span>   <span class="p">(</span><span class="n">S</span><span class="o">/</span><span class="p">(</span><span class="n">S</span><span class="o">+</span><span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">Qstar</span><span class="o">-</span><span class="n">G</span><span class="p">)</span> <span class="o">+</span> <span class="mf">20.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">LEfrac</span>
+
+    <span class="c1">#---- sensible heat flux  -----------------------------------</span>
+    <span class="n">Ho</span>   <span class="o">=</span> <span class="n">Qstar</span> <span class="o">-</span> <span class="n">LE</span> <span class="o">-</span> <span class="n">G</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">Qstar</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">LE</span><span class="p">,</span> <span class="n">Ho</span>
+</pre></div>
+<p>We <strong>run the model</strong> for a mid summer day</p>
+<div class="highlight"><pre><span></span><span class="n">d0</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">d1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">secSteps</span>  <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="mi">3600</span>
+
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span> <span class="o">=</span> <span class="n">secSteps</span><span class="p">)</span>
+<span class="n">Time</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+
+<span class="n">A</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="n">solarRadiation</span><span class="p">(</span><span class="n">Time</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Time</span><span class="p">))]</span> <span class="p">)</span>
+<span class="n">I</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>   <span class="c1"># A[A&lt; 0] = 0; sets negative values to zero</span>
+<span class="n">T</span>  <span class="o">=</span> <span class="mf">272.</span> <span class="o">+</span> <span class="mf">15.</span> <span class="o">+</span> <span class="mf">10.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="nb">int</span><span class="p">((</span><span class="mf">3.</span><span class="o">*</span><span class="mf">3600.</span><span class="p">)</span><span class="o">/</span><span class="n">secSteps</span><span class="p">))</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+<span class="n">Qstar</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">LE</span><span class="p">,</span> <span class="n">Ho</span> <span class="o">=</span> <span class="n">EB2</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+<h4>Graphics</h4>
+<div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">42</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span> 
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="mi">24</span> <span class="o">*</span> <span class="p">(</span><span class="n">Ht</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">Ht</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">Ht</span><span class="p">)</span><span class="o">-</span><span class="nb">min</span><span class="p">(</span><span class="n">Ht</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">Qstar</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span><span class="mf">2.</span><span class="o">*</span><span class="n">G</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span><span class="n">LE</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span><span class="n">Ho</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+
+<span class="n">x_majorLoc</span> <span class="o">=</span> <span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">x_majorLoc</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">'Q*'</span><span class="p">,</span> <span class="s1">'G'</span><span class="p">,</span> <span class="s1">'LE'</span><span class="p">,</span> <span class="s1">'Ho'</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">'upper right'</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">60</span><span class="p">})</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Atmospheric Surface Layer Energy Balance'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'21. June'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'Local solar time of the site'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$[W/m^2]$'</span><span class="p">,</span>  <span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">)</span>
+
+<span class="n">tickFontsize</span><span class="o">=</span><span class="mi">40</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="n">tickFontsize</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">320</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontsize</span> <span class="o">=</span> <span class="n">tickFontsize</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">'major'</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> 
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img5300/output_11_0.png"/></p>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/atmospheric-surface-fluxes-with-python.html';
+    this.page.identifier = 'atmospheric-surface-fluxes-with-python';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

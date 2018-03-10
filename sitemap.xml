@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/diagnostic-test-in-medical-practice.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/cost-healthcaresystem-usa-switzerland.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/swiss-population-dynamics-01.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/atmospheric-surface-fluxes-with-python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/python-loops-over-the-time.html</loc>
     <priority>0.8</priority>
   </url>
   <url>

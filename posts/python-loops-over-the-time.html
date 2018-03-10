@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Loops over the time | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/python-loops-over-the-time.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="How to create Python loops in the date-time format">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>Loops over the time
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2017-12-05T18:30:00+01:00">
+        <i class="fa fa-clock-o"></i>
+        Di. 05 Dezember 2017
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/devtec.html">devTec</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#Python</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">float_formatter</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s2">"</span><span class="si">%8.2f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">x</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">formatter</span><span class="o">=</span><span class="p">{</span><span class="s1">'float_kind'</span><span class="p">:</span><span class="n">float_formatter</span><span class="p">})</span>
+
+<span class="kn">from</span> <span class="nn">dateutil.relativedelta</span> <span class="kn">import</span> <span class="n">relativedelta</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+<h3>Loops over the time</h3>
+<p>When dealing with solar driven energy balances we need a loop over the time. We can use the Pyton module <code>datetime</code> that provide us  with some useful utilities. The loop over the days gives us the <em>number of day of a year</em> that we will use to compute the position of the sun.</p>
+<h4>For loop</h4>
+<div class="highlight"><pre><span></span><span class="n">firstDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lastDate</span>  <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">daySteps</span>  <span class="o">=</span> <span class="mi">2</span>
+
+<span class="n">date</span> <span class="o">=</span> <span class="n">firstDate</span>
+<span class="k">while</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">lastDate</span><span class="p">:</span>
+    <span class="n">NumberOfDay</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">7</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">'    number of the day of the year: '</span><span class="p">,</span><span class="n">NumberOfDay</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">daySteps</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>2018-02-25 00:00:00     number of the day of the year:  56
+2018-02-27 00:00:00     number of the day of the year:  58
+2018-03-01 00:00:00     number of the day of the year:  60
+2018-03-03 00:00:00     number of the day of the year:  62
+2018-03-05 00:00:00     number of the day of the year:  64
+</pre></div>
+<p>To be more flexible we will use a <strong>double loop</strong>. The outer loop determines the days of the year we are interested in, 1 day each month e.g. . The inner loop runs in secondes over the cycle of a day.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">runDay</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="n">secSteps</span><span class="p">):</span>    
+    <span class="n">startDay</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">endDay</span>   <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">23</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">59</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">59</span><span class="p">)</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="n">startDay</span>
+    <span class="k">while</span> <span class="n">day</span> <span class="o">&lt;=</span> <span class="n">endDay</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">'       --&gt;'</span><span class="p">,</span><span class="n">day</span><span class="p">)</span>
+        <span class="n">day</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">secSteps</span><span class="p">)</span>
+
+<span class="n">firstDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">lastDate</span>  <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">daySteps</span>  <span class="o">=</span> <span class="mi">2</span>
+<span class="n">secSteps</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="mi">3600</span>
+
+<span class="n">date</span> <span class="o">=</span> <span class="n">firstDate</span>
+<span class="k">while</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">lastDate</span><span class="p">:</span>
+    <span class="n">NumberOfDay</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">7</span><span class="p">]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="s1">'    number of the day of the year: '</span><span class="p">,</span><span class="n">NumberOfDay</span><span class="p">)</span>
+    <span class="n">runDay</span><span class="p">(</span><span class="n">date</span><span class="p">,</span><span class="n">secSteps</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="n">daySteps</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>2018-02-25 00:00:00     number of the day of the year:  56
+       --&gt; 2018-02-25 00:00:00
+       --&gt; 2018-02-25 04:00:00
+       --&gt; 2018-02-25 08:00:00
+       --&gt; 2018-02-25 12:00:00
+       --&gt; 2018-02-25 16:00:00
+       --&gt; 2018-02-25 20:00:00
+2018-02-27 00:00:00     number of the day of the year:  58
+       --&gt; 2018-02-27 00:00:00
+       --&gt; 2018-02-27 04:00:00
+       --&gt; 2018-02-27 08:00:00
+       --&gt; 2018-02-27 12:00:00
+       --&gt; 2018-02-27 16:00:00
+       --&gt; 2018-02-27 20:00:00
+2018-03-01 00:00:00     number of the day of the year:  60
+       --&gt; 2018-03-01 00:00:00
+       --&gt; 2018-03-01 04:00:00
+       --&gt; 2018-03-01 08:00:00
+       --&gt; 2018-03-01 12:00:00
+       --&gt; 2018-03-01 16:00:00
+       --&gt; 2018-03-01 20:00:00
+2018-03-03 00:00:00     number of the day of the year:  62
+       --&gt; 2018-03-03 00:00:00
+       --&gt; 2018-03-03 04:00:00
+       --&gt; 2018-03-03 08:00:00
+       --&gt; 2018-03-03 12:00:00
+       --&gt; 2018-03-03 16:00:00
+       --&gt; 2018-03-03 20:00:00
+2018-03-05 00:00:00     number of the day of the year:  64
+       --&gt; 2018-03-05 00:00:00
+       --&gt; 2018-03-05 04:00:00
+       --&gt; 2018-03-05 08:00:00
+       --&gt; 2018-03-05 12:00:00
+       --&gt; 2018-03-05 16:00:00
+       --&gt; 2018-03-05 20:00:00
+</pre></div>
+<h4>An iterable time list</h4>
+<p>If an iterable list is preferred the follwing construct can be used:</p>
+<div class="highlight"><pre><span></span><span class="n">d0</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">d1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">23</span><span class="p">,</span><span class="mi">59</span><span class="p">,</span><span class="mi">59</span><span class="p">)</span>
+<span class="n">secSteps</span> <span class="o">=</span> <span class="mf">6.</span> <span class="o">*</span> <span class="mf">3600.</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span> <span class="o">=</span> <span class="n">secSteps</span><span class="p">)</span>
+<span class="n">dates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">date</span> <span class="ow">in</span> <span class="n">dates</span><span class="p">:</span> 
+    <span class="k">print</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>2018-03-21 00:00:00
+2018-03-21 06:00:00
+2018-03-21 12:00:00
+2018-03-21 18:00:00
+</pre></div>
+<h4>Implicit for loop with iterable list</h4>
+<p>To build up a time series which is generated as output of a function the implicit for loop over the points of time can be used:</p>
+<div class="highlight"><pre><span></span>A = np.array( [solarRadiation(dates[k]) for k in range(0,len(dates))] )
+</pre></div>
+<h4>Solar elevation and iradiation</h4>
+<p>We give here a procedure to compute the elevation and iraditaion of the sun</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solarRadiation</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
+    <span class="n">Latit</span> <span class="o">=</span> <span class="mf">47.</span>
+    <span class="n">rad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span>
+    <span class="n">NumberOfDay</span> <span class="o">=</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">7</span><span class="p">]</span>                                           <span class="c1"># number of days since 1st January</span>
+    <span class="n">TMST</span> <span class="o">=</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">3</span><span class="p">]</span><span class="o">*</span><span class="mf">3600.0</span> <span class="o">+</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">4</span><span class="p">]</span><span class="o">*</span> <span class="mf">60.0</span> <span class="o">+</span> <span class="n">day</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">5</span><span class="p">]</span> <span class="c1"># True mean solar time in sec</span>
+    <span class="n">declin</span> <span class="o">=</span> <span class="n">rad</span><span class="o">*</span><span class="mf">23.45</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rad</span><span class="o">*</span><span class="p">(</span><span class="mf">280.1</span> <span class="o">+</span> <span class="mf">0.987</span><span class="o">*</span><span class="n">NumberOfDay</span><span class="p">));</span>                <span class="c1"># Declination</span>
+    <span class="n">Ht</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="mf">43200.0</span><span class="o">-</span><span class="n">TMST</span><span class="p">)</span><span class="o">/</span><span class="mf">43200.0</span><span class="p">;</span>                                        <span class="c1"># hourley angel                                        </span>
+    <span class="n">sinHs</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">rad</span><span class="o">*</span><span class="n">Latit</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">declin</span><span class="p">)</span>  \
+           <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">rad</span><span class="o">*</span><span class="n">Latit</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">declin</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">Ht</span><span class="p">);</span>
+    <span class="n">sElevation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan</span><span class="p">(</span><span class="n">sinHs</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">1.0</span><span class="o">-</span><span class="n">sinHs</span><span class="o">*</span><span class="n">sinHs</span><span class="p">));</span>                    <span class="c1"># elevation of sun</span>
+    <span class="n">sAzimut</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">declin</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">Ht</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">sElevation</span><span class="p">);</span>                    <span class="c1"># azimuth of sun</span>
+    <span class="n">kn</span> <span class="o">=</span> <span class="n">NumberOfDay</span> <span class="o">*</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">365.0</span><span class="p">;</span>
+    <span class="n">I0</span> <span class="o">=</span> <span class="mf">1353.0</span> <span class="o">+</span> <span class="mf">45.33</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">kn</span><span class="p">)</span>   <span class="o">+</span> <span class="mf">0.88</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span> \
+                <span class="o">+</span> <span class="mf">0.005</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.8</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">kn</span><span class="p">)</span>   \
+                <span class="o">+</span> <span class="mf">0.10</span> <span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span><span class="o">+</span> <span class="mf">0.184</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">kn</span><span class="p">)</span>                       <span class="c1"># solar constant</span>
+    <span class="c1">#S0:= I0 * sinHs                                                            # extraterrestrial radiation</span>
+    <span class="k">return</span> <span class="n">I0</span> <span class="o">*</span> <span class="n">sinHs</span><span class="p">,</span> <span class="n">Ht</span>
+</pre></div>
+<h4>Daily course of solar radition for some selected months</h4>
+<p>For March, June, September and December of a year we take day 21 and plot the daily corse of the solar extraterestrial raditaion</p>
+<div class="highlight"><pre><span></span><span class="n">firstDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2017</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">lastDate</span>  <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">daySteps</span>  <span class="o">=</span> <span class="mi">1</span>
+<span class="n">monthSteps</span><span class="o">=</span> <span class="mi">3</span>
+<span class="n">secSteps</span>  <span class="o">=</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="mi">3600</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span> <span class="o">=</span> <span class="n">secSteps</span><span class="p">)</span>
+
+<span class="n">date</span> <span class="o">=</span> <span class="n">firstDate</span>
+<span class="k">while</span> <span class="n">date</span> <span class="o">&lt;=</span> <span class="n">lastDate</span><span class="p">:</span>
+    <span class="n">nextDay</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">timetuple</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">d0</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">day</span> <span class="o">=</span> <span class="n">nextDay</span><span class="p">)</span>    
+
+    <span class="n">Time</span><span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">Time</span><span class="p">);</span><span class="k">print</span><span class="p">()</span>
+    <span class="n">A</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="n">solarRadiation</span><span class="p">(</span><span class="n">Time</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Time</span><span class="p">))]</span> <span class="p">)</span>
+
+    <span class="c1">#date += datetime.timedelta(days=daySteps)</span>
+    <span class="n">date</span> <span class="o">+=</span> <span class="n">relativedelta</span><span class="p">(</span><span class="n">months</span><span class="o">=</span> <span class="n">monthSteps</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>[datetime.datetime(2017, 3, 21, 0, 0) datetime.datetime(2017, 3, 21, 3, 0)
+ datetime.datetime(2017, 3, 21, 6, 0) datetime.datetime(2017, 3, 21, 9, 0)
+ datetime.datetime(2017, 3, 21, 12, 0)
+ datetime.datetime(2017, 3, 21, 15, 0)
+ datetime.datetime(2017, 3, 21, 18, 0)
+ datetime.datetime(2017, 3, 21, 21, 0)]
+
+[datetime.datetime(2017, 6, 21, 0, 0) datetime.datetime(2017, 6, 21, 3, 0)
+ datetime.datetime(2017, 6, 21, 6, 0) datetime.datetime(2017, 6, 21, 9, 0)
+ datetime.datetime(2017, 6, 21, 12, 0)
+ datetime.datetime(2017, 6, 21, 15, 0)
+ datetime.datetime(2017, 6, 21, 18, 0)
+ datetime.datetime(2017, 6, 21, 21, 0)]
+
+[datetime.datetime(2017, 9, 21, 0, 0) datetime.datetime(2017, 9, 21, 3, 0)
+ datetime.datetime(2017, 9, 21, 6, 0) datetime.datetime(2017, 9, 21, 9, 0)
+ datetime.datetime(2017, 9, 21, 12, 0)
+ datetime.datetime(2017, 9, 21, 15, 0)
+ datetime.datetime(2017, 9, 21, 18, 0)
+ datetime.datetime(2017, 9, 21, 21, 0)]
+
+[datetime.datetime(2017, 12, 21, 0, 0)
+ datetime.datetime(2017, 12, 21, 3, 0)
+ datetime.datetime(2017, 12, 21, 6, 0)
+ datetime.datetime(2017, 12, 21, 9, 0)
+ datetime.datetime(2017, 12, 21, 12, 0)
+ datetime.datetime(2017, 12, 21, 15, 0)
+ datetime.datetime(2017, 12, 21, 18, 0)
+ datetime.datetime(2017, 12, 21, 21, 0)]
+
+
+
+T = 272. + 15. + 10. * np.roll(I , int((3.*3600.)/secSteps))/max(I)
+</pre></div>
+<p>We run the model for a mid summer day</p>
+<div class="highlight"><pre><span></span><span class="n">d0</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">d1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">secSteps</span>  <span class="o">=</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="mi">3600</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span> <span class="o">=</span> <span class="n">secSteps</span><span class="p">)</span>
+
+
+<span class="n">Time</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span>
+<span class="n">A</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="n">solarRadiation</span><span class="p">(</span><span class="n">Time</span><span class="p">[</span><span class="n">t</span><span class="p">])</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">Time</span><span class="p">))]</span> <span class="p">)</span>
+<span class="n">I</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">A</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.</span><span class="p">)</span>   <span class="c1"># A[A&lt; 0] = 0; sets negative values to zero</span>
+<span class="n">T</span>  <span class="o">=</span> <span class="mf">272.</span> <span class="o">+</span> <span class="mf">15.</span> <span class="o">+</span> <span class="mf">10.</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">roll</span><span class="p">(</span><span class="n">I</span><span class="p">,</span><span class="nb">int</span><span class="p">((</span><span class="mf">3.</span><span class="o">*</span><span class="mf">3600.</span><span class="p">)</span><span class="o">/</span><span class="n">secSteps</span><span class="p">))</span><span class="o">/</span><span class="nb">max</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">Time</span><span class="p">);</span> 
+</pre></div>
+<div class="highlight"><pre><span></span>Time
+[datetime.datetime(2018, 6, 21, 0, 0) datetime.datetime(2018, 6, 21, 3, 0)
+ datetime.datetime(2018, 6, 21, 6, 0) datetime.datetime(2018, 6, 21, 9, 0)
+ datetime.datetime(2018, 6, 21, 12, 0)
+ datetime.datetime(2018, 6, 21, 15, 0)
+ datetime.datetime(2018, 6, 21, 18, 0)
+ datetime.datetime(2018, 6, 21, 21, 0)]
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'A'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">A</span><span class="p">);</span> 
+</pre></div>
+<div class="highlight"><pre><span></span>A
+[[ -438.24    -3.14]
+ [ -198.24    -2.36]
+ [  381.15    -1.57]
+ [  960.54    -0.79]
+ [ 1200.53    -0.00]
+ [  960.54     0.79]
+ [  381.15     1.57]
+ [ -198.24     2.36]]
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'I'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">I</span><span class="p">);</span>
+</pre></div>
+<div class="highlight"><pre><span></span>I
+[    0.00     0.00   381.15   960.54  1200.53   960.54   381.15     0.00]
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'T'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">T</span><span class="p">);</span>
+</pre></div>
+<div class="highlight"><pre><span></span>T
+[  287.00   287.00   287.00   290.17   295.00   297.00   295.00   290.17]
+</pre></div>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/python-loops-over-the-time.html';
+    this.page.identifier = 'python-loops-over-the-time';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
