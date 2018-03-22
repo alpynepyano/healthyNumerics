@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://alpynepyano.github.io/healthyNumerics/posts/diagnostic-test-in-medical-practice.html</loc>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/evaluating-diagnostic-test-with-continuous-output.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/screening-with-binary-diagnostic-test.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/sampling_arbitrary_distributions_with_python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>

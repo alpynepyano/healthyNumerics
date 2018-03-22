@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>NumericalStats: How to randomly sample your empirical arbitrary distribution | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/sampling_arbitrary_distributions_with_python.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="We provide a simple sampling engine which allows to generate random numbers that are distributed as an empirical and arbitrary distribution given as a data array.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>NumericalStats: How to randomly sample your empirical arbitrary distribution
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-02-18T17:45:00+01:00">
+        <i class="fa fa-clock-o"></i>
+        So. 18 Februar 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/metaanalysis.html">MetaAnalysis</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/numerical.html">#numerical</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/statistics.html">#statistics</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#python</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/bayesian.html">#bayesian</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>To make as few assumptions as possible is - among other - one motivation to use numerical methods in statistics. If you find some empirical distribution from your problem under consideration, you may be faced with the question how to use this distribution as a <strong>sampling engine</strong>. This is not too difficult, and we give an example here.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="kn">as</span> <span class="nn">mclr</span>
+</pre></div>
+<h3>Data generation</h3>
+<p>We use the beta distribution to generate some arbitrary looking distribution. With different paramters we generate 2 arrays, which we concatenate to one data set of a population. So we have now a distribution that is</p>
+<ul>
+<li>empirical</li>
+<li>discrete (given by data points)</li>
+<li>the analytical function is unknown</li>
+<li>the inverse function is unknown too</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">prev</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="n">NP</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">nI</span> <span class="o">=</span>  <span class="nb">round</span><span class="p">(</span><span class="n">NP</span><span class="o">*</span><span class="n">prev</span><span class="p">)</span>
+<span class="n">nH</span> <span class="o">=</span> <span class="n">NP</span><span class="o">-</span><span class="n">nI</span>
+
+<span class="n">value_h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">nH</span><span class="p">)</span>
+<span class="n">value_i</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">beta</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nI</span><span class="p">)</span>
+<span class="n">value_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">value_h</span><span class="p">,</span> <span class="n">value_i</span><span class="p">))</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">pdf</span><span class="p">,</span> <span class="n">xc</span> <span class="o">=</span> <span class="n">plot_distrib1</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2104/output_5_0.png"/></p>
+<h3>Sampling</h3>
+<p>If we want a random number generator that returns data with the distribution of our empirical distribution we can achieve that in 3 steps</p>
+<ol>
+<li>we need the cumulative distribution function (<strong>CDF</strong>, also cumulative density function) of our empirical distribution.</li>
+<li>as driving engine we need from our computer the uniform random generator that gives data in the interval [0, 1], which is the value range of the CDF (and which is the y-axis of the CDF-graph)</li>
+<li>we have to identify to which element of the CDF the random number fits best and we have to count this hit (this is the transformation to the x-axis)</li>
+</ol>
+<p>One can imagine that the uniform random numbers are <strong>sun rays</strong> that are emitted from the y-axis on the left and travel to the right to the CDF-curve. The CDF-curve can be interpreted as a <strong>hill</strong> which get's more <strong>solar energy</strong> on the steeper parts and less on the flater parts due to the inclination. The resulting energy profil will be a data set distributed as the PDF of our empirical distribution.</p>
+<p>The CDF can be found as the cumulative sum of our empirical distribution, normalized by the numbers of data.</p>
+<div class="highlight"><pre><span></span><span class="n">myPDF</span> <span class="o">=</span> <span class="n">pdf</span><span class="o">/</span><span class="n">NP</span>
+<span class="n">myCDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">myPDF</span><span class="p">)</span>
+<span class="n">plot_line</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2104/output_7_0.png"/></p>
+<h3>Our random number generator</h3>
+<p>In the follow code we run with the for-loop <em>nRuns</em> examples and count the hits in the <em>X</em>-array. In the code lines inbetween we find out to which data-element of the CDF an emitted unit random number fits best. For that, we pick out the location in the CDF-array where the random number is the first time larger than the CDF-value. Then we round to the closer element.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_sampling</span><span class="p">(</span><span class="n">myCDF</span><span class="p">,</span> <span class="n">nRuns</span><span class="o">=</span><span class="mi">5000</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">myCDF</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">nX</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nRuns</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">j1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">myCDF</span><span class="o">&gt;=</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">j1</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span> <span class="n">j1</span><span class="o">=</span><span class="mi">1</span> 
+        <span class="k">else</span><span class="p">:</span>  
+            <span class="n">eta</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">myCDF</span><span class="p">[</span><span class="n">j1</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">myCDF</span><span class="p">[</span><span class="n">j1</span><span class="p">]</span><span class="o">-</span><span class="n">myCDF</span><span class="p">[</span><span class="n">j1</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">j2</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">j1</span><span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="nb">round</span><span class="p">(</span><span class="n">eta</span><span class="p">))</span>
+        <span class="n">X</span><span class="p">[</span><span class="n">j2</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'nRuns: '</span><span class="p">,</span><span class="n">nRuns</span><span class="p">,</span> <span class="s1">'        Sum of X: '</span><span class="p">,</span> <span class="nb">sum</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="n">X</span><span class="p">[</span><span class="n">nX</span><span class="p">]</span> <span class="o">*=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">X</span><span class="o">/</span><span class="n">nRuns</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">run_sampling</span><span class="p">(</span><span class="n">myCDF</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">nRuns</span><span class="o">:</span>  <span class="mi">5000</span>         <span class="n">Sum</span> <span class="n">of</span> <span class="n">X</span><span class="o">:</span>  <span class="mi">5000</span>
+</pre></div>
+<h3>The result</h3>
+<p>As a result we are able to reconstruct the PDF of the empirical distribution with our random number generator using <em>myCDF</em> as input.</p>
+<div class="highlight"><pre><span></span><span class="n">plot_distrib2</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2104/output_11_0.png"/></p>
+<h2><em>Python code: graphics</em></h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_distrib1</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+        <span class="n">nBins</span><span class="o">=</span><span class="mi">30</span>
+        <span class="n">count_c</span><span class="p">,</span> <span class="n">bins_c</span><span class="p">,</span> <span class="n">ignored</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">value_c</span><span class="p">,</span> <span class="n">nBins</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'gold'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>      
+        <span class="n">dxc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">bins_c</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span> <span class="n">xc</span> <span class="o">=</span> <span class="n">bins_c</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">dxc</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="n">count_c</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'b'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Arbitrary discrete distribution'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">count_c</span><span class="p">,</span><span class="n">xc</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_line</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="n">myCDF</span><span class="p">,</span> <span class="s1">'mo-'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'discrete CDF'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="n">myPDF</span><span class="p">,</span> <span class="s1">'co-'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'discrete PDF'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'x-axis'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'y-axis'</span><span class="p">);</span> 
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'CDF and PDF'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper center'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_distrib2</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>     
+        <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">X</span> <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'resampled PDF'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="n">myPDF</span><span class="p">,</span> <span class="s1">'co-'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'discrete PDF'</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Reconstruction of the discrete PDF distribution'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper center'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/sampling_arbitrary_distributions_with_python.html';
+    this.page.identifier = 'sampling_arbitrary_distributions_with_python';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

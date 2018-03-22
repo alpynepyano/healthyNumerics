@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>MetaAnalysis: Screening with a binary diagnostic test | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/screening-with-binary-diagnostic-test.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="Given a diagnostic test with sensitivity 0.90 and specifity 0.95. Then, with a prevalence of 0.02, in medical practice 27% of the positive tests will be right and 73% of the positive tests will be wrong.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>MetaAnalysis: Screening with a binary diagnostic test
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-03-03T11:40:00+01:00">
+        <i class="fa fa-clock-o"></i>
+        Sa. 03 März 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/metaanalysis.html">MetaAnalysis</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/diagnostic-tests.html">#diagnostic tests</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/screening.html">#screening</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <h1>A toy example of a diagnostic test</h1>
+<h3>The performance of the diagnostic test in clinical evaluation</h3>
+<p>Let's assume a diagnostice test detects correctely 90% of the those cases that are ill, and rules out correctely 95% of the cases that are not ill. Let's further assume that 2% of the population are affected by this illness. So we have:</p>
+<ul>
+<li>Prevalence of the illness: 0.02</li>
+<li>Sensitivity of the diagnostic test: 0.90</li>
+<li>Specificity of the diagnostic test: 0.95</li>
+</ul>
+<p><strong>This sounds pretty good !</strong></p>
+<h3>The performance of the diagnostic test in medical practice</h3>
+<p>To make things easier let's consider an arithmetic example with a population of 1000 peoples.</p>
+<h3>Prevalence:</h3>
+<ul>
+<li>population <strong>1000</strong> peoples</li>
+<li><strong>20</strong> are ill (0.02*1000 = 20)</li>
+<li><strong>980</strong> are healthy (1000-20 = 980)</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">nIll</span><span class="p">),</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">plot_table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3012/output_3_0.png"/></p>
+<h3>Sensitivity:</h3>
+<ul>
+<li>90% of the ill peoples = 0.90*20 = <strong>18</strong> are detected correctely (true positive)</li>
+<li>10% of the ill peoples = 0.01*20 = <strong>2</strong> are not detetced (false negative)</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">truePositive</span><span class="p">),</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">z</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">truePositive</span><span class="p">):</span><span class="nb">int</span><span class="p">(</span><span class="n">nIll</span><span class="p">),</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">plot_table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3012/output_5_0.png"/></p>
+<h3>Specificity:</h3>
+<ul>
+<li>95% of the healty peoples = 0.95*980 = <strong>931</strong> are classified as healthy (true negative)</li>
+<li>5% of the healty peoples = 0.05*980 = <strong>49</strong> are classidied as ill (false positive)</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">falsePositive</span><span class="p">),</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="nb">int</span><span class="p">(</span><span class="n">falsePositive</span><span class="o">-</span><span class="n">nx</span><span class="p">),</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">plot_table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3012/output_7_0.png"/></p>
+<h3>Result for the positive tests:</h3>
+<ul>
+<li>among the positive tests are <strong>18</strong> correct and <strong>49</strong> wrong</li>
+<li>in medical practice  18/(18+49) = <strong>27%</strong> of the positive tests are right (positive prediction value)</li>
+<li>in medical practice  49/(18+49) = <strong>73%</strong> of the positive tests are wrong</li>
+</ul>
+<h1>Example: Breast cancer screening</h1>
+<h3>Typical parameters:</h3>
+<ul>
+<li>Prevalence of breast cancer at age of 40: ~0.01</li>
+<li>Sensitivity of mammography: ~0.80</li>
+<li>Specificity of mammography: ~0.90</li>
+</ul>
+<h3>Benefit</h3>
+<ul>
+<li>assume 1000 women are screened by mammography</li>
+<li>8 women are identified correctely as suffering from breast cancer</li>
+<li>The <em>positive predictive value</em> is 7.4%</li>
+</ul>
+<h3>Harm</h3>
+<ul>
+<li>99 women are identified as being ill despite they are healthy</li>
+</ul>
+<h3>Without utility</h3>
+<ul>
+<li>2 women are not identified as being ill despite they are ill</li>
+<li>891 healthy women are screened and identified as being healthy</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">dfB</span>
+</pre></div>
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
+    }
+
+    .dataframe thead th {
+        text-align: left;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe table table-striped table-hover">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>ill</th>
+<th>healthy</th>
+<th>Σ tests</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>positive</th>
+<td>8.0</td>
+<td>99.0</td>
+<td>107.0</td>
+</tr>
+<tr>
+<th>negative</th>
+<td>2.0</td>
+<td>891.0</td>
+<td>893.0</td>
+</tr>
+<tr>
+<th>Σ states</th>
+<td>10.0</td>
+<td>990.0</td>
+<td>1000.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight"><pre><span></span><span class="n">Mammography</span><span class="o">.</span><span class="n">get_summary</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>7.476636     % of the positive tests are right (positive pr...
+92.523364    % of the positive tests are wrong (false posit...
+dtype: object
+</pre></div>
+<h1>Some conclusions</h1>
+<h3>Reasoning about the screening strategy</h3>
+<ul>
+<li>with a low prevalence of ~0.1 the size of the groups (healthy group, ill group) is very unevenley distributed</li>
+<li>as a consequence the rate of true positive cases is low, and the rate of false positive cases is high</li>
+<li>a thorough screnning (100%) is on one side costy and with a positive detective rate of 7.4% not efficient.  On the other side it brings harm to the false postive identified women (unnecessary biospy, psychological pressure e.g.)</li>
+<li>one might think about different screenings strategies. From the statistical point of view approaches seem to be interesting that are able to reduce the rather large number of unnecessary screened peoples, a two level test e.g., that builds in a first step a smaller group of peoples with a higher risk of the desease under consideration.</li>
+</ul>
+<h3>The influence of the prevalence</h3>
+<ul>
+<li>with a low prevalence the positive predictive value is small and the false positive predictive value is high</li>
+<li>the relation between the prevalence and the positive predictive value is plotted below</li>
+<li>statistically speaking: building a smaller subgroup that contains the potential patients raises the prevalence in the subgroup. This raises the efficency of the application of a diagostic test.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">plot_p_ppv</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img3012/output_13_0.png"/></p>
+<h3>What type of statistic is it ?</h3>
+<ul>
+<li>Note, that we have got the results just by counting the occurence of the different cases. So we had no philosophical discussions wether it is Frequentist's or Bayesian statistics.</li>
+<li>despite of this peace between the methods it's worth to mention that there is an aspect, that is related with the <strong>Bayesian</strong> formula: it's  the <strong>change of perspective</strong>.</li>
+<li>We start with the perspective of the diagnostic test: given a group of persons that ARE ill, what is the ability (= probablilty) of the diagnostic test to detect the disease <span class="math">\(\mathbf{P(test=positive \mid ill)}\)</span>.</li>
+<li>We end with the patient's perspective: given a test that is positive, what is the probablity that the patient IS ill <span class="math">\(\mathbf{P(ill \mid test=positive)}\)</span></li>
+</ul>
+<h3><em>Python Code: Analysis with the graphical tables</em></h3>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="kn">as</span> <span class="nn">mclr</span>
+
+<span class="k">def</span> <span class="nf">init_table</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">):</span>
+    <span class="c1">#---- set the 1-dimensional arrays in x- and y-direction</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nx</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">nx</span><span class="p">)</span>
+    <span class="n">iy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ny</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span>
+
+    <span class="c1">#---- use the outer product of 2 vectors -----------</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">ix</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">iy</span><span class="p">))</span>  <span class="c1"># X = ix.T * ones(iy)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">ix</span><span class="p">),</span><span class="n">iy</span><span class="p">)</span>  <span class="c1"># Y = ones(ix) * iy.T</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span>
+
+<span class="k">def</span> <span class="nf">plot_table</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span> 
+    <span class="n">myCmap</span> <span class="o">=</span> <span class="n">mclr</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">([</span><span class="s1">'lightgrey'</span><span class="p">,</span><span class="s1">'blue'</span><span class="p">,</span> <span class="s1">'yellow'</span><span class="p">,</span><span class="s1">'orange'</span><span class="p">,</span><span class="s1">'violet'</span><span class="p">,</span> <span class="s1">'lightgrey'</span><span class="p">])</span>
+    <span class="n">ax4</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'w'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">myCmap</span><span class="p">)</span>
+    <span class="n">ax4</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">nx</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">Np</span> <span class="o">=</span> <span class="n">nx</span> <span class="o">*</span> <span class="n">ny</span>
+<span class="n">prev</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="n">sens</span> <span class="o">=</span> <span class="mf">0.90</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="mf">0.95</span>
+
+<span class="n">nIll</span> <span class="o">=</span> <span class="n">Np</span><span class="o">*</span><span class="n">prev</span>
+<span class="n">nHealthy</span> <span class="o">=</span> <span class="n">Np</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">prev</span><span class="p">)</span>
+
+<span class="n">truePositive</span> <span class="o">=</span> <span class="n">nIll</span> <span class="o">*</span> <span class="n">sens</span><span class="p">;</span>     <span class="n">falseNegative</span> <span class="o">=</span> <span class="n">nIll</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sens</span><span class="p">)</span>
+<span class="n">trueNegative</span> <span class="o">=</span> <span class="n">nHealthy</span> <span class="o">*</span> <span class="n">spec</span><span class="p">;</span> <span class="n">falsePositive</span> <span class="o">=</span> <span class="n">nHealthy</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">spec</span><span class="p">)</span>
+
+<span class="n">sumPositive</span> <span class="o">=</span> <span class="n">truePositive</span><span class="o">+</span><span class="n">falsePositive</span>
+<span class="n">sumNegative</span> <span class="o">=</span> <span class="n">falseNegative</span><span class="o">+</span><span class="n">trueNegative</span>
+
+<span class="n">PC_TruePos</span> <span class="o">=</span>  <span class="n">truePositive</span><span class="o">/</span><span class="n">sumPositive</span>
+<span class="n">PC_FalsePos</span> <span class="o">=</span> <span class="n">falsePositive</span><span class="o">/</span><span class="n">sumPositive</span>
+
+<span class="n">PC_TrueNeg</span> <span class="o">=</span>  <span class="n">trueNegative</span><span class="o">/</span><span class="n">sumNegative</span>
+<span class="n">PC_FalseNeg</span> <span class="o">=</span> <span class="n">falseNegative</span><span class="o">/</span><span class="n">sumNegative</span>
+
+<span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span> <span class="o">=</span> <span class="n">init_table</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span>
+<span class="n">z</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">=</span><span class="mi">5</span>
+</pre></div>
+<h3><em>Python Code: Analysis of the diagnostic test with a Python class</em></h3>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">DiagnosticAnalysis</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Np</span><span class="p">,</span><span class="n">prev</span><span class="p">,</span><span class="n">sens</span><span class="p">,</span><span class="n">spec</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Np</span> <span class="o">=</span> <span class="n">Np</span>       <span class="c1">#size of population</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span>   <span class="c1">#prevalence</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sens</span> <span class="o">=</span> <span class="n">sens</span>   <span class="c1">#sensitiviy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="n">spec</span>   <span class="c1">#specitivity</span>
+
+    <span class="k">def</span> <span class="nf">get_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">Data</span><span class="p">):</span>
+        <span class="n">columns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">'ill'</span><span class="p">,</span> <span class="s1">'healthy'</span><span class="p">,</span><span class="s1">'Σ tests'</span><span class="p">])</span>
+        <span class="n">index</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">'positive'</span><span class="p">,</span> <span class="s1">'negative'</span><span class="p">,</span><span class="s1">'Σ states'</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">Data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns</span><span class="p">)</span>     
+        <span class="k">return</span> <span class="n">df</span>
+
+    <span class="k">def</span> <span class="nf">ContingencyTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">nIll</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">prev</span>
+        <span class="n">nHealthy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">prev</span><span class="p">)</span>
+
+        <span class="n">truePositive</span> <span class="o">=</span> <span class="n">nIll</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">sens</span><span class="p">;</span>     <span class="n">falseNegative</span> <span class="o">=</span> <span class="n">nIll</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">sens</span><span class="p">)</span>
+        <span class="n">trueNegative</span> <span class="o">=</span> <span class="n">nHealthy</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">;</span> <span class="n">falsePositive</span> <span class="o">=</span> <span class="n">nHealthy</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">)</span>
+
+        <span class="n">sumPositive</span> <span class="o">=</span> <span class="n">truePositive</span><span class="o">+</span><span class="n">falsePositive</span>
+        <span class="n">sumNegative</span> <span class="o">=</span> <span class="n">falseNegative</span><span class="o">+</span><span class="n">trueNegative</span>
+
+        <span class="n">nData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="s1">'true Positive'</span><span class="p">,</span><span class="s1">' false Positive'</span><span class="p">,</span> <span class="s1">'sum Positive'</span><span class="p">],</span> 
+                          <span class="p">[</span><span class="s1">'false Negative'</span><span class="p">,</span> <span class="s1">'true Negative'</span><span class="p">,</span> <span class="s1">'sum Negative'</span><span class="p">],</span>
+                          <span class="p">[</span><span class="s1">'nIll'</span><span class="p">,</span> <span class="s1">'nHealthy'</span><span class="p">,</span> <span class="s1">'Np'</span><span class="p">]])</span>  
+        <span class="n">dData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">truePositive</span><span class="p">,</span> <span class="n">falsePositive</span><span class="p">,</span> <span class="n">sumPositive</span><span class="p">],</span> 
+                          <span class="p">[</span><span class="n">falseNegative</span><span class="p">,</span> <span class="n">trueNegative</span><span class="p">,</span> <span class="n">sumNegative</span><span class="p">],</span>
+                          <span class="p">[</span><span class="n">nIll</span><span class="p">,</span> <span class="n">nHealthy</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Np</span><span class="p">]])</span>
+        <span class="n">rData</span> <span class="o">=</span> <span class="n">dData</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">Np</span>
+        <span class="c1">#print(nData);print(dData);print(rData)</span>
+        <span class="k">return</span> <span class="n">nData</span><span class="p">,</span><span class="n">dData</span><span class="p">,</span><span class="n">rData</span><span class="p">,</span> \
+               <span class="bp">self</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">nData</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">dData</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_df</span><span class="p">(</span><span class="n">rData</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">D</span><span class="p">):</span>
+        <span class="n">sData</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span> <span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">D</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]])</span> <span class="o">*</span><span class="mi">100</span>
+        <span class="n">sText</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">'</span><span class="si">% o</span><span class="s1">f the positive tests are right (positive prediction value)'</span><span class="p">,</span> 
+                          <span class="s1">'</span><span class="si">% o</span><span class="s1">f the positive tests are wrong (false positive prediction value)'</span><span class="p">])</span>  
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">sData</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">sText</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">Population</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">;</span>  <span class="n">prevalence</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">;</span> <span class="n">sensivity</span> <span class="o">=</span> <span class="mf">0.80</span><span class="p">;</span>   <span class="n">specivity</span> <span class="o">=</span> <span class="mf">0.90</span>
+<span class="n">Mammography</span> <span class="o">=</span> <span class="n">DiagnosticAnalysis</span><span class="p">(</span><span class="n">Population</span><span class="p">,</span><span class="n">prevalence</span><span class="p">,</span><span class="n">sensivity</span><span class="p">,</span><span class="n">specivity</span><span class="p">)</span>
+<span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">dfA</span><span class="p">,</span><span class="n">dfB</span><span class="p">,</span><span class="n">dfC</span> <span class="o">=</span> <span class="n">Mammography</span><span class="o">.</span><span class="n">ContingencyTable</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">Mammography</span><span class="o">.</span><span class="n">get_summary</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>7.476636     % of the positive tests are right (positive pr...
+92.523364    % of the positive tests are wrong (false posit...
+dtype: object
+</pre></div>
+<h3><em>Python Code: Relation between prevalence and positive predictive value</em></h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_p_ppv</span><span class="p">():</span>
+    <span class="n">prevalences</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">)</span>
+    <span class="n">falsepositives</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">prevalences</span><span class="p">)</span>
+    <span class="n">Population</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">;</span>  <span class="n">prevalence</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">;</span> <span class="n">sensivity</span> <span class="o">=</span> <span class="mf">0.90</span><span class="p">;</span>   <span class="n">specivity</span> <span class="o">=</span> <span class="mf">0.95</span>
+
+    <span class="k">for</span> <span class="n">jj</span><span class="p">,</span><span class="n">prevalence</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">prevalences</span><span class="p">):</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">DiagnosticAnalysis</span><span class="p">(</span><span class="n">Population</span><span class="p">,</span><span class="n">prevalence</span><span class="p">,</span><span class="n">sensivity</span><span class="p">,</span><span class="n">specivity</span><span class="p">)</span>
+        <span class="n">A</span><span class="p">,</span><span class="n">B</span><span class="p">,</span><span class="n">C</span><span class="p">,</span><span class="n">dfA</span><span class="p">,</span><span class="n">dfB</span><span class="p">,</span><span class="n">dfC</span> <span class="o">=</span> <span class="n">D</span><span class="o">.</span><span class="n">ContingencyTable</span><span class="p">()</span>
+        <span class="n">falsepositives</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">C</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>  <span class="c1"># 'fivethirtyeight'</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">prevalences</span><span class="p">,</span> <span class="n">falsepositives</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"False-positive predictive value"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'prevalence'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'False-positive predictive value in dependence of prevalence'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'upper center'</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/screening-with-binary-diagnostic-test.html';
+    this.page.identifier = 'screening-with-binary-diagnostic-test';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
