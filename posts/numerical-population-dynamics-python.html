@@ -192,13 +192,17 @@ $$</div>
 l^n - d^n \equiv 1
 $$</div>
 <h3>C. Conclusion for the point of time of the suvival or the death rate</h3>
-<p>Note that
-- with the mathematical framework presented here there is no necessety to express the survival rate or the death rate as fraction of the population in the middle of the year <span class="math">\(P^{\frac{1}{2}}= 0.5\cdot(P^0 + P^1)\)</span>
-- on contrary: if you have a data set where the survial and the death rates <em>are</em> evaluated as fraction of <span class="math">\(P^{\frac{1}{2}}\)</span> you have to think about wether this time shift can be disturbant</p>
+<p>Note that</p>
+<ul>
+<li>with the mathematical framework presented here there is no necessety to express the survival rate or the death rate as fraction of the population in the middle of the year <span class="math">\(P^{\frac{1}{2}}= 0.5\cdot(P^0 + P^1)\)</span></li>
+<li>on contrary: if you have a data set where the survial and the death rates <em>are</em> evaluated as fraction of <span class="math">\(P^{\frac{1}{2}}\)</span> you have to think about wether this time shift can be disturbant</li>
+</ul>
 <h1>Example of a data driven solution</h1>
-<p>With the following code we simply 
-- implement the discretisized mathematical framework
-- illustrate the time series of the death rate given some simple time series of the generation</p>
+<p>With the following code we simply</p>
+<ul>
+<li>implement the discretisized mathematical framework</li>
+<li>illustrate the time series of the death rate given some simple time series of the generation</li>
+</ul>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">scipy</span> <span class="kn">as</span> <span class="nn">sp</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
@@ -238,9 +242,11 @@ $$</div>
     <span class="k">if</span> <span class="n">case</span><span class="o">==</span><span class="s1">'B'</span><span class="p">:</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>   <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">R</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">P</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">R</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">a</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">b</span>
     <span class="k">return</span> <span class="n">P</span>      
 </pre></div>
-<p>We simply
-1. compute the death rate
-2. re-contruct the time series of the generation again</p>
+<p>We simply</p>
+<ol>
+<li>compute the death rate</li>
+<li>re-construct the time series of the generation again</li>
+</ol>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">analyticModel</span><span class="p">(</span><span class="n">case</span><span class="p">,</span><span class="n">nt</span><span class="p">):</span>
     <span class="c1">#--- generate population data ---------------</span>
     <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nt</span><span class="p">)</span> 
@@ -267,11 +273,13 @@ $$</div>
 <div class="math">$$
 \dot{P} = d \cdot P
 $$</div>
-<p>Here only the temporal term <span class="math">\(\dot{P} = \frac{dP}{dt}\)</span> has to be considerd (since no derivatives in space are existent). Without going into the details we scetch the following 3 types
-- forward Euler schema
-- backward Euler schema
-- Crank Nicolson schema (generalized as \theta -schema)
-- ....and there are more sophisticated schemas not mentioned here</p>
+<p>Here only the temporal term <span class="math">\(\dot{P} = \frac{dP}{dt}\)</span> has to be considerd (since no derivatives in space are existent). Without going into the details we scetch the following 3 types</p>
+<ul>
+<li>forward Euler schema</li>
+<li>backward Euler schema</li>
+<li>Crank Nicolson schema (generalized as \theta -schema)</li>
+<li>....and there are more sophisticated schemas not mentioned here</li>
+</ul>
 <p>Each discretization schema is an approximation only to the original ODE. It depends on the type of application which one the best suited is.</p>
 <h2>A. Forward Euler schema or explicit schema</h2>
 <div class="math">$$
@@ -298,11 +306,13 @@ $$</div>
 P^{n+1} = \frac{1+(1-\theta)d^n\Delta t}{1-\theta\:d^{n+1}\Delta t} P^n 
 $$</div>
 <h2>D. Implementation of the 3 numerical ODE solvers</h2>
-<p>Numerical solvers sometimes need  a finer resolution than the data are given. An implementaion has to be prepared to interpolate the parameters given as data. In the following section
-- we generate the distribution of the population (=times series of a generation)
-- we derive the death rate
-- we interpolate the data to the resolution given by the timestep of integration
-- we solve the ODE by the <strong>explicit</strong>, the <strong>implicit</strong> and the <strong>Crank Nicolson</strong> schema</p>
+<p>Numerical solvers sometimes need  a finer resolution than the data are given. An implementaion has to be prepared to interpolate the parameters given as data. In the following section</p>
+<ul>
+<li>we generate the distribution of the population (=times series of a generation)</li>
+<li>we derive the death rate</li>
+<li>we interpolate the data to the resolution given by the timestep of integration</li>
+<li>we solve the ODE by the <strong>explicit</strong>, the <strong>implicit</strong> and the <strong>Crank Nicolson</strong> schema</li>
+</ul>
 <h4>Main results</h4>
 <ul>
 <li>Even with few data (n=100) all three solvers produce the same results. </li>
@@ -401,10 +411,10 @@ $$</div>
 
 <span class="n">scipySolver</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
 </pre></div>
-<p><img alt="png" class="img-fluid" src="output_27_0.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6003/output_27_0.png"/></p>
 <div class="highlight"><pre><span></span><span class="n">scipySolver</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span><span class="mi">110</span><span class="p">)</span>
 </pre></div>
-<p><img alt="png" class="img-fluid" src="output_28_0.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6003/output_28_0.png"/></p>
 <script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
     var align = "center",
         indent = "0em",
