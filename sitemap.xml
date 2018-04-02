@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/why-to-use-distribution-vectors.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/from-decision-tree-to-markov-model.html</loc>
     <priority>0.8</priority>
   </url>
@@ -90,6 +94,10 @@
   </url>
   <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/Basic_Stats_31_Linear_Regression_Python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/basic_stats_03_distributions_python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>

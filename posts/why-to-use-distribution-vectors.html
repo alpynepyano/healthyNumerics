@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>NumericalStats: WHY to switch to distribution vectors | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/why-to-use-distribution-vectors.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="Using the coin flipping example, we give some arguments WHY the use of distribution vectors can be helpful as a preparation for Monte Carlo Markov Chain models and others and how this changes the role of medical researchers.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>NumericalStats: WHY to switch to distribution vectors
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-04-01T18:30:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        So. 01 April 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/metaanalysis.html">MetaAnalysis</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/bayesian.html">#bayesian</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/uncertainity.html">#uncertainity</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/numerical.html">#numerical</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/statistics.html">#statistics</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#python</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>Full disclosure: <strong>I hate flipping coin examples</strong>. But they they are close to <strong>ill or healthy</strong> and contain the ingradients to think about how statistics can be done. So let's have a look at this inevitable case study.</p>
+<ol>
+<li>we explain briefly the tradtional flipping coin example</li>
+<li>we introduce the use of vectors for that example</li>
+<li>we give some arguments WHY this can be usefull</li>
+<li>we give a short outlook how an application might look like for that example</li>
+</ol>
+<h1>Using points of values for the flipping coin model</h1>
+<ul>
+<li><strong>Physics</strong>: A tossed coin lands due to its angular momnentum al-al-al-almost never on its edge. So we can approximate the space of state of outcome  with two states only: head or tail.</li>
+<li><strong>(In-)Dependency of outcome</strong>: The two states are perfectely dependent on each other, perfectely negative correlated. No overlapping areas of outcome: a coin can not land on both of its sides simultaneously, not even a little bit.</li>
+<li><strong>Countability</strong>: The outcome is observable. We can count the events without measurement instruments. So we do not need any approximations about what we see.</li>
+<li><strong>The mental model</strong>: all these circumstances lead us to conlcusion that the probability (in form of odds) of the side a coin lands after tossing is 50:50. Furthermore, if the probability (in form of odds) is different than 50:50 we are convinced that the coin is wrong or that the tossing person is wrong, not that the model is wrong. This conviction is our mental model.</li>
+<li><strong>The statistical model</strong>: We use a tool (Bernoulli distribution, for situations with binary outcome), that counts the events and that tells us something about the probability of certain events after taking all the different possibilities of outcomes into account. The free variable  is the number of events with outcome 'head' (or it might be 'tail' too). The probability <strong>p</strong> that can be found in the formula is not a free variable but an <em>a priori</em> parameter to describe the coin-flipping-model. We will call it later <strong>θ</strong>.</li>
+</ul>
+<h3>Lessons to learn from the flipping coins</h3>
+<ul>
+<li>Most of the time we would like to know the probablities of interrelations and events that are more interesting than the landing side of a coin.e.g:</li>
+<li>high and low pressure in the atmosphere and its consequences on the weather conditions or</li>
+<li>high and low pressure in the blood vessels and its consequences on the living conditions.</li>
+<li>For this type of problems it would not be a good idea, to be as convinced as with the coin-flipping-model, that rather the world is wrong than our model. So we have to think about carefully how we can take into account all the different uncertainities.</li>
+<li>A modest first step is, that we formally introduce the possibility to include vectors of information (whole distributions e.g.) instead single 'representative' points of information only. We describe that below.</li>
+</ul>
+<h3>Inverse inference: Find Your hidden layer</h3>
+<ul>
+<li>Even when everything seems to be definite and clear around the coin, there is still a <strong>hidden layer</strong> in the flipping coin experiment.</li>
+<li>You can find it by the question: "If everything is definite and clear around the coin, why is tossing coins a random experiment ?"</li>
+<li>If You are the person that is tossing the coin, then the inverse inference is that You are a randomly acting event. Would You say that is a good model to describe yourself ?</li>
+</ul>
+<h3>The statistical formula</h3>
+<p>Using the binomial distribution
+</p>
+<div class="math">$$
+B\; (k \mid n,p)=\binom nk\cdot p^k\cdot (1-p)^{n-k}
+$$</div>
+<p>then is <span class="math">\(B\)</span> the probability of <span class="math">\(k\)</span> succesful events given <span class="math">\(n\)</span> trials and the probability <span class="math">\(p\)</span> of a singel event.</p>
+<p>Let's rename this formula to
+</p>
+<div class="math">$$
+P\; (y \mid\theta)=\binom ny\cdot \theta^y\cdot (1-\theta)^{n-y}
+$$</div>
+<ul>
+<li>on the left side we suppress the dependence on <span class="math">\(n\)</span> because it is regarded as part of the experimental design that is considered fixed</li>
+<li><span class="math">\(\theta\)</span> is a model parameter. We can call it bias. It expresses wether one side (#0) or the other side (#1) of the tossed coin is preferred. It is dimensionless and has the range of value <span class="math">\([0..1]\)</span>. The value <span class="math">\(\theta = 0.5\)</span> means equally biased which is the same as not biased.</li>
+<li><span class="math">\(y\)</span> are observational, gathered data. </li>
+</ul>
+<p>The formula is used ususally in the following manner: What is the probability for y=10 succesful events given n=40 experiments and a bias θ=0.25 ?</p>
+<ul>
+<li>n = 40 experiments</li>
+<li>y = 10 succesful events</li>
+<li>θ = 0.25 bias, model parameter</li>
+<li><span class="math">\(P\; (y \mid\theta) = 0.144\)</span></li>
+</ul>
+<p>NOTE: most of the time we are interested in <span class="math">\(P(\theta \mid y)\)</span> as a final result rather  than in <span class="math">\(P(y\mid \theta)\)</span> .</p>
+<h1>From value points to distribution vectors</h1>
+<ul>
+<li>We can write the observational, gathered data as a vector <span class="math">\(\vec y = (y_0, y_1, ... , y_n)\)</span>. </li>
+<li>The same we can do with the model parameter <span class="math">\(\vec θ = (θ_0, θ_1, .., θ_n)\)</span></li>
+</ul>
+<p>With this vectors we have both items, data <span class="math">\(y\)</span> and model parameter <span class="math">\(\theta\)</span>, in the calculation schema explicitly. Later we will use this opportunity to fill the vectors with the distributions of <span class="math">\(y\)</span> and <span class="math">\(\theta\)</span>. And if we do not know what the appropriate (analytical) distribution is, we will generate numericaly a surrogate out of the data we have.</p>
+<p>Using this vectors we have now a 2-dimensional distribution <span class="math">\(P(\vec y, \vec\theta)\)</span> which can vary in both parameters. For the moment we do not fill the vectors with  distributions.  We discretisize <span class="math">\(\vec y\)</span> and <span class="math">\(\vec\theta\)</span> in <span class="math">\(n\)</span> equidistant points. So what we see on the 2-dimensional graph is a systematic table with the <span class="math">\(P\)</span> values of the binomial distribution.</p>
+<div class="highlight"><pre><span></span><span class="err">θ</span> <span class="o">=</span> <span class="mf">0.25</span>   <span class="c1"># bias</span>
+<span class="n">nToss</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># experiment: tossing nToss times</span>
+<span class="n">get_likelihood</span><span class="p">(</span><span class="err">θ</span><span class="p">,</span><span class="n">nToss</span><span class="p">)</span>
+<span class="n">get_pTable</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2033/output_3_0.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2033/output_3_1.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2033/output_3_2.png"/></p>
+<h1>WHY can this be helpful ?</h1>
+<ul>
+<li>we are now able to include uncertainities in form of distributions for both items: for the data <span class="math">\(y\)</span> and for the model parameter <span class="math">\(θ\)</span></li>
+<li>most of the time we are interested in <span class="math">\(P(\theta \mid y)\)</span>. That means we have observed data <span class="math">\(y\)</span> (<em>with uncertainities in form of variances</em>) and an idea about a modell <span class="math">\(M(\theta)\)</span> (<em>with uncertainities about the appropriate parameter <span class="math">\(\theta\)</span></em>) and we want to know up to what degree the data <span class="math">\(y\)</span> and the  model <span class="math">\(M(\theta)\)</span> fit together.</li>
+<li>We can include both types of uncertainities throughout the evaluation. When reporting the final result we are able to report the final uncertainities too.</li>
+<li>Often it's not obvious what type of statistical distribution observed data <span class="math">\(y\)</span> do have. In this case we can use numerical sampling methods (bootstrapping, Monte Carlo) to draw samples of the unknown and arbitrary distribution of <span class="math">\(y\)</span>.</li>
+<li>This approach makes sense when there is a demand for accuracy and risk handling in the decision making proces. </li>
+</ul>
+<h4>Opportunities and consequences</h4>
+<ul>
+<li>The type of model becomes an explicit part of data modelling and analysis.</li>
+<li>Concerning the worklflow, there are now two necessary steps to drive an evaluation, (1) to choose an appropriate forward model <span class="math">\(P\; (y \mid\theta)\)</span> and (2) to choose an appropriate backward model <span class="math">\(P(\theta \mid y)\)</span></li>
+<li>Concerning the responsability, the choice of the appropriate models can and has to come back from the statistician to the medical researcher since the choice of the models has become explicit (<em>"what is an appropriate model for 'life'  ?"</em>)</li>
+<li>The numerical approach allows to concatenate several layers of information. So the models can relate closer to  evolving processes compared to the purely algebraic driven correlation.</li>
+</ul>
+<h1>Outlook</h1>
+<p>Most of the time we are interested in</p>
+<div class="math">$$P(\theta \mid y)    =  \frac{P(y \mid \theta) \cdot P(\theta)}{P(y)}$$</div>
+<ul>
+<li><span class="math">\(y\)</span> represents observational gathered data, as a vector <span class="math">\(y = (y_0, y_1, ... , y_n)\)</span>. such as the numbers of survivors and deaths in each treatment group. Or in a clinical trial, we might label <span class="math">\(y_i\)</span> as 1 if patient i is alive after five years or 0 if the patient dies. If several variables are measured on each unit, then each <span class="math">\(y_i\)</span>  is actually a vector. The <span class="math">\(y\)</span> variables are called the ‘outcomes’ and are considered ‘random’ in the sense that they are variable due to the natural variation of the population.</li>
+<li>As general notation, we let θ denote unobservable vector quantities or population parameters of interest (such as the probabilities of survival under each treatment for randomly chosen members of the population in a clinical trial)</li>
+</ul>
+<p>For the application the following vectors are used:</p>
+<div class="highlight"><pre><span></span><span class="n">nθ</span> <span class="o">=</span> <span class="mi">40</span>    <span class="c1"># resolution: number of θ-points</span>
+<span class="n">nToss</span> <span class="o">=</span> <span class="mi">40</span> <span class="c1"># experiment: tossing nToss times</span>
+<span class="n">nHead</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># result:  heads out of nToss</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">get_posterior</span><span class="p">(</span><span class="n">nθ</span> <span class="p">,</span> <span class="n">nHead</span><span class="p">,</span> <span class="n">nToss</span><span class="p">);</span> <span class="c1">#df</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2033/output_6_0.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2033/output_6_1.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2033/output_6_2.png"/></p>
+<h1><em>Python code</em></h1>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="kn">as</span> <span class="nn">mclr</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_gr00</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">xLabel</span><span class="p">,</span><span class="n">yLabel</span><span class="p">,</span><span class="n">nHead</span><span class="p">,</span><span class="n">nToss</span><span class="p">,</span><span class="err">θ</span><span class="p">,</span><span class="n">xv</span><span class="p">,</span><span class="n">vlabel</span><span class="p">,</span><span class="n">grTitel</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>         
+         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">;</span>       
+         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">);</span>
+         <span class="n">a1size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="mi">500</span><span class="p">;</span>        
+         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">a1size</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'w'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"plasma"</span><span class="p">);</span>
+         <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'y = {}</span><span class="se">\n</span><span class="s1"> n = {} </span><span class="se">\n</span><span class="s1"> θ = {} '</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nHead</span><span class="p">,</span> <span class="n">nToss</span><span class="p">,</span> <span class="err">θ</span><span class="p">));</span>
+         <span class="n">ax1</span><span class="o">.</span><span class="n">vlines</span><span class="p">(</span><span class="n">xv</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="n">vlabel</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>       
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xLabel</span><span class="p">);</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">yLabel</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">grTitel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_gr01</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">xLabel</span><span class="p">,</span><span class="n">yLabel</span><span class="p">,</span><span class="n">grTitel</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>         
+         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">;</span>       
+         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">);</span>
+         <span class="n">a1size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="mi">500</span><span class="p">;</span>        
+         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">a1size</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'w'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"plasma"</span><span class="p">);</span>
+         <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'heads = {}</span><span class="se">\n</span><span class="s1">tosses = {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">nHead</span><span class="p">,</span> <span class="n">nToss</span><span class="p">));</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>       
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xLabel</span><span class="p">);</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">yLabel</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">grTitel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_likelihood</span><span class="p">(</span><span class="err">θ</span><span class="p">,</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">p_lklhd</span><span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">ay</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="err">θ</span><span class="p">)</span>    
+    <span class="n">plot_gr00</span><span class="p">(</span><span class="n">ay</span><span class="p">,</span> <span class="n">p_lklhd</span><span class="p">,</span> <span class="sa">r</span><span class="s1">'$y$'</span><span class="p">,</span><span class="s1">'P'</span><span class="p">,</span><span class="s1">'$heads$'</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="err">θ</span><span class="p">,</span>
+              <span class="err">θ</span><span class="o">*</span><span class="n">nToss</span><span class="p">,</span><span class="s1">'$P_{max}(y = n \cdot θ)$'</span><span class="p">,</span>
+              <span class="s1">'$P(y\mid θ_{fix}) = binom.pmf(y, n, θ_{fix})$'</span><span class="p">)</span>   
+    <span class="n">aθ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">y</span>  <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">p_lklhd</span><span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">aθ</span><span class="p">)</span>
+    <span class="n">plot_gr00</span><span class="p">(</span><span class="n">aθ</span><span class="p">,</span> <span class="n">p_lklhd</span><span class="p">,</span> <span class="sa">r</span><span class="s1">'$θ$'</span><span class="p">,</span><span class="s1">'P'</span><span class="p">,</span><span class="s1">'$10$'</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="s1">'bias'</span><span class="p">,</span>
+              <span class="n">y</span><span class="o">/</span><span class="n">n</span><span class="p">,</span><span class="s1">'$P_{max}(θ = y/n)$'</span><span class="p">,</span>
+              <span class="s1">'$P(y_{fix}\mid θ) = binom.pmf(y_{fix}, n, θ)$'</span><span class="p">)</span> 
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_pTable</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="err">θ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">Y</span><span class="p">:</span>
+        <span class="n">A</span><span class="p">[</span><span class="n">y</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="err">θ</span><span class="p">)</span> 
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="err">θ</span><span class="p">))</span>  <span class="c1"># X = ix.T * ones(iy)</span>
+    <span class="n">ay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span><span class="err">θ</span><span class="p">)</span>  <span class="c1"># Y = ones(ix) * iy.T</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>      
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">7</span><span class="p">))</span> 
+        <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ay</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span> <span class="mi">5</span><span class="o">+</span><span class="mi">150</span><span class="o">*</span><span class="n">A</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">10</span><span class="p">),</span> <span class="n">c</span><span class="o">=</span><span class="n">A</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">9</span><span class="p">),</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'w'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"plasma"</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'y'</span><span class="p">);</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'θ'</span><span class="p">);</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'p = binom.pmf(y, n, θ)'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_posterior</span><span class="p">(</span><span class="n">nθ</span><span class="p">,</span> <span class="n">nHead</span><span class="p">,</span> <span class="n">nToss</span><span class="p">):</span>
+    <span class="err">θ</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nθ</span><span class="p">)</span>
+    <span class="n">p_prio</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">nθ</span><span class="p">)</span>
+    <span class="n">p_lklhd</span><span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">pmf</span><span class="p">(</span><span class="n">nHead</span><span class="p">,</span> <span class="n">nToss</span><span class="p">,</span> <span class="err">θ</span><span class="p">)</span>
+    <span class="n">p_post</span> <span class="o">=</span> <span class="n">p_lklhd</span> <span class="o">*</span> <span class="n">p_prio</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">p_lklhd</span> <span class="o">*</span> <span class="n">p_prio</span><span class="p">)</span>
+    <span class="n">plot_gr01</span><span class="p">(</span><span class="err">θ</span><span class="p">,</span> <span class="n">p_prio</span><span class="p">,</span><span class="sa">r</span><span class="s1">'$\theta$'</span><span class="p">,</span><span class="s1">'P prior'</span><span class="p">,</span><span class="s1">'P$( θ )$ prior on grid θ'</span><span class="p">)</span>
+    <span class="n">plot_gr01</span><span class="p">(</span><span class="err">θ</span><span class="p">,</span> <span class="n">p_lklhd</span><span class="p">,</span><span class="sa">r</span><span class="s1">'$\theta$'</span><span class="p">,</span><span class="s1">'likelihood'</span><span class="p">,</span><span class="s1">'likelihood = P$(y \mid θ )$ = binom.pmf(nHead, nToss, θ)'</span><span class="p">)</span>
+    <span class="n">plot_gr01</span><span class="p">(</span><span class="err">θ</span><span class="p">,</span> <span class="n">p_post</span><span class="p">,</span><span class="sa">r</span><span class="s1">'$\theta$'</span><span class="p">,</span><span class="s1">'P posterior'</span><span class="p">,</span><span class="s1">'P$(θ \mid y)$ posterior'</span><span class="p">)</span>    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">'θ'</span><span class="p">:</span> <span class="err">θ</span><span class="p">,</span> <span class="s1">'p_prio'</span><span class="p">:</span><span class="n">p_prio</span><span class="p">,</span> <span class="s1">'p_lklhd'</span><span class="p">:</span> <span class="n">p_lklhd</span><span class="p">,</span><span class="s1">'p_post'</span><span class="p">:</span><span class="n">p_post</span><span class="p">})</span> 
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/why-to-use-distribution-vectors.html';
+    this.page.identifier = 'why-to-use-distribution-vectors';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
