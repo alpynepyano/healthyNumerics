@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>NumericalStats: WHY and HOW to involve medical researchers into the statistical model building | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/solving-the-monti-hall-problem-with-python.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="The Monty Hall problem came out of a US TV-game in the 1970's and got wide publicity about problem solving statistically. It can be transfered easely to medical research how to seek a strategy that proofs to be the most suitable to reach ceratin aims in healthcare.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>NumericalStats: WHY and HOW to involve medical researchers into the statistical model building
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-04-14T23:40:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Sa. 14 April 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/metaanalysis.html">MetaAnalysis</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/why.html">#WHY</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/monty-hall-problem.html">#Monty Hall problem</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>The Monti Hall problem came out of a US TV-game in the 1970's and got wide publicity about problem solving statistically. It's about the role of the participant at the TV-game and  some external statistical experts which gave advisory what the best gaming strategy is. You can transfer it easely to <strong>medical research</strong> and seeking a strategy that proofs to be the most suitable to reach ceratin aims in <strong>healthcare</strong>.</p>
+<p><strong>The game runs as follows</strong>:</p>
+<ul>
+<li>there are three closed doors. Behind one door is the main prize, a trendy car, while behind the other two doors are goats.</li>
+<li>The participant has two choices to get the prize.</li>
+<li>Step 1: The participant may indicate behind which door the prize is (1. choice).</li>
+<li>Step 2: The TV-moderator (Monty Hall) is free to open any door and opens a door.</li>
+<li>Step 3: The participant is asked by the moderator whether she wants to stay with her first chocie or whether she wants to indicate the other remainig door (2. choice).</li>
+<li>Step 3: The moderator opens the indicated door and the participant gets what's behind it.</li>
+</ul>
+<p>The question is: what is the best strategy to win the main prize ?</p>
+<h1>The informational bias</h1>
+<p>We recommend to run yourself a self test in this order:</p>
+<ol>
+<li>scetch what you think to be the best gaming strategy</li>
+<li>get some advisory by watching different video clips in YouTube about the Monty Hall problem</li>
+<li>get some advisory by reading about the Monty Hall problem in Wikipedia</li>
+</ol>
+<p>In YouTube you will see many different hand weaving poeples with hand weaving arguments, augmented with decision trees or Bayesian formulas, explainig very focussed what the correct answer is. If you are not really at home in statistics, I think you will not be really be convinced by any of these contributions but will rather think: "It seems to be complicated with many falling tricks - let statistically talented people do that job". I think that's <strong>not the best conclusion</strong> you can draw.</p>
+<p>Consulting Wikipedia about the Monty Hall problem you will more learn about the history of the story. I'm shure you soon will recognize it's not only about <strong>doing the things right</strong> but <strong>doing the right things</strong> first: it's about the statistical model. In the Monti Hall example it's first not obivious and not a common agreement <strong>what the appropriate statistical model</strong> is, because it's not fixed what game the TV-moderator really plays, leading to different approaches what the best gaming strategy is.</p>
+<p>If you imagine that it is not about the behaviour of a TV-moderator but about <strong>the behaviour of patients</strong> then it's obvious that you should be involved in about what the statistical model is, which is not a mathematical issue but an issue of the real world problem under consideration.</p>
+<h1>Solving the problem numerically by reconstructing the game</h1>
+<p>"Numerically" means that we do not seek for a solution by analytical formulas but seek to solve the problem with numbers directely. The workflow is as follows:</p>
+<blockquote class="blockquote">
+<ol>
+<li>We go through the process step by step.</li>
+<li>Each step has a certain perspective that gives an information layer. We try to transform this perspective into a mathematical form by using distribution vectors as a describing tool.</li>
+<li>We model explicitely what the connection to the next step and information layer is.</li>
+<li>In development stage we go through the steps with one randomly choosen possibility (= 1 random walk).</li>
+<li>In evaluation stage we run the model many times (random walks) and analyzee the results.</li>
+</ol>
+</blockquote>
+<p>In order to make the generality of the approach visible, we will demonstrate it with <strong>7 doors</strong>, but we will run the model with 3 doors only later.</p>
+<h2>Layer 1: The prize behind the doors</h2>
+<p>Layer 1 is the perspective of the goats and the prize. We set up <strong>the model</strong> as what we see in the TV-game: we have nD doors and so we set up a vector (= an array) of length nD and choose randomly behind which door the prize has to be located. The <strong>mathematical translation</strong> is that we get a stay distribution of the prize which is 1 at the door where the prize is behind and equals zero else.</p>
+<div class="highlight"><pre><span></span><span class="n">nD</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span> <span class="n">nP</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">xnd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nD</span><span class="p">)</span>
+<span class="n">L1_PDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nP</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nD</span><span class="o">-</span><span class="n">nP</span><span class="p">)]</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">L1_PDF</span><span class="p">)</span>
+<span class="n">plot_distr</span><span class="p">(</span><span class="n">xnd</span><span class="p">,</span><span class="n">L1_PDF</span><span class="p">,</span><span class="s1">'Distribution of the stay probability of the prize'</span><span class="p">,</span><span class="s1">'gold'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2106/output_5_0.png"/></p>
+<h2>Layer 2: The first choice of the participant</h2>
+<p>Layer 2 is the participant's perspective. For the participitant is the stay of the prize a hidden layer she has no information about. The <strong>model</strong> is that she can and has to choose just any door. The <strong>mathematical translation</strong> is a uniform distribution saying that any door has the same probability to have the prize behind. The <strong>process</strong> is that randomly a door number  is choosen out of the given distribution.</p>
+<div class="highlight"><pre><span></span><span class="n">L2_PDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nD</span><span class="p">)</span><span class="o">/</span><span class="n">nD</span>
+<span class="n">plot_distr</span><span class="p">(</span><span class="n">xnd</span><span class="p">,</span><span class="n">L2_PDF</span><span class="p">,</span><span class="s1">'Distribution to indicate the door with the prize behind (first choice)'</span><span class="p">,</span><span class="s1">'magenta'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2106/output_7_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="n">L2_door</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nD</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"Guess 1 is door number "</span><span class="p">,</span> <span class="n">L2_door</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>Guess 1 is door number  1
+</pre></div>
+<h2>Layer 3: The role of the TV-moderator</h2>
+<p>Layer 3 is the moderator's perspective. His role is <strong>open to discussion</strong>. He could be very neutral and just open the door the participant indicates. But it's more obvious that he wants to keep the game exciting. So he does not want to finish the game after the first step already. And he might interessted to generate an atmosphere of emotional uncertainity which he can achieve when he opens any other door but this one the participant has indicated.</p>
+<p>We decide to use the following <strong>model</strong>: The TV-moderator will open any door, but never the door with the prize behind and never the door the participant has guessed. The <strong>mathematical translation</strong> leads us to a distribution that is uniform execpt at the door with the prize behind and at the door guessed by the participant where the values of the distribution are zero. The <strong>process</strong> is to draw randomly a 1-element sample from this arbitrary, empirical distribution.</p>
+<div class="highlight"><pre><span></span><span class="n">L3_PDF</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">L1_PDF</span><span class="p">;</span> <span class="n">L3_PDF</span><span class="p">[</span><span class="n">L2_door</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">L3_PDF</span> <span class="o">=</span> <span class="n">L3_PDF</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L3_PDF</span><span class="p">)</span>
+<span class="n">plot_distr</span><span class="p">(</span><span class="n">xnd</span><span class="p">,</span><span class="n">L3_PDF</span><span class="p">,</span><span class="s2">"The TV-master's distribution to open a door"</span><span class="p">,</span><span class="s1">'cyan'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2106/output_10_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="n">L3_CDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L3_PDF</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">L3_CDF</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">L3_PDF</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">L3_door</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">L3_CDF</span><span class="o">&gt;=</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"The TV-moderator opens door "</span><span class="p">,</span> <span class="n">L3_door</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>The TV-moderator opens door  6
+</pre></div>
+<h2>Layer 4: The strategy of the participant for the second choice</h2>
+<p>Layer 4 is the participant's perspective again. Her strategy is <strong>open to discussion</strong> too. It is the question how far she anticipates a suspected behaviour of the moderator. So we seek for a model that expresses the parciptant's aim to include the suspected behaviour and to draw some assumed information out of that.</p>
+<p>We decide to use the following <strong>model</strong>: The participant will indicate any door, but never the door that is already open :-) and never the door she has already guessed. The <strong>mathematical translation</strong> leads us to a distribution that is uniform execpt at the door that is open and at the door guessed by the participant where the values of the distribution are zero. The <strong>process</strong> is again to draw randomly a 1-element sample from this arbitrary, empirical distribution.</p>
+<div class="highlight"><pre><span></span><span class="n">L4_PDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">L1_PDF</span><span class="p">);</span> 
+<span class="n">L4_PDF</span><span class="p">[</span><span class="n">L2_door</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">L4_PDF</span><span class="p">[</span><span class="n">L3_door</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+<span class="n">L4_PDF</span> <span class="o">=</span> <span class="n">L4_PDF</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L4_PDF</span><span class="p">)</span>
+<span class="n">plot_distr</span><span class="p">(</span><span class="n">xnd</span><span class="p">,</span><span class="n">L4_PDF</span><span class="p">,</span><span class="s2">"The participant's strategy (second choice)"</span><span class="p">,</span><span class="s1">'red'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2106/output_13_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="n">L4_CDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L4_PDF</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">L4_CDF</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">L4_PDF</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">L4_door</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">L4_CDF</span><span class="o">&gt;=</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"The participant indicates door "</span><span class="p">,</span> <span class="n">L4_door</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">L1_PDF</span><span class="p">[</span><span class="n">L4_door</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+     <span class="k">print</span><span class="p">(</span><span class="s2">"...and wins the CAR !!!"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s2">"...and wins a goat"</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>The participant indicates door  2
+...and wins the CAR
+</pre></div>
+<h1>Random walk runs</h1>
+<p>Each single case and step may be imponderable, but we want to know which strategy is advantageous on the long run. That is exactely what we can do numerically with the computer: We run a long run and repeat the game with many random walks that are controlled by the distributions we have formulated.</p>
+<blockquote class="blockquote">
+<p>With the strategy, formulated by the models above, the participant on  the long run <strong>will in  66 % of the games win the prize</strong> (<em>mean=0.665599, std=0.149588</em>)</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="n">plot_run</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2106/output_16_0.png"/></p>
+<h1>Lessons to learn</h1>
+<p>We can draw some conlusions from the Monty Hall model:</p>
+<ul>
+<li>This approach <strong>links several layers</strong> of information / stakeholders / treatment effects / states of patients / etc.</li>
+<li>Each layer can be <strong>adressed seperately</strong> and specified.</li>
+<li>Each layer is accessible for</li>
+<li><strong>open discussion</strong> what the important features are</li>
+<li>formulation of an <strong>appropriate model</strong></li>
+<li>translation into a <strong>mathematical form</strong></li>
+<li>explict <strong>coding of the processes</strong> in relation to other layers</li>
+<li>evaluation of <strong>expected values and uncertainities</strong></li>
+</ul>
+<p>The approach is self-contained and works with the data that belongs to the problem under consideration (<strong>no foreign distributions</strong> from somewhere else)</p>
+<p>This approach has some features that are adressed in other model types too:</p>
+<ul>
+<li>it is of <strong>Markov</strong>-type because it is organized around <strong>states of patients</strong>, populations etc.</li>
+<li>it is of <strong>Monte Carlo</strong>-type because it's driven by an <strong>informed random process</strong>.</li>
+<li>it is of <strong>Bayesian</strong>-type because it adresses the specific <strong>perspective of each stakeholder</strong> (layer) under the precondition that the previous layer is given.</li>
+<li>it is <strong>dynamic</strong> because during the walk a layer can <strong>adapt its preferred distribution</strong> according to the prevailing circumstances</li>
+</ul>
+<h1><em>Python code</em></h1>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="kn">as</span> <span class="nn">mclr</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_distr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">title</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+            <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="s1">'k:'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Door-#'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'p'</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">random_walk</span><span class="p">(</span><span class="n">nD</span><span class="p">,</span><span class="n">nP</span><span class="p">,</span><span class="n">W</span><span class="p">):</span>
+    <span class="n">xnd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nD</span><span class="p">)</span>
+    <span class="n">L1_PDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nP</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nD</span><span class="o">-</span><span class="n">nP</span><span class="p">)]</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">L1_PDF</span><span class="p">)</span>
+    <span class="n">L1_door</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span> <span class="n">L1_PDF</span><span class="o">&gt;=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">L2_PDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">nD</span><span class="p">)</span><span class="o">/</span><span class="n">nD</span>
+    <span class="n">L2_door</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nD</span><span class="p">)</span>
+
+    <span class="n">L3_PDF</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">L1_PDF</span><span class="p">;</span> <span class="n">L3_PDF</span><span class="p">[</span><span class="n">L2_door</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">L3_PDF</span> <span class="o">=</span> <span class="n">L3_PDF</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L3_PDF</span><span class="p">)</span>
+    <span class="n">L3_CDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L3_PDF</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">L3_CDF</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">L3_PDF</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">L3_door</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">L3_CDF</span><span class="o">&gt;=</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">L4_PDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">L1_PDF</span><span class="p">);</span> 
+    <span class="n">L4_PDF</span><span class="p">[</span><span class="n">L2_door</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">L4_PDF</span><span class="p">[</span><span class="n">L3_door</span><span class="p">]</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="n">L4_PDF</span> <span class="o">=</span> <span class="n">L4_PDF</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">L4_PDF</span><span class="p">)</span>
+    <span class="n">L4_CDF</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">L4_PDF</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">L4_CDF</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">L4_PDF</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">L4_door</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">L4_CDF</span><span class="o">&gt;=</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">if</span> <span class="n">L4_door</span> <span class="o">==</span> <span class="n">L1_door</span><span class="p">:</span> <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">W</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">W</span> <span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">L1_door</span><span class="p">,</span><span class="n">L2_door</span><span class="p">,</span><span class="n">L3_door</span><span class="p">,</span> <span class="n">L4_door</span><span class="p">))</span>
+
+<span class="n">nSet</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nSet</span><span class="p">)</span>
+<span class="n">nD</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> <span class="n">nP</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">nRuns</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nSet</span><span class="p">):</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nRuns</span><span class="p">):</span>
+        <span class="n">W</span><span class="p">,</span><span class="n">P</span> <span class="o">=</span> <span class="n">random_walk</span><span class="p">(</span><span class="n">nD</span><span class="p">,</span><span class="n">nP</span><span class="p">,</span><span class="n">W</span><span class="p">)</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span> <span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">P</span> <span class="p">))</span>
+    <span class="n">S</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">W</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">W</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"mean: "</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"std : "</span><span class="p">,</span><span class="n">S</span><span class="o">.</span><span class="n">std</span><span class="p">())</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">mean</span><span class="o">:</span>  <span class="mf">0.6693</span>
+<span class="n">std</span> <span class="o">:</span>  <span class="mf">0.1488203951076599</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">kx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nRuns</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span> 
+<span class="n">dx1</span><span class="o">=</span><span class="mf">0.15</span><span class="p">;</span> <span class="n">dx2</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">dx1</span><span class="p">;</span> <span class="n">dx3</span><span class="o">=</span><span class="mi">3</span><span class="o">*</span><span class="n">dx1</span><span class="p">;</span> <span class="n">dx4</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">dx1</span><span class="p">;</span>
+<span class="n">L1</span> <span class="o">=</span> <span class="n">D</span><span class="p">[:,</span><span class="mi">0</span><span class="p">];</span> <span class="n">L2</span> <span class="o">=</span> <span class="n">D</span><span class="p">[:,</span><span class="mi">1</span><span class="p">];</span> <span class="n">L3</span> <span class="o">=</span> <span class="n">D</span><span class="p">[:,</span><span class="mi">2</span><span class="p">];</span> <span class="n">L4</span> <span class="o">=</span> <span class="n">D</span><span class="p">[:,</span><span class="mi">3</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">plot_run</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>     
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kx</span><span class="p">,</span>     <span class="n">L1</span> <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'gold'</span><span class="p">,</span>   <span class="n">s</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'L1'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kx</span><span class="o">+</span><span class="n">dx1</span><span class="p">,</span> <span class="n">L2</span> <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'magenta'</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'L2'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kx</span><span class="o">+</span><span class="n">dx2</span><span class="p">,</span> <span class="n">L3</span> <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'cyan'</span><span class="p">,</span>   <span class="n">s</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'L3'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">kx</span><span class="o">+</span><span class="n">dx3</span><span class="p">,</span> <span class="n">L4</span> <span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span>    <span class="n">s</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'L4'</span><span class="p">)</span>        
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kx</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">((</span><span class="n">k</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="n">dx1</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="n">dx2</span><span class="p">,</span><span class="n">k</span><span class="o">+</span><span class="n">dx2</span><span class="p">),(</span><span class="n">L1</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">L2</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">L3</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">L4</span><span class="p">[</span><span class="n">k</span><span class="p">]),</span><span class="n">ls</span><span class="o">=</span><span class="s1">'-'</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Probability driven Random Walk through possible states'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'best'</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/solving-the-monti-hall-problem-with-python.html';
+    this.page.identifier = 'solving-the-monti-hall-problem-with-python';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

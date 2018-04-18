@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/solving-the-monti-hall-problem-with-python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/why-to-use-distribution-vectors.html</loc>
     <priority>0.8</priority>
   </url>
@@ -17,15 +21,15 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://alpynepyano.github.io/healthyNumerics/posts/sampling_arbitrary_distributions_with_python.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/cost-healthcaresystem-usa-switzerland.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/swiss-population-dynamics-01.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/sampling_arbitrary_distributions_with_python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
