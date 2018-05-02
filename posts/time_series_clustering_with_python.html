@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>MachineLearning: How to analyze longitudinal studies with time series clustering | HealthyNumerics
+</title>
+  <link rel="canonical" href="http://localhost:8000/posts/time_series_clustering_with_python.html">
+
+
+  <link rel="apple-touch-icon" href="http://localhost:8000/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="http://localhost:8000/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="http://localhost:8000/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="http://localhost:8000/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="http://localhost:8000/theme/css/style.css">
+ 
+
+<meta name="description" content="With the increasing possibilities to gather longitudinal data, there is an interest in mining profiles in form of time series data. The key question is how to figure out and to group similarities and dissimilarities between the profiles.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(http://localhost:8000/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(http://localhost:8000/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="http://localhost:8000/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="http://localhost:8000">
+            <img class="img-fluid" src=http://localhost:8000/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="http://localhost:8000">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="http://localhost:8000/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="http://localhost:8000/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="http://localhost:8000/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="http://localhost:8000/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>MachineLearning: How to analyze longitudinal studies with time series clustering
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-04-22T10:15:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        So. 22 April 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="http://localhost:8000/category/metaanalysis.html">MetaAnalysis</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="http://localhost:8000/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="http://localhost:8000/tag/numerical.html">#numerical</a>,         <a href="http://localhost:8000/tag/statistics.html">#statistics</a>,         <a href="http://localhost:8000/tag/machine-learning.html">#machine learning</a>,         <a href="http://localhost:8000/tag/python.html">#python</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>With the increasing possibilities to gather longitudinal data, there is an interest in mining profiles in form of time series data. The key question is how to figure out and to group similarities and dissimilarities between the profiles.
+Common approaches include segmentation, indexing, clustering, classification, anomaly detection, rule discovery, and summarization. </p>
+<h3>Hierarchical clustering</h3>
+<p>One of the most widely used clustering approaches is hierarchical clustering. It produces a nested hierarchy of similar groups of objects, according to a pairwise distance matrix of the objects.  One of the advantages of this method is its generality, since the user does not need to provide any parameters such as the number of clusters.</p>
+<h3>Time series clustering</h3>
+<p>The notion of clustering here is similar to that of conventional clustering of discrete objects:  Given a set of individual time series data, the objective is to group similar time series into the same cluster.</p>
+<h3>The features of the method</h3>
+<p>We present here the <em>Whole Clustering</em>: A profile (= time series) can be interpreted as a local vector in space which has as many dimensions as the time series entries has. Since a local vector indicates a point in space, we assume two points to be similar if the distance between them is small. This raises two questions:</p>
+<h4>1. What is the appropriate distance model ?</h4>
+<p>This again is a <strong>medical matter</strong> to be discussed, that can be translated into a mathematical form. Of course there are quite a few propositions (euclidean, Manhatten, correlation, scalar product....) but the choice is not a mathematical matter of its own.</p>
+<h4>2. How near is near enough?</h4>
+<p>The cluster analysis has two end points. One end point is, that all profils are in one and the same cluster. And the other is that each profil is its own cluster. It's heuristic task to select a clustering level as a final result that is usefull to work with.</p>
+<p>The Euclidean distance performs in a wide range of applications as a successful tool. </p>
+<h1>Generating Data</h1>
+<p>As input we generate 6 basic patterns and for each of them 10 time series.</p>
+<p>For the basic patterns a damped sin-wave is used with a superposed linear trend. The basic patterns may differ in amplitude, frequancy, phase, slope. The 10 times series of each of them are generated by adding some random noise.</p>
+<div class="highlight"><pre><span></span><span class="c1">#---- number of time series</span>
+<span class="n">nT</span> <span class="o">=</span> <span class="mi">101</span>  <span class="c1"># number of observational point in a time series</span>
+<span class="n">nC</span> <span class="o">=</span> <span class="mi">6</span>    <span class="c1"># number of charakteristic  signal groups</span>
+<span class="n">mG</span> <span class="o">=</span> <span class="mi">10</span>   <span class="c1"># number of time series in a charakteristic signal group</span>
+
+<span class="c1">#---- control parameters for data generation</span>
+<span class="n">Am</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">;</span> <span class="c1"># amplitude of the signal</span>
+<span class="n">sg</span> <span class="o">=</span> <span class="mf">0.3</span>  <span class="c1"># rel. weight of the slope</span>
+<span class="n">eg</span> <span class="o">=</span> <span class="mf">0.02</span> <span class="c1"># rel. weight of the damping</span>
+
+<span class="c1">#---- generate the data</span>
+<span class="n">basicSeries</span><span class="p">,</span><span class="n">timeSeries</span> <span class="o">=</span> <span class="n">generate_data</span><span class="p">(</span><span class="n">nT</span><span class="p">,</span><span class="n">nC</span><span class="p">,</span><span class="n">mG</span><span class="p">,</span><span class="n">Am</span><span class="p">,</span><span class="n">sg</span><span class="p">,</span><span class="n">eg</span><span class="p">)</span>
+<span class="n">plot_basicSeries</span><span class="p">(</span><span class="n">basicSeries</span><span class="p">)</span>
+<span class="n">plot_timeSeries</span><span class="p">(</span><span class="n">timeSeries</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_3_0.png"/></p>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_3_1.png"/></p>
+<h2>Run the clustering and evaluate the dendogram</h2>
+<h3>Example 1: Spearman correlation as distance metric</h3>
+<p>In this example we use the Spearman correlation as distance metric. We get a well balanced dendogram as a result. The dendogram should be read from top to down. It delivers a series of suggestions how the time series can be clusterd, indicated by the vertical lines. E.g.:</p>
+<ul>
+<li>with distance 0.6 we get 2 clusters</li>
+<li>with distance 0.3 we get 4 clusters</li>
+<li>with distance 0.15 we get 6 clusters</li>
+<li>at the bottom with distance 0 each time series is its own cluster</li>
+</ul>
+<p>We evaluate the dendogram with 6 clusters. In the graphics below we can recognize the time series are properly separated and assigned to coherent clusters.</p>
+<div class="highlight"><pre><span></span><span class="c1">#--- Here we use spearman correlation as distance metric</span>
+<span class="k">def</span> <span class="nf">myMetric</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">r</span> 
+
+<span class="c1">#--- run the clustering    </span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">hac</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">timeSeries</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'single'</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">myMetric</span><span class="p">)</span>
+<span class="n">plot_dendogram</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+
+<span class="c1">#---- evaluate the dendogram</span>
+<span class="n">cut_off_level</span> <span class="o">=</span> <span class="mi">6</span>   <span class="c1"># level where to cut off the dendogram</span>
+<span class="n">plot_results</span><span class="p">(</span><span class="n">timeSeries</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">cut_off_level</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_5_0.png"/></p>
+<div class="highlight"><pre><span></span>0 Cluster number 3 has 10 elements
+1 Cluster number 2 has 10 elements
+2 Cluster number 1 has 10 elements
+3 Cluster number 4 has 10 elements
+4 Cluster number 6 has 10 elements
+5 Cluster number 5 has 10 elements
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_5_2.png"/></p>
+<h3>Example 2: Euclidean distance as metric</h3>
+<p>With the <strong>same data</strong> as in example 1 we use now the Euclidean distance as metric. The dendogram is now less balanced and we have some difficulties to chose meaningful clusters.</p>
+<div class="highlight"><pre><span></span><span class="c1">#--- run the clustering</span>
+<span class="c1">#D = hac.linkage(timeSeries, method='single', metric='correlation')</span>
+<span class="n">D</span> <span class="o">=</span> <span class="n">hac</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">timeSeries</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'single'</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">'euclidean'</span><span class="p">)</span>
+<span class="n">plot_dendogram</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+
+<span class="c1">#---- evaluate the dendogram</span>
+<span class="n">cut_off_level</span> <span class="o">=</span> <span class="mi">6</span>   <span class="c1"># level where to cut off the dendogram</span>
+<span class="n">plot_results</span><span class="p">(</span><span class="n">timeSeries</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">cut_off_level</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_7_0.png"/></p>
+<div class="highlight"><pre><span></span>0 Cluster number 1 has 30 elements
+1 Cluster number 2 has 10 elements
+2 Cluster number 5 has 1 elements
+3 Cluster number 3 has 9 elements
+4 Cluster number 4 has 9 elements
+5 Cluster number 6 has 1 elements
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_7_2.png"/></p>
+<p>If we want to decide what kind of correlation to apply or to use <strong>another distance metric</strong>, then we can provide a <strong>custom metric</strong> function:</p>
+<h1>The basics of cluster analysis</h1>
+<p>Cluster analysis (or clustering) is the task of grouping a set of objects in such a way that objects in the same group - called a cluster - are in some sense similar.
+Cluster analysis is a general task to be solved and not a specific algorithm. It can be achieved by various algorithms that differ significantly in their notion of what constitutes a cluster and how to efficiently find them.</p>
+<p>We set up a very simple collection of objects:
+</p>
+<div class="math">$$
+X = [[0], [1], [2], [3], [4], [5], [6], [7]]
+$$</div>
+<p>We can see that different algorithms generate different suggestions about the clusters:</p>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]]</span>
+<span class="n">plot_basic_cluster</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_10_0.png"/></p>
+<p><img alt="png" class="img-fluid" src="http://localhost:8000/posts/img6100/output_10_1.png"/></p>
+<h1><em>Python code</em></h1>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="kn">as</span> <span class="nn">hac</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.gridspec</span> <span class="kn">as</span> <span class="nn">gridspec</span>
+
+<span class="k">def</span> <span class="nf">generate_data</span><span class="p">(</span><span class="n">nT</span><span class="p">,</span><span class="n">nC</span><span class="p">,</span><span class="n">mG</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="n">sg</span><span class="p">,</span><span class="n">eg</span><span class="p">):</span>
+    <span class="n">timeSeries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">basicSeries</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="err">β</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span>
+    <span class="err">ω</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">nT</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">nT</span><span class="p">,</span><span class="n">nT</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ic</span><span class="p">,</span><span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">nC</span><span class="p">)):</span>
+        <span class="n">slope</span> <span class="o">=</span> <span class="n">sg</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">nC</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">A</span> <span class="o">*</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="o">**</span><span class="n">c</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t</span><span class="o">*</span><span class="n">eg</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="o">*</span><span class="err">ω</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span><span class="o">*</span><span class="err">β</span><span class="p">)</span> <span class="o">+</span> <span class="n">t</span><span class="o">*</span><span class="err">ω</span><span class="o">*</span><span class="n">slope</span> 
+        <span class="n">basicSeries</span><span class="p">[</span><span class="n">ic</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">mG</span><span class="p">),</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">sr</span> <span class="o">=</span> <span class="n">sr</span> <span class="o">+</span> <span class="mi">1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">mG</span><span class="p">,</span><span class="n">nT</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">mG</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">timeSeries</span> <span class="o">=</span> <span class="n">timeSeries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">sr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">basicSeries</span><span class="p">,</span> <span class="n">timeSeries</span>
+
+<span class="k">def</span> <span class="nf">plot_basicSeries</span><span class="p">(</span><span class="n">basicSeries</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span>      <span class="c1"># 'fivethirtyeight'      </span>
+         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span> <span class="p">;</span>       
+         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Basice patterns to generate Longitudinal data'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Signal of the observed feature'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">basicSeries</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.8</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">plot_timeSeries</span><span class="p">(</span><span class="n">timeSeries</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span>      <span class="c1"># 'fivethirtyeight'      </span>
+         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span> <span class="p">;</span>       
+         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Longitudinal data'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Time'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Signal of the observed feature'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">timeSeries</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+         <span class="c1">#ax1 = sns.tsplot(ax=ax1, data=timeSeries.values, ci=[68, 95])</span>
+
+<span class="k">def</span> <span class="nf">plot_dendogram</span><span class="p">(</span><span class="n">Z</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span> <span class="p">):</span> 
+         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Dendrogram of time series clustering'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'sample index'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'distance'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+         <span class="n">hac</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span> <span class="n">Z</span><span class="p">,</span> <span class="n">leaf_rotation</span><span class="o">=</span><span class="mf">90.</span><span class="p">,</span>    <span class="c1"># rotates the x axis labels</span>
+                            <span class="n">leaf_font_size</span><span class="o">=</span><span class="mf">15.</span><span class="p">,</span> <span class="p">)</span> <span class="c1"># font size for the x axis labels</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">plot_results</span><span class="p">(</span><span class="n">timeSeries</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">cut_off_level</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">hac</span><span class="o">.</span><span class="n">fcluster</span><span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">cut_off_level</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">'maxclust'</span><span class="p">))</span>
+    <span class="n">clusters</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>       
+    <span class="n">figX</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="n">figY</span> <span class="o">=</span> <span class="mi">15</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figX</span><span class="p">,</span> <span class="n">figY</span><span class="p">))</span>   
+    <span class="n">mimg</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">cut_off_level</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span>
+    <span class="n">gs</span> <span class="o">=</span> <span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">mimg</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">width_ratios</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>   
+    <span class="k">for</span> <span class="n">ipic</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">clusters</span><span class="p">):</span>
+        <span class="n">cluster_index</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="o">==</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">ipic</span><span class="p">,</span> <span class="s2">"Cluster number </span><span class="si">%d</span><span class="s2"> has </span><span class="si">%d</span><span class="s2"> elements"</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_index</span><span class="p">)))</span>
+        <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="n">ipic</span><span class="p">])</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">timeSeries</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">cluster_index</span><span class="p">])</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">((</span><span class="s1">'Cluster number '</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>      
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">plot_basic_cluster</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span> <span class="p">):</span> 
+         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+         <span class="n">D1</span> <span class="o">=</span> <span class="n">hac</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'ward'</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">'euclidean'</span><span class="p">)</span>
+         <span class="n">dn1</span><span class="o">=</span> <span class="n">hac</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">D1</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Clustering: method='ward', metric='euclidean'"</span><span class="p">)</span>
+
+         <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+         <span class="n">D2</span> <span class="o">=</span> <span class="n">hac</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'single'</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">'euclidean'</span><span class="p">)</span>
+         <span class="n">dn2</span><span class="o">=</span> <span class="n">hac</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">D2</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Clustering: method='single', metric='euclidean'"</span><span class="p">)</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'http://localhost:8000/posts/time_series_clustering_with_python.html';
+    this.page.identifier = 'time_series_clustering_with_python';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="http://localhost:8000/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="http://localhost:8000/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="http://localhost:8000/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="http://localhost:8000/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
