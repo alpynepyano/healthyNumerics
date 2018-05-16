@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>NumericalStats: What the Metropolis Markov Chain Monte Carlo sampler is good for | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/Metropolis-Hasting-with-python.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="We use the Metropolis-Hasting algorithm to sample a 2-dimensional empirical distribution.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>NumericalStats: What the Metropolis Markov Chain Monte Carlo sampler is good for
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-05-19T17:45:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Sa. 19 Mai 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/metaanalysis.html">MetaAnalysis</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/numerical.html">#numerical</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/statistics.html">#statistics</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#python</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/bayesian.html">#bayesian</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <h3>The Task</h3>
+<p>We want to have a number of samples that follow a certain distribution, which means that we want to have at the end more samples in the region where the density of the PDF (probability density function) is high and less samples in the regions with lower density.</p>
+<p>In the following example our samples <span class="math">\(\mathbf{x}\)</span> will just be the geometrical (x,y)-coordinates in the plane. In an application however a sample <span class="math">\(\mathbf{x}\)</span> might be a multidimensional vector assembling some features as e.g.</p>
+<div class="math">$$
+\mathbf{x} = \left[\begin{matrix} sex,\; age,\;  BMI,\;  blood\;  pressure\; status,\;  treatment\; group\;  \end{matrix}\right]^T
+$$</div>
+<h3>What does the Metropolis sampler ?</h3>
+<p>In the 2-dimensional case the sampler returns a list with the (x,y)-coordinates of the samples. As an imput it uses an arbitrary PDF. In  <a href="sampling_arbitrary_distributions_with_python.html">a previous example</a>  we have built a CDF (cumulative distribution function) first. But the Metropolis sampler uses the PDF without building a CDF.</p>
+<p>There are many different <strong>Markov Chain Monte Carlo</strong>-type samplers. Historically Metropolis was the first, Metropolis-Hastings a later improvement, Gibbs sampler and more.</p>
+<h3>What does the Markov Chain part ?</h3>
+<p>The MCMC sampler searches the samples systematically. Given a sampling point then the MCMC sampler moves to the next sampling point if this represents a higher probability. This asserts a walk in direction of the region with high probability densitiy.</p>
+<p>So beeing at a certain sampling point, the transition probability to the next sampling point is given. That's the Markov aspect of the walk. Note that a Markov matrix with the transition probabilities is not built explicitly. The algorithm applies the principle locally and so the result is a Markov chain, which means a chain of <span class="math">\(\mathbf{x}\)</span>-positions.</p>
+<h3>What is the Monte Carlo random noise good for ?</h3>
+<p>A pure Markov walk faces a series of problems.</p>
+<ol>
+<li>imagine the PDF to be a mountain with a distinctive peak. How to continue the walk when the order is strictely: "Move to the top!" ?</li>
+<li>imagine the PDF to be two islands in a flat sea of zeros. In which direction is the walk to be continued in a slope-less zero-plane ?</li>
+<li>imagine you choose randomly a starting point and follow the continuos and monotonic Markov path. What would be the path from a different starting point a little bit apart ?</li>
+</ol>
+<p>Of course each of these points is adressed by theory stating that the Markov part should be somehow well-behaved, e.g. :</p>
+<ol>
+<li>The  imaginary Markov matrix must not lead to an oscillatory behaviour of the chain.</li>
+<li>The imaginary Markov matrix should be fully occupied in an order that each point of the space can be reached.</li>
+</ol>
+<p>The Monte Carlo part helps to circumvent the faced problems. The Markov Chain part should give a usefull tendency but not too strictely. So Markov Chain and Monte Carlo are something like <strong>Ying and Yang</strong>.</p>
+<h1>The cases</h1>
+<p>With the <strong>Metropolis-Hasting</strong> algorithm we sample first and reconstruct then the following two examples of 2-dimensional PDF :</p>
+<div class="highlight"><pre><span></span><span class="c1">#--- create the grid ---------------------------</span>
+<span class="n">mx</span> <span class="o">=</span> <span class="mi">70</span><span class="p">;</span> <span class="n">Dx</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span> <span class="n">xm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">Dx</span><span class="p">,</span><span class="n">Dx</span><span class="p">,</span><span class="n">mx</span><span class="p">)</span>
+<span class="n">my</span> <span class="o">=</span> <span class="n">mx</span><span class="p">;</span> <span class="n">Dy</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span> <span class="n">ym</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">Dy</span><span class="p">,</span><span class="n">Dy</span><span class="p">,</span><span class="n">my</span><span class="p">)</span>
+<span class="n">Xm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">xm</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">ym</span><span class="p">))</span>  
+<span class="n">Ym</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xm</span><span class="p">),</span><span class="n">ym</span><span class="p">)</span>
+<span class="c1">#--- plot the cases -----------------------------</span>
+<span class="n">case</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">rv1</span><span class="p">,</span><span class="n">rv2</span> <span class="o">=</span> <span class="n">q_setup</span><span class="p">(</span><span class="n">case</span><span class="p">);</span> <span class="n">rvPDF1</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">Xm</span><span class="p">,</span><span class="n">Ym</span><span class="p">)</span>
+<span class="n">case</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="n">rv1</span><span class="p">,</span><span class="n">rv2</span> <span class="o">=</span> <span class="n">q_setup</span><span class="p">(</span><span class="n">case</span><span class="p">);</span> <span class="n">rvPDF2</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">Xm</span><span class="p">,</span><span class="n">Ym</span><span class="p">)</span>
+<span class="n">plot_grafics_X</span><span class="p">(</span><span class="n">Xm</span><span class="p">,</span><span class="n">Ym</span><span class="p">,</span><span class="n">rvPDF1</span><span class="p">,</span><span class="n">rvPDF2</span><span class="p">,</span><span class="mi">8</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2107/output_3_0.png"/></p>
+<h1>Case 1</h1>
+<p>The given PDF (isolines) seems to cover a connected area. The graphics on the left side shows the samples (red dots) chosen by the Mtreopolis-Hasting algorithm. For easier visual interpretation the run contains only a few number of samples (~<span class="math">\(10^4\)</span>). By visual inspection we can see that the samples cover fairly the regions of the PDF.</p>
+<p>The graphics on the right side shows the <strong>reconstruction</strong> of the PDF (isolines) based on the samples. For the reconstruction with prepare a grid of control volumes. A control volumne acts as a counter: Each time when a sample is in the control volume it counts this event. This gives the distribution of the frequency. To get a reliable reconstruction of the PDF the run needs a large number of samples (~<span class="math">\(10^6\)</span>). </p>
+<div class="highlight"><pre><span></span><span class="c1">#===== run case 1 =========================</span>
+<span class="c1">#----- setup the target distribution ------</span>
+<span class="n">case</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">rv1</span><span class="p">,</span><span class="n">rv2</span> <span class="o">=</span> <span class="n">q_setup</span><span class="p">(</span><span class="n">case</span><span class="p">)</span>
+
+<span class="c1">#----- run the sampling with Metropolis-Hastings ------</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">12000</span><span class="p">;</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>  <span class="n">case</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>  <span class="n">Ns</span> <span class="o">=</span> <span class="n">N</span><span class="o">/</span><span class="n">s</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">MetropolisHastings</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">s</span><span class="p">))</span>
+
+<span class="c1">#---- reconstruct the distribution from the samples</span>
+<span class="n">Xc</span><span class="p">,</span><span class="n">Yc</span><span class="p">,</span><span class="n">Zdistr</span><span class="p">,</span><span class="n">counts</span><span class="p">,</span><span class="n">sam1</span> <span class="o">=</span> <span class="n">reconstruct</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">plot_grafics</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span><span class="n">Yc</span><span class="p">,</span><span class="n">Zdistr</span><span class="p">,</span><span class="n">counts</span><span class="p">,</span><span class="n">sam1</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2107/output_5_0.png"/></p>
+<h1>Case 2</h1>
+<p>In case 2 the regions of the different parts of the probability distribution are hardly connected. We have now the situation with two probability islands in the sea of zeros. The theoretical requirement, that the  Markov Chain must be able to reach any point, is not fullfilled (because of too many zeros in the imaginary Markov matrix).</p>
+<p>When experimenting with the sampling procedure we realize that we need now more samples (~<span class="math">\(10^5\)</span>) than in case 1. Otherwise only one part (one island) of the PDF might be sampeld.</p>
+<p>Despite unfavorable and rule breaking conditions, the algorithm is able to sample both important areas of the PDF. This is due to the power of the Monte Carlo part.</p>
+<div class="highlight"><pre><span></span><span class="c1">#===== run case 2 =========================</span>
+<span class="c1">#----- setup the target distribution ------</span>
+<span class="n">case</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">rv1</span><span class="p">,</span><span class="n">rv2</span> <span class="o">=</span> <span class="n">q_setup</span><span class="p">(</span><span class="n">case</span><span class="p">)</span>
+
+<span class="c1">#----- run the sampling with Metropolis-Hastings ------</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">200000</span><span class="p">;</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>  <span class="n">case</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>  <span class="n">Ns</span> <span class="o">=</span> <span class="n">N</span><span class="o">/</span><span class="n">s</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">MetropolisHastings</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">s</span><span class="p">))</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#---- reconstruct the distribution from the samples</span>
+<span class="n">Xc</span><span class="p">,</span><span class="n">Yc</span><span class="p">,</span><span class="n">Zdistr</span><span class="p">,</span><span class="n">counts</span><span class="p">,</span><span class="n">sam1</span> <span class="o">=</span> <span class="n">reconstruct</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+<span class="n">plot_grafics</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span><span class="n">Yc</span><span class="p">,</span><span class="n">Zdistr</span><span class="p">,</span><span class="n">counts</span><span class="p">,</span><span class="n">sam1</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img2107/output_8_0.png"/></p>
+<h1>The sampling algorithm</h1>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="kn">as</span> <span class="nn">cm</span>
+<span class="kn">import</span> <span class="nn">matplotlib.mlab</span> <span class="kn">as</span> <span class="nn">mlab</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">AR</span><span class="p">(</span><span class="n">w</span><span class="p">):</span> <span class="k">return</span> <span class="n">w</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># a little hack to transform a float into a (1,1)-matrix</span>
+
+<span class="k">def</span> <span class="nf">q_setup</span><span class="p">(</span><span class="n">case</span><span class="p">):</span>                 <span class="c1"># prepare the PDF as input parameter</span>
+    <span class="k">if</span> <span class="n">case</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">muXa</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span> <span class="n">muYa</span><span class="o">=</span> <span class="mf">2.5</span><span class="p">;</span> <span class="n">varXXa</span><span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">varYYa</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">varXYa</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">varYXa</span><span class="o">=</span> <span class="mi">1</span>
+        <span class="n">muXb</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">muYb</span><span class="o">=-</span><span class="mf">2.5</span><span class="p">;</span> <span class="n">varXXb</span><span class="o">=</span><span class="mi">15</span><span class="p">;</span> <span class="n">varYYb</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="n">varXYb</span><span class="o">=-</span><span class="mi">0</span><span class="p">;</span> <span class="n">varYXb</span><span class="o">=-</span><span class="mi">3</span> 
+    <span class="k">if</span> <span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">muXa</span><span class="o">=-</span><span class="mi">2</span><span class="p">;</span> <span class="n">muYa</span><span class="o">=</span> <span class="mf">5.5</span><span class="p">;</span> <span class="n">varXXa</span><span class="o">=</span> <span class="mi">5</span><span class="p">;</span> <span class="n">varYYa</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="n">varXYa</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">varYXa</span><span class="o">=</span> <span class="mi">1</span>
+        <span class="n">muXb</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">muYb</span><span class="o">=-</span><span class="mf">5.5</span><span class="p">;</span> <span class="n">varXXb</span><span class="o">=</span><span class="mi">15</span><span class="p">;</span> <span class="n">varYYb</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span> <span class="n">varXYb</span><span class="o">=-</span><span class="mi">0</span><span class="p">;</span> <span class="n">varYXb</span><span class="o">=-</span><span class="mi">3</span>  
+    <span class="n">rv1</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">([</span><span class="n">muXa</span><span class="p">,</span><span class="n">muYa</span><span class="p">],[[</span><span class="n">varXXa</span><span class="p">,</span><span class="n">varXYa</span><span class="p">],[</span><span class="n">varYXa</span><span class="p">,</span><span class="n">varYYa</span><span class="p">]])</span>
+    <span class="n">rv2</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">([</span><span class="n">muXb</span><span class="p">,</span><span class="n">muYb</span><span class="p">],[[</span><span class="n">varXXb</span><span class="p">,</span><span class="n">varXYb</span><span class="p">],[</span><span class="n">varYXb</span><span class="p">,</span><span class="n">varYYb</span><span class="p">]])</span>
+    <span class="k">return</span> <span class="n">rv1</span><span class="p">,</span> <span class="n">rv2</span>  
+
+<span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">):</span>                         <span class="c1"># picking from the PDF in operational use</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="p">,))</span>
+    <span class="n">pos</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">;</span>  <span class="n">pos</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Y</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.30</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">rv1</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">rv2</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span> 
+
+<span class="k">def</span> <span class="nf">MetropolisHastings</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>           <span class="c1"># 2 random numbers</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">AR</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">AR</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="c1"># a value out of the distribution  </span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="p">[]</span>              <span class="c1"># initialize an empty list    </span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">rn</span> <span class="o">=</span> <span class="n">r</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">pn</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">AR</span><span class="p">(</span><span class="n">rn</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">AR</span><span class="p">(</span><span class="n">rn</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="n">pn</span> <span class="o">&gt;=</span> <span class="n">p</span><span class="p">:</span>    <span class="c1"># if the new point has higher probability....</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">pn</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">rn</span>     <span class="c1">#... then take the new point</span>
+        <span class="k">else</span><span class="p">:</span>                    <span class="c1"># else</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="c1"># take randomly the</span>
+            <span class="k">if</span> <span class="n">u</span> <span class="o">&lt;</span> <span class="n">pn</span><span class="o">/</span><span class="n">p</span><span class="p">:</span>         <span class="c1"># new point sometimes</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">pn</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">rn</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c1"># but add only each (s-th)-sample to the list</span>
+            <span class="n">samples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>    <span class="c1"># choose this (x,y)-pair</span>
+    <span class="k">return</span> <span class="n">samples</span>
+</pre></div>
+<h1>Reconstruction</h1>
+<h3>Prepare the observational grid and count the events</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reconstruct</span> <span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+    <span class="n">sam1</span> <span class="o">=</span> <span class="n">samples</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1">#----- for reconstruction re-run the sampling with large N -----</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">MetropolisHastings</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">s</span><span class="p">))</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[:,</span><span class="mi">0</span><span class="p">];</span> <span class="n">yp</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[:,</span><span class="mi">1</span><span class="p">];</span> <span class="n">zp</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">xp</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span><span class="n">yp</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]);</span> 
+
+    <span class="c1">#---- set up the observational grid ------------------</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="mi">50</span><span class="p">;</span> <span class="n">ny</span> <span class="o">=</span> <span class="n">nx</span>
+    <span class="n">xc0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xp</span><span class="p">);</span>  <span class="n">xc1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xp</span><span class="p">);</span> 
+    <span class="n">yc0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">yp</span><span class="p">);</span>  <span class="n">yc1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">yp</span><span class="p">);</span>
+    <span class="n">xc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xc0</span><span class="p">,</span><span class="n">xc1</span><span class="p">,</span><span class="n">nx</span><span class="p">)</span>
+    <span class="n">yc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">yc0</span><span class="p">,</span><span class="n">yc1</span><span class="p">,</span><span class="n">ny</span><span class="p">)</span>
+    <span class="n">Xc</span><span class="p">,</span><span class="n">Yc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span><span class="n">yc</span><span class="p">)</span>  
+
+    <span class="c1">#----- count the events -------------------------------</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Xc</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">ip</span><span class="p">,</span><span class="n">xv</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xp</span><span class="p">):</span>
+        <span class="n">jx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">xc</span><span class="o">&gt;=</span><span class="n">xp</span><span class="p">[</span><span class="n">ip</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">jy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">yc</span><span class="o">&gt;=</span><span class="n">yp</span><span class="p">[</span><span class="n">ip</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">jx</span><span class="p">,</span><span class="n">jy</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">counts</span><span class="o">/</span><span class="n">Ns</span>    <span class="c1"># build the relative frequency   </span>
+    <span class="k">return</span> <span class="n">Xc</span><span class="p">,</span><span class="n">Yc</span><span class="p">,</span><span class="n">Zdistr</span><span class="p">,</span><span class="n">counts</span><span class="p">,</span><span class="n">sam1</span>
+
+    <span class="c1">#----- in order to plot the target distribution -----</span>
+    <span class="n">Zdistr</span> <span class="o">=</span> <span class="n">q</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span> <span class="n">Yc</span><span class="p">)</span>
+</pre></div>
+<h3><em>Grafics</em></h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_grafics</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span><span class="n">Yc</span><span class="p">,</span><span class="n">Zdistr</span><span class="p">,</span><span class="n">counts</span><span class="p">,</span><span class="n">sam1</span><span class="p">):</span>
+    <span class="n">Cc</span> <span class="o">=</span> <span class="n">counts</span>
+    <span class="n">Cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flipud</span><span class="p">(</span><span class="n">counts</span><span class="p">);</span> <span class="n">Cc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rot90</span><span class="p">(</span><span class="n">Cc</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span><span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+        <span class="n">CS</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span> <span class="n">Yc</span><span class="p">,</span> <span class="n">Zdistr</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sam1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sam1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Samples (dots) according to the distribution'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+
+        <span class="n">CS</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">Xc</span><span class="p">,</span> <span class="n">Yc</span><span class="p">,</span> <span class="n">Cc</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">sam1</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sam1</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'r'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Reconstructing the distribution from the samples'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_grafics_X</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z1</span><span class="p">,</span><span class="n">Z2</span><span class="p">,</span><span class="n">nL</span><span class="p">):</span>
+    <span class="c1">#--- draw disribution -------</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+        <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span><span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+
+        <span class="n">CS</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z1</span><span class="p">,</span><span class="n">nL</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'pdf: Case 1'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+
+        <span class="n">CS</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">Z2</span><span class="p">,</span><span class="n">nL</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">CS</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'pdf: Case 2'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/Metropolis-Hasting-with-python.html';
+    this.page.identifier = 'Metropolis-Hasting-with-python';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
