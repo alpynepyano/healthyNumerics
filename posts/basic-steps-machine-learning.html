@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>MachineLearning: run through the basic steps | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/basic-steps-machine-learning.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="We go through the basic steps of machine learning using the most elementary models, linear and logistic regression namely. This gives a first outlook on the machine learning proces.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>MachineLearning: run through the basic steps
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-09-25T21:15:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        Di. 25 September 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/machinelearning.html">MachineLearning</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/machine-learning.html">#machine learning</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sklearn</span> <span class="kn">as</span> <span class="nn">sl</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="kn">as</span> <span class="nn">mclr</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="kn">import</span> <span class="n">Circle</span><span class="p">,</span> <span class="n">Rectangle</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">Arrow</span><span class="p">,</span> <span class="n">FancyArrow</span>
+</pre></div>
+<p><strong>The target of artificial intelligence and of machine learning is to identify or to label situations and objects given some indicators or features.</strong>  The predictive model can have</p>
+<ul>
+<li>a number of m features as input</li>
+<li>a number of n labels or target values or classes as output</li>
+</ul>
+<p>The output is valid upon a certain probability only. So cross-validation and the knowledge of the degree of uncertainity are important aspects in machine learning.</p>
+<div class="highlight"><pre><span></span><span class="n">flowchart_1</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6101/output_3_0.png"/></p>
+<h3>Models used</h3>
+<p>In this post we will use two models</p>
+<ul>
+<li>linear regression and</li>
+<li>logistic regression, which is a classifier</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">linear</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+<span class="n">logist</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span><span class="p">()</span>
+</pre></div>
+<h1>Linear Regression</h1>
+<h3>Generate data set</h3>
+<p>It's important to use always to seperated data sets of the same entity:
+- a <strong>trainig data</strong> set is used to train and to adapt the model. The output will be a set of model parameters
+- a <strong>test data</strong> set in order to test how good the model's predictibility is</p>
+<div class="highlight"><pre><span></span><span class="n">NT</span> <span class="o">=</span> <span class="mi">25</span>
+<span class="n">xtrain</span><span class="p">,</span><span class="n">ytrain</span> <span class="o">=</span> <span class="n">generate_data_1D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span><span class="n">case</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">xtest</span><span class="p">,</span><span class="n">ytest</span> <span class="o">=</span> <span class="n">generate_data_1D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span><span class="n">case</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># plot_gr01(xtrain,ytrain,'xAxis','yAxis','training data')</span>
+<span class="c1"># plot_gr01(xtest,ytest,'xAxis','yAxis','test data')</span>
+</pre></div>
+<h3>Training</h3>
+<p>We run the adapting of the model with the <a href="https://scikit-learn.org/stable/index.html#">scikit-learn</a>-library</p>
+<div class="highlight"><pre><span></span><span class="c1">#--- train the model with the training data set and check the score</span>
+<span class="n">linear</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">);</span>
+</pre></div>
+<h3>Testing</h3>
+<p>Since the model is known now, we use the test data set to evaluate it's performance, which is usuallay lower than when the test is done with the training data.</p>
+<div class="highlight"><pre><span></span><span class="c1">#--- use the test data set and check the score with the model</span>
+<span class="n">score_training</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<span class="n">score_testing</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">xtest</span><span class="p">,</span> <span class="n">ytest</span><span class="p">)</span>
+
+<span class="c1">#--- display the model parameters</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Linear Regression: resulting model parameters of training ----'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Coefficient  :  '</span><span class="p">,</span> <span class="n">linear</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Intercept     : '</span><span class="p">,</span> <span class="n">linear</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Test vs Training: check the score: ----'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Training Score        : '</span><span class="p">,</span> <span class="n">score_training</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Testing Score         : '</span><span class="p">,</span> <span class="n">score_testing</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'sTest-sTrain          : '</span><span class="p">,</span> <span class="n">score_testing</span><span class="o">-</span><span class="n">score_training</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'(sTest-sTrain)/sTrain : '</span><span class="p">,</span> <span class="p">(</span><span class="n">score_testing</span><span class="o">-</span><span class="n">score_training</span><span class="p">)</span><span class="o">/</span><span class="n">score_training</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="c1">#--- predict y by the model</span>
+<span class="n">y_pred_train</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtrain</span><span class="p">)</span>
+<span class="n">y_pred_test</span> <span class="o">=</span> <span class="n">linear</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
+<span class="n">plot_gr02</span><span class="p">(</span><span class="n">xtest</span><span class="p">,</span><span class="n">ytest</span><span class="p">,</span><span class="n">xtest</span><span class="p">,</span><span class="n">y_pred_test</span><span class="p">,</span><span class="s1">'xAxis'</span><span class="p">,</span><span class="s1">'yAxis'</span><span class="p">,</span><span class="s1">'y predicted by the model'</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>---- Linear Regression: resulting model parameters of training ----
+Coefficient  :   [[0.30554815]]
+Intercept     :  [0.35924642]
+
+---- Test vs Training: check the score: ----
+Training Score        :  0.468824081497367
+Testing Score         :  0.6325095570532999
+sTest-sTrain          :  0.16368547555593294
+(sTest-sTrain)/sTrain :  0.34914050283667486
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6101/output_11_1.png"/></p>
+<h1>Logistic regression with 1 feature</h1>
+<p>Don’t get confused by its name! It is a classification not a regression algorithm. It is used to estimate discrete values ( Binary values like 0/1, yes/no, true/false ) based on given set of independent variables.</p>
+<p>To the math: the log odds of the outcome is modeled as a linear combination of the predictor variables.</p>
+<div class="math">$$
+odds := \frac{p}{1-p} =\frac{\text{probability of event occurrence}}{\text{probability of not event occurrence}} 
+$$</div>
+<div class="math">$$
+ln(odds) = ln(\frac{p}{1-p})
+$$</div>
+<div class="math">$$
+logit(p) := ln(\frac{p}{1-p}) = b_0+b_1X_1+b_2X_2+b_3X_3....+b_kX_k
+$$</div>
+<p>Above, p is the probability of the presence of the characteristic of interest. It chooses the parameters that maximize the likelihood of observing the sample values.</p>
+<h3>Generate data set</h3>
+<p>Again we use two data sets
+- training data
+- test data</p>
+<div class="highlight"><pre><span></span><span class="n">NT</span> <span class="o">=</span> <span class="mi">26</span>
+<span class="n">xtrain</span><span class="p">,</span><span class="n">ytrain</span> <span class="o">=</span> <span class="n">generate_data_1D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span><span class="n">case</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">xtest</span><span class="p">,</span><span class="n">ytest</span> <span class="o">=</span> <span class="n">generate_data_1D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span><span class="n">case</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># plot_gr01(xtrain,ytrain,'xAxis','yAxis','training data')</span>
+<span class="c1"># plot_gr01(xtest,ytest,'xAxis','yAxis','test data')</span>
+</pre></div>
+<h3>Training</h3>
+<div class="highlight"><pre><span></span><span class="c1">#--- train the model with the training data set</span>
+<span class="n">logist</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="o">.</span><span class="n">ravel</span><span class="p">());</span>
+</pre></div>
+<h3>Testing</h3>
+<div class="highlight"><pre><span></span><span class="c1">#--- use the test data set and check the score with the model</span>
+<span class="n">score_training</span> <span class="o">=</span> <span class="n">logist</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">xtrain</span><span class="p">,</span> <span class="n">ytrain</span><span class="p">)</span>
+<span class="n">score_testing</span> <span class="o">=</span> <span class="n">logist</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">xtest</span><span class="p">,</span> <span class="n">ytest</span><span class="p">)</span>
+
+<span class="c1">#--- display the model parameters</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Logistic Regression: resulting model parameters of training ----'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Coefficient  :  '</span><span class="p">,</span> <span class="n">logist</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Intercept     : '</span><span class="p">,</span> <span class="n">logist</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span>
+<span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Test vs Training: check the score: ----'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Training Score        : '</span><span class="p">,</span> <span class="n">score_training</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'Testing Score         : '</span><span class="p">,</span> <span class="n">score_testing</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'sTest-sTrain          : '</span><span class="p">,</span> <span class="n">score_testing</span><span class="o">-</span><span class="n">score_training</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'(sTest-sTrain)/sTrain : '</span><span class="p">,</span> <span class="p">(</span><span class="n">score_testing</span><span class="o">-</span><span class="n">score_training</span><span class="p">)</span><span class="o">/</span><span class="n">score_training</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="c1">#--- predict y by the model</span>
+<span class="n">xmodel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">xtest</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">xtest</span><span class="p">),</span><span class="n">NT</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y_pred_test</span> <span class="o">=</span> <span class="n">logist</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xtest</span><span class="p">)</span>
+<span class="n">y_pred_model</span> <span class="o">=</span> <span class="n">logist</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">xmodel</span><span class="p">)</span>
+<span class="n">plot_gr02</span><span class="p">(</span><span class="n">xtest</span><span class="p">,</span><span class="n">ytest</span><span class="p">,</span><span class="n">xmodel</span><span class="p">,</span><span class="n">y_pred_model</span><span class="p">,</span><span class="s1">'xAxis'</span><span class="p">,</span><span class="s1">'yAxis'</span><span class="p">,</span><span class="s1">'y predicted by the model'</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>---- Logistic Regression: resulting model parameters of training ----
+Coefficient  :   [[1.78849999]]
+Intercept     :  [-0.82190826]
+
+---- Test vs Training: check the score: ----
+Training Score        :  0.9230769230769231
+Testing Score         :  0.8653846153846154
+sTest-sTrain          :  -0.05769230769230771
+(sTest-sTrain)/sTrain :  -0.06250000000000001
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6101/output_17_1.png"/></p>
+<h1>Logistic regression with 2 features</h1>
+<p>We just run through a logistic model with two features</p>
+<div class="highlight"><pre><span></span><span class="c1">#---- generate the data</span>
+<span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">v1</span> <span class="o">=</span> <span class="n">generate_data_2D</span><span class="p">(</span><span class="n">NT</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>  <span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>   <span class="c1"># 1 = training data</span>
+<span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">v2</span> <span class="o">=</span> <span class="n">generate_data_2D</span><span class="p">(</span><span class="n">NT</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>  <span class="n">X2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>   <span class="c1"># 2 = test data</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#---- train the model</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">sl</span><span class="o">.</span><span class="n">linear_model</span><span class="o">.</span><span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">'lbfgs'</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">v1</span><span class="p">);</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#---- test the model</span>
+<span class="n">score_1</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">v1</span><span class="p">)</span>
+<span class="n">score_2</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X2</span><span class="p">,</span> <span class="n">v2</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">);</span><span class="k">print</span><span class="p">(</span><span class="s1">'Testing --------------'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'score training :'</span><span class="p">,</span> <span class="n">score_1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'score test     :'</span><span class="p">,</span> <span class="n">score_2</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>Testing --------------
+score training : 0.82
+score test     : 0.82
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#--- evaluate the decision boundary</span>
+<span class="n">wght</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">coef_</span>
+<span class="n">icpt</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">intercept_</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'weights:    '</span><span class="p">,</span> <span class="n">wght</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'intercepts: '</span><span class="p">,</span> <span class="n">icpt</span><span class="p">)</span>
+<span class="n">a1</span> <span class="o">=</span> <span class="o">-</span><span class="n">wght</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">wght</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">icpt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">wght</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">xm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>
+<span class="n">ym</span> <span class="o">=</span> <span class="n">a1</span><span class="o">*</span><span class="n">xm</span> <span class="o">-</span><span class="n">b1</span>
+
+<span class="n">plot_gr03</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">v2</span><span class="p">,</span><span class="n">xm</span><span class="p">,</span><span class="n">ym</span><span class="p">,</span><span class="s1">'xAxis = feature A'</span><span class="p">,</span><span class="s1">'yAxis = feature B'</span><span class="p">,</span><span class="s1">'Classification with logistic regression'</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>weights:     [[-0.33762703 -0.2979359 ]]
+intercepts:  [-0.43771573]
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6101/output_22_1.png"/></p>
+<h1>Outlook</h1>
+<ul>
+<li>we have used the historicaly earliest predictive models as an introduction</li>
+<li>there are more advanced models today</li>
+<li>to find a model with a high predictiv power is a core issue</li>
+<li>since most models have some degrees of freedom (e.g. which degree of polynom do we use), we need a strategy to find the best model</li>
+<li>the training of the model depends on the data used too (resulting in overfitting and underfitting). So we need a strategy too for a systematic cross-validation and model fitting process.</li>
+<li>putting all this aspects together gives the learning curve of the algorithm as a guidance how to proceed.</li>
+</ul>
+<h2>--- <em>Python code: Data generation</em></h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_data_1D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">NT</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">case</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">t0</span><span class="p">;</span>   <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.5</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="o">*</span><span class="n">x</span>   <span class="c1"># line</span>
+        <span class="n">rf</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">rf</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">case</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">t0</span> <span class="o">*</span> <span class="mf">0.75</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">;</span>   <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>   <span class="c1"># sinus</span>
+        <span class="n">rf</span> <span class="o">=</span> <span class="mf">0.15</span><span class="p">;</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">rf</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">case</span><span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+        <span class="n">xp</span> <span class="o">=</span>  <span class="mi">4</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">NT</span><span class="p">);</span> <span class="n">yp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
+        <span class="n">xm</span> <span class="o">=</span> <span class="o">-</span><span class="mi">5</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">NT</span><span class="p">);</span> <span class="n">ym</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">xm</span><span class="p">)</span>
+        <span class="n">overlap</span> <span class="o">=</span> <span class="mf">1.2</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">xm</span><span class="o">+</span><span class="n">overlap</span><span class="p">,</span><span class="n">xp</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">ym</span><span class="p">,</span><span class="n">yp</span><span class="p">))</span>
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span>  <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_data_2D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">NT</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">case</span><span class="o">==</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">L1</span><span class="o">=</span><span class="mf">19.0</span><span class="p">;</span> <span class="n">a1</span><span class="o">=</span>  <span class="mi">0</span><span class="p">;</span> <span class="n">b1</span><span class="o">=</span> <span class="o">-</span><span class="mf">0.8</span><span class="p">;</span>  <span class="n">rf1</span><span class="o">=</span><span class="mf">0.5</span><span class="p">;</span>
+        <span class="n">L2</span><span class="o">=</span><span class="mf">19.0</span><span class="p">;</span> <span class="n">a2</span><span class="o">=</span>  <span class="mi">0</span><span class="p">;</span> <span class="n">b2</span><span class="o">=</span> <span class="o">-</span><span class="mf">1.8</span><span class="p">;</span>  <span class="n">rf2</span><span class="o">=</span><span class="mf">0.5</span><span class="p">;</span>
+
+        <span class="n">x1</span> <span class="o">=</span>  <span class="n">L1</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">NT</span><span class="p">);</span> <span class="n">r1</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">+</span> <span class="n">b1</span><span class="o">*</span><span class="n">x1</span> <span class="p">;</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">r1</span> <span class="o">+</span> <span class="n">rf1</span><span class="o">*</span><span class="n">x1</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">NT</span><span class="p">);</span> <span class="n">v1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">x1</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span>  <span class="n">L2</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">NT</span><span class="p">);</span> <span class="n">r2</span> <span class="o">=</span> <span class="n">a2</span> <span class="o">+</span> <span class="n">b2</span><span class="o">*</span><span class="n">x2</span> <span class="p">;</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">rf2</span><span class="o">*</span><span class="n">x2</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">NT</span><span class="p">);</span> <span class="n">v2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">x2</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span><span class="n">x2</span><span class="p">));</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">y1</span><span class="p">,</span><span class="n">y2</span><span class="p">));</span> <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">v1</span><span class="p">,</span><span class="n">v2</span><span class="p">))</span>    
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">v</span>
+</pre></div>
+<h2>--- <em>Python code: Graphics</em></h2>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_gr01</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">xLabel</span><span class="p">,</span><span class="n">yLabel</span><span class="p">,</span><span class="n">grTitel</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+
+         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">;</span>
+
+         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">);</span>
+         <span class="n">a1size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="mi">500</span><span class="p">;</span>
+
+         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">a1size</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">Y</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'w'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"plasma"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">);</span>
+         <span class="c1">#ax1.plot(X,Y,'b--',lw=1);</span>
+
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xLabel</span><span class="p">);</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">yLabel</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">grTitel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+         <span class="c1">#ax1.set_aspect('equal');</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">plot_gr02</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span><span class="n">Y1</span><span class="p">,</span><span class="n">X2</span><span class="p">,</span><span class="n">Y2</span><span class="p">,</span><span class="n">xLabel</span><span class="p">,</span><span class="n">yLabel</span><span class="p">,</span><span class="n">grTitel</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>    
+         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">;</span>
+         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">);</span>
+         <span class="n">a1size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">X1</span><span class="p">)</span><span class="o">*</span><span class="mi">500</span><span class="p">;</span>
+
+         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X1</span><span class="p">,</span> <span class="n">Y1</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">a1size</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">Y1</span><span class="p">,</span> <span class="c1">#edgecolors='chartreuse', linewidths=2,</span>
+                     <span class="n">cmap</span><span class="o">=</span><span class="s2">"plasma"</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'given data'</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+         <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X2</span><span class="p">,</span><span class="n">Y2</span><span class="p">,</span><span class="s1">'r-o'</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'y(x) by the model'</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xLabel</span><span class="p">);</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">yLabel</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">grTitel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+         <span class="c1">#ax1.set_aspect('equal');</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">plot_gr03</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">Xm</span><span class="p">,</span><span class="n">Ym</span><span class="p">,</span><span class="n">xLabel</span><span class="p">,</span><span class="n">yLabel</span><span class="p">,</span><span class="n">grTitel</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>
+         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span> <span class="p">;</span>
+         <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">);</span>
+         <span class="n">a1size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="mi">200</span><span class="p">;</span>
+
+         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">a1size</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">V</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"winter"</span><span class="p">,</span> 
+                     <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'observations'</span><span class="p">);</span>
+         <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Xm</span><span class="p">,</span><span class="n">Ym</span><span class="p">,</span><span class="s1">'r--'</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'decision boundary'</span><span class="p">);</span>
+
+         <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">xLabel</span><span class="p">);</span>  <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">yLabel</span><span class="p">);</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">grTitel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+         <span class="c1">#ax1.set_aspect('equal');</span>
+
+         <span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mf">0.5</span>
+         <span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">+</span><span class="mf">0.5</span>
+         <span class="n">h</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># step size in the mesh</span>
+         <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">y_min</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+         <span class="n">Z</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">()])</span>
+
+         <span class="c1"># Put the result into a color plot</span>
+         <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+         <span class="n">ax1</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'winter'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'model prediction'</span><span class="p">)</span> 
+         <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"lower left"</span><span class="p">,</span> <span class="n">scatterpoints</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+         <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># plot_gr03(x,y,v,xm,ym,'xAxis = feature A','yAxis = feature B','Classification with logistic regression')</span>
+
+<span class="k">def</span> <span class="nf">flowchart_1</span><span class="p">():</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'w'</span><span class="p">)</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>   <span class="c1"># </span>
+
+    <span class="n">dpx</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">;</span> <span class="n">dpy</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+    <span class="n">polyF</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">polyG</span> <span class="o">=</span> <span class="n">polyF</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">])</span>
+    <span class="n">polyG</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">polyG</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dpx</span><span class="p">;</span>   <span class="n">polyG</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">polyG</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">dpy</span>
+
+    <span class="n">patches</span> <span class="o">=</span> <span class="p">[</span> <span class="n">Rectangle</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">'c'</span><span class="p">),</span>
+                <span class="n">FancyArrow</span><span class="p">(</span><span class="mf">2.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">'m'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+                <span class="n">Polygon</span><span class="p">(</span><span class="n">polyG</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">'gold'</span><span class="p">),</span>
+                <span class="n">FancyArrow</span><span class="p">(</span><span class="mf">6.25</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">'m'</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">head_length</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+                <span class="n">Rectangle</span><span class="p">((</span><span class="mf">7.75</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">'c'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">),</span>
+              <span class="p">]</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">patches</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="c1">#ax.set_aspect('equal');</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s2">"Features</span><span class="se">\n</span><span class="s2">of the</span><span class="se">\n</span><span class="s2">Objects"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s2">"Predictive</span><span class="se">\n</span><span class="s2">Model"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span> <span class="s2">"Names,</span><span class="se">\n</span><span class="s2"> Labels </span><span class="se">\n</span><span class="s2"> of the </span><span class="se">\n</span><span class="s2"> Objects</span><span class="se">\n\n</span><span class="s2"> (targets, classes)"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> 
+
+<span class="c1">#flowchart_1()</span>
+</pre></div>
+<h1>Ressources</h1>
+<ul>
+<li>http://openclassroom.stanford.edu/MainFolder/CoursePage.php?course=MachineLearning</li>
+<li>https://www.youtube.com/watch?v=mz3j59aJBZQ   Andy Ng</li>
+<li>https://www.youtube.com/watch?v=gNhogKJ_q7U</li>
+<li>https://www.analyticsvidhya.com/blog/2017/09/common-machine-learning-algorithms/</li>
+<li>https://towardsdatascience.com/building-a-logistic-regression-in-python-301d27367c24</li>
+<li>http://christianherta.de/lehre/dataScience/machineLearning/logisticRegression.pdf</li>
+<li>https://www.tu-chemnitz.de/hsw/psychologie/professuren/method/homepages/ts/methodenlehre/LogistischeRegression.pdf</li>
+<li>https://www.statistik.uni-dortmund.de/fileadmin/user_upload/Lehrstuehle/Datenanalyse/Wissensentdeckung/Wissensentdeckung-Li-4_2x2.pdf</li>
+</ul>
+<div class="highlight"><pre><span></span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/basic-steps-machine-learning.html';
+    this.page.identifier = 'basic-steps-machine-learning';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
