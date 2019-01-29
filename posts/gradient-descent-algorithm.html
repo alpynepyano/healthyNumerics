@@ -172,8 +172,8 @@
 <h3><strong>1. Target function with parameters</strong></h3>
 <p>We define the linear function f(x) that will approximate our dataset. It depends on two unknown parameters that we want to find out:  <span class="math">\(\theta_0\)</span> and <span class="math">\(\theta_1\)</span>:</p>
 <p><span class="math">\(f(x)=\theta_0 + \theta_1x\)</span></p>
-<p>In matrix notation we can write <br/>
-<span class="math">\(\mathbf{f}(\mathbf{x}) = \theta_0 + \theta_1 \mathbf{x}\)</span></p>
+<p>In matrix notation we can write</p>
+<p><span class="math">\(\mathbf{f}(\mathbf{x}) = \theta_0 + \theta_1 \mathbf{x}\)</span></p>
 <h3><strong>2. Loss function</strong></h3>
 <p>We define the loss or error function as the squared distance between the observed data <span class="math">\(y\)</span> and its approximated value <span class="math">\(f(x)\)</span> <br/>
 <span class="math">\(L(\theta)=\sum_{i^{(i)}\in data} (f(x^{(i)}) - y^{(i)})^2\)</span></p>
@@ -189,7 +189,7 @@
 <p><span class="math">\(L_{\theta_0} = 2\cdot sum(\mathbf{\delta})\)</span> <br/>
 <span class="math">\(L_{\theta_1} = 2\cdot &lt;\mathbf{\delta} , \mathbf{x} &gt;\)</span>  , scalar product</p>
 <h3><strong>4. Algorithm</strong></h3>
-<p>It's a marching alorithm. Starting with some intitial values for  <span class="math">\(\theta_0\)</span> and <span class="math">\(\theta_1\)</span> these are updated recursively: <br/></p>
+<p>It's a marching algorithm. Starting with some intitial values for  <span class="math">\(\theta_0\)</span> and <span class="math">\(\theta_1\)</span> these are updated recursively: <br/></p>
 <p><span class="math">\(\theta_0^{n+1}  = \theta_0^n + \epsilon  \frac{\partial L}{\partial \theta_0}\)</span> <br/>
 <span class="math">\(\theta_1^{n+1}  = \theta_1^n + \epsilon  \frac{\partial L}{\partial \theta_1}\)</span> <br/></p>
 <p>We apply the standard approach where all data are used at each time step. There are variations in using only a subset of the data that are randomly picked out at each time step.</p>
@@ -300,7 +300,7 @@ The parameters with np.polyfit:         = 2.548736915671355 -3.792170212097653
         text-align: right;
     }
 </style>
-<table border="1" class="table-hover table dataframe table-striped">
+<table border="1" class="table-hover dataframe table-striped table">
 <thead>
 <tr style="text-align: right;">
 <th></th>
