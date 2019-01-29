@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>MachineLearning: Gradient descent from Nobel Laureates to chocolate consumption | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/gradient-descent-algorithm.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="Evaluating the appropriate parameters of a model is the core of every machine learning algorithm. In neural networks such a procedure has to be repeated over an over. Beceause of the non-linearities numerical approaches which approximate the solution iteratively are an important class of solution.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>MachineLearning: Gradient descent from Nobel Laureates to chocolate consumption
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2019-01-28T10:15:00+01:00">
+        <i class="fa fa-clock-o"></i>
+        Mo. 28 Januar 2019
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/machinelearning.html">MachineLearning</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/numerical.html">#numerical</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/statistics.html">#statistics</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/machine-learning.html">#machine learning</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#python</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>We present a solution method, the <a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">Stochastic Gradient Descent (SGD)</a>. Our approach is based on this repos:</p>
+<ul>
+<li>https://github.com/elizavetasemenova/amld-2019</li>
+<li>https://github.com/gregunz/AMLD2019/blob/master/workshops/02%20-%20Pneumonia%20Detection%20using%20CNN%20and%20pre-trained%20networks/1_gradient_descent/p2_gradient_example.ipynb</li>
+</ul>
+<p>which we have slightly modified.</p>
+<p>This is an iterative approach, in which the desiered solution is successively approached with every iteration. The gradient of the loss or error function gives the direction to control the development of the solution of the algorithm. </p>
+<p>As an example we choose a linear 1-dimensional function to approach the data, which corresponds to a linear interpolation. The aim is to evaluate the model parameters <span class="math">\(\theta_0\)</span> and <span class="math">\(\theta_1\)</span> as slope and intercept.</p>
+<p>The data we use is from a paper published in <a href="https://www.nejm.org/doi/full/10.1056/NEJMon1211064">New England Journal of Medicine</a>. The author Franz Messerli reports a highly significant correlation between a nation's per capita chocolate consumption and the rate at which its citizens win Nobel Prizes. He reported "a close, significant linear correlation (r=0.791, p&lt;0.0001) between chocolate consumption per capita and the number of Nobel laureates per 10 million persons in a total of 23 countries." </p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rc</span>
+<span class="n">rc</span><span class="p">(</span><span class="s1">'text'</span><span class="p">,</span> <span class="n">usetex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'data.csv'</span><span class="p">)</span>
+<span class="n">nd</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span>      <span class="c1"># 'fivethirtyeight'      </span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span> <span class="p">;</span>   
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nd</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="n">tx</span><span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span><span class="n">ms</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Nobel Laureates vs Chocolate Consumption'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6102/output_3_1.png"/></p>
+<h3><strong>1. Target function with parameters</strong></h3>
+<p>We define the linear function f(x) that will approximate our dataset. It depends on two unknown parameters that we want to find out:  <span class="math">\(\theta_0\)</span> and <span class="math">\(\theta_1\)</span>:</p>
+<p><span class="math">\(f(x)=\theta_0 + \theta_1x\)</span></p>
+<p>In matrix notation we can write <br/>
+$\mathbf{f}(\mathbf{x}) = \theta_0 + \theta_1 \mathbf{x} $</p>
+<h3><strong>2. Loss function</strong></h3>
+<p>We define the loss or error function as the squared distance between the observed data <span class="math">\(y\)</span> and its approximated value <span class="math">\(f(x)\)</span> <br/>
+<span class="math">\(L(\theta)=\sum_{i^{(i)}\in data} (f(x^{(i)}) - y^{(i)})^2\)</span></p>
+<p>In matrix notation we can express this as a scalar product of the difference <span class="math">\(\mathbf{\delta} = \mathbf{f}(\mathbf{x})-\mathbf{y}\)</span> which can be used for an implementation in vectorized form <br/>
+<span class="math">\(L(\theta)=&lt;\mathbf{\delta},\mathbf{\delta}&gt;\)</span> , scalar product</p>
+<h3><strong>3. Derivatives of the loss function</strong></h3>
+<p>They will be used for the descendent gradient algorithm <br/></p>
+<p><span class="math">\(\frac{\partial L}{\partial \theta_0} = 2\sum_i (f(x^{(i)}) - y^{(i)})\)</span>
+<br/> and <br/>
+<span class="math">\(\frac{\partial L}{\partial \theta_1} = 2\sum_i (f(x^{(i)}) - y^{(i)})x_{1}^{(i)}\)</span>
+<br/> </p>
+<p>We implement these as</p>
+<p>$L_{\theta_0} = 2\cdot sum(\mathbf{\delta}) $  <br/>
+$L_{\theta_1} = 2\cdot &lt;\mathbf{\delta} , \mathbf{x} &gt; $  , scalar product</p>
+<h3><strong>4. Algorithm</strong></h3>
+<p>It's a marching alorithm. Starting with some intitial values for  <span class="math">\(\theta_0\)</span> and <span class="math">\(\theta_1\)</span> these are updated recursively: <br/></p>
+<p>$\theta_0^{n+1}  = \theta_0^n + \epsilon  \frac{\partial L}{\partial \theta_0}  $ <br/>
+$\theta_1^{n+1}  = \theta_1^n + \epsilon  \frac{\partial L}{\partial \theta_1}  $ <br/></p>
+<p>We apply the standard approach where all data are used at each time step. There are variations in using only a subset of the data that are randomly picked out at each time step.</p>
+<h3><strong>5. Solution</strong></h3>
+<p>The rate of convergance depends on the choice of <span class="math">\(\epsilon\)</span>. With a low value the convergence is slow and many iterations are needed. With a large value to soltuion might oscillate or even diverge. This phenomena is well known in <strong>computational fluid dynamics</strong> where the Courant–Friedrichs–Lewy (CFL) condition is a necessary condition for convergence.</p>
+<p>In playing around with this example we can see, that the convergence for the intercept is slower than for the slope. We have chosen <span class="math">\(\epsilon\)</span> as large as possible, so that an oscillatory behaviour can be seen, which in this case is still benefical and supports a faster convergence.</p>
+<p>A Runge-Kutta schema might improve the convergence properties.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="err">θ</span><span class="p">):</span>
+    <span class="k">return</span> <span class="err">θ</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="err">θ</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span>
+
+<span class="k">def</span> <span class="nf">f_loss</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span><span class="err">θ</span><span class="p">):</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="err">θ</span><span class="p">)</span> <span class="o">-</span> <span class="n">ys</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span><span class="n">delta</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">f_dθ0</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span><span class="err">θ</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="err">θ</span><span class="p">)</span> <span class="o">-</span> <span class="n">ys</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">f_dθ1</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span><span class="err">θ</span><span class="p">):</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="err">θ</span><span class="p">)</span> <span class="o">-</span> <span class="n">ys</span>
+    <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span><span class="n">xs</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">data_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'data.csv'</span><span class="p">)</span>    <span class="c1"># get the data</span>
+<span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_df</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_df</span><span class="o">.</span><span class="n">values</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="err">ε</span> <span class="o">=</span> <span class="mf">0.001</span>                            <span class="c1"># choose the time step</span>
+<span class="err">θ</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">4.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>             <span class="c1"># initialize the parameters theta</span>
+<span class="n">dLs</span><span class="p">,</span> <span class="n">dT0</span><span class="p">,</span> <span class="n">dT1</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">loss_old</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n\n</span><span class="s1">'</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span>       
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span> 
+    <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">14</span>                    <span class="c1"># 2 x-points of the straight line in the graphics</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">300</span><span class="p">):</span> <span class="c1">#------------- run the algorithm -----------</span>
+        <span class="n">dθ0</span> <span class="o">=</span> <span class="n">f_dθ0</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="err">θ</span><span class="p">)</span>        <span class="c1"># compute the gradients of theta</span>
+        <span class="n">dθ1</span> <span class="o">=</span> <span class="n">f_dθ1</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="err">θ</span><span class="p">)</span>
+        <span class="n">dT0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dθ0</span><span class="p">)</span>
+        <span class="n">dT1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dθ1</span><span class="p">)</span>
+
+        <span class="err">θ</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="err">ε</span> <span class="o">*</span> <span class="n">dθ0</span>               <span class="c1"># update theta</span>
+        <span class="err">θ</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-=</span> <span class="err">ε</span> <span class="o">*</span> <span class="n">dθ1</span>
+
+        <span class="n">loss_new</span> <span class="o">=</span> <span class="n">f_loss</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="err">θ</span><span class="p">)</span>  <span class="c1"># check the development of the error</span>
+        <span class="n">dL</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss_new</span><span class="o">-</span><span class="n">loss_old</span><span class="p">)</span><span class="o">/</span><span class="n">loss_old</span>
+        <span class="n">dLs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dL</span><span class="o">*</span><span class="n">dL</span><span class="p">))</span>
+        <span class="n">loss_old</span> <span class="o">=</span> <span class="n">loss_new</span>
+
+        <span class="c1"># ----- Graphics -------------------------------------------------</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">],</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="err">θ</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="err">θ</span><span class="p">)],</span> <span class="s1">'k-'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">],</span> <span class="p">[</span><span class="n">f</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span><span class="err">θ</span><span class="p">),</span> <span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="err">θ</span><span class="p">)],</span> <span class="s1">'r-'</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.93</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nd</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">]]</span>
+        <span class="n">tx</span><span class="o">=</span> <span class="n">data_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span><span class="n">ms</span><span class="o">=</span><span class="mi">29</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'orange'</span><span class="p">,</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">tx</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">18</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">);</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="n">data_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Nobel Laureates vs Chocolate Consumption'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1">#---- compare with linear regression ---------</span>
+<span class="n">theta1</span><span class="p">,</span> <span class="n">theta0</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span><span class="p">,</span><span class="n">_</span>  <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">)</span>
+<span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"The parameters θ                        ="</span><span class="p">,</span><span class="err">θ</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="err">θ</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"The parameters with linear regression:  ="</span><span class="p">,</span><span class="n">theta1</span><span class="p">,</span> <span class="n">theta0</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">"The parameters with np.polyfit:         ="</span><span class="p">,</span><span class="n">fp</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">fp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n\n</span><span class="s1">'</span><span class="p">)</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6102/output_9_1.png"/></p>
+<div class="highlight"><pre><span></span>The parameters θ                        = 2.501848008865261 -3.448185705127312
+The parameters with linear regression:  = 2.548736915671354 -3.792170212097653
+The parameters with np.polyfit:         = 2.548736915671355 -3.792170212097653
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span>       
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span> <span class="p">;</span>   
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dLs</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Iteration'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'rel. change of Loss'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Convergence'</span><span class="p">,</span><span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">30</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span> <span class="p">;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dT0</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\frac{\partial L}{\partial \theta_0}$'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span> <span class="p">;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dT1</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">r</span><span class="s1">'$\frac{\partial L}{\partial \theta_1}$'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">35</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6102/output_10_0.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6102/output_10_1.png"/></p>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6102/output_10_2.png"/></p>
+<h1><em>The data</em></h1>
+<div class="highlight"><pre><span></span><span class="n">data_df</span>
+</pre></div>
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="table-hover table-striped dataframe table">
+<thead>
+<tr style="text-align: right;">
+<th></th>
+<th>country</th>
+<th>chocolate consumption (kg/yr/capita)</th>
+<th>Nobel laureates per 10M population</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th>0</th>
+<td>France</td>
+<td>6.3</td>
+<td>8.0</td>
+</tr>
+<tr>
+<th>1</th>
+<td>Denmark</td>
+<td>8.5</td>
+<td>25.1</td>
+</tr>
+<tr>
+<th>2</th>
+<td>Finland</td>
+<td>7.2</td>
+<td>7.3</td>
+</tr>
+<tr>
+<th>3</th>
+<td>Brazil</td>
+<td>2.9</td>
+<td>0.0</td>
+</tr>
+<tr>
+<th>4</th>
+<td>Italy</td>
+<td>3.8</td>
+<td>3.0</td>
+</tr>
+<tr>
+<th>5</th>
+<td>Poland</td>
+<td>3.6</td>
+<td>2.9</td>
+</tr>
+<tr>
+<th>6</th>
+<td>Switzerland</td>
+<td>12.0</td>
+<td>32.4</td>
+</tr>
+<tr>
+<th>7</th>
+<td>China</td>
+<td>0.7</td>
+<td>0.0</td>
+</tr>
+<tr>
+<th>8</th>
+<td>Belgium</td>
+<td>4.2</td>
+<td>8.0</td>
+</tr>
+<tr>
+<th>9</th>
+<td>Japan</td>
+<td>1.8</td>
+<td>1.0</td>
+</tr>
+<tr>
+<th>10</th>
+<td>Greece</td>
+<td>2.6</td>
+<td>1.2</td>
+</tr>
+<tr>
+<th>11</th>
+<td>United States</td>
+<td>5.4</td>
+<td>10.1</td>
+</tr>
+<tr>
+<th>12</th>
+<td>Norway</td>
+<td>9.1</td>
+<td>23.0</td>
+</tr>
+<tr>
+<th>13</th>
+<td>Portugal</td>
+<td>1.9</td>
+<td>1.3</td>
+</tr>
+<tr>
+<th>14</th>
+<td>United Kingdom</td>
+<td>9.5</td>
+<td>18.0</td>
+</tr>
+<tr>
+<th>15</th>
+<td>Spain</td>
+<td>3.7</td>
+<td>1.2</td>
+</tr>
+<tr>
+<th>16</th>
+<td>Austria</td>
+<td>8.7</td>
+<td>24.5</td>
+</tr>
+<tr>
+<th>17</th>
+<td>Ireland</td>
+<td>8.8</td>
+<td>12.5</td>
+</tr>
+<tr>
+<th>18</th>
+<td>Germany</td>
+<td>11.4</td>
+<td>12.4</td>
+</tr>
+<tr>
+<th>19</th>
+<td>The Netherlands</td>
+<td>4.3</td>
+<td>11.0</td>
+</tr>
+<tr>
+<th>20</th>
+<td>Canada</td>
+<td>3.8</td>
+<td>5.8</td>
+</tr>
+<tr>
+<th>21</th>
+<td>Australia</td>
+<td>4.3</td>
+<td>5.2</td>
+</tr>
+<tr>
+<th>22</th>
+<td>Sweden</td>
+<td>6.2</td>
+<td>32.0</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="highlight"><pre><span></span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/gradient-descent-algorithm.html';
+    this.page.identifier = 'gradient-descent-algorithm';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

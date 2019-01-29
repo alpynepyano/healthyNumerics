@@ -204,7 +204,11 @@ $$</div>
 <div class="math">$$
 \mathbf{C \cdot \alpha} = \mathbf{\phi}
 $$</div>
-<p>Once <span class="math">\(\mathbf{\alpha}\)</span> is known, at any point <span class="math">\((\xi, \nu)\)</span> within the quadrilateral <span class="math">\(\phi\)</span> can be interpolated by asigning <span class="math">\(\mathbf{H}(\xi, \nu)=<div class="math">\begin{bmatrix} 1,\  \xi,\  \nu,\  \xi\nu \end{bmatrix}</div>\)</span> and then compute <span class="math">\(\phi(\xi, \nu) = \mathbf{H \cdot \alpha}\)</span>.</p>
+<p>Once <span class="math">\(\mathbf{\alpha}\)</span> is known, at any point <span class="math">\((\xi, \nu)\)</span> within the quadrilateral <span class="math">\(\phi\)</span> can be interpolated by asigning </p>
+<div class="math">$$\mathbf{H}(\xi, \nu)=\begin{bmatrix} 1,\  \xi,\  \nu,\  \xi\nu \end{bmatrix}$$</div>
+<p>and then compute </p>
+<div class="math">$$\phi(\xi, \nu) = \mathbf{H \cdot \alpha}$$</div>
+<p>.</p>
 <h2>Implementation of the FEM interpolation</h2>
 <p>We choose an inplementation where we can  handle not only quadrilaterals with (nx=2)<span class="math">\(\cdot\)</span>(ny=2) = 4 nodes but any size of elements nx<span class="math">\(\cdot\)</span>ny. For that we do not evaluate the shape functions <span class="math">\(N_i\)</span> analytically as it is found in FEM textbooks usually. Actually what we do is that <strong>we numerically construct 1 macro finite element of lagrangian type</strong>. Our algorithm follows directely the description above:</p>
 <ol>

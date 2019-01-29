@@ -182,7 +182,7 @@
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe table-striped table-hover table">
+<table border="1" class="table-hover table-striped dataframe table">
 <thead>
 <tr style="text-align: right;">
 <th></th>
@@ -278,7 +278,7 @@ Meilen         -0.031463
 Service       135.837493
 dtype: float64
 </pre></div>
-<table class="table-striped simpletable table-hover table">
+<table class="simpletable table-striped table-hover table">
 <caption>OLS Regression Results</caption>
 <tr>
 <th>Dep. Variable:</th> <td>Preis</td> <th>  R-squared:         </th> <td>   0.974</td>
@@ -308,7 +308,7 @@ dtype: float64
 <th>Covariance Type:</th> <td>nonrobust</td> <th> </th> <td> </td>
 </tr>
 </table>
-<table class="table-striped simpletable table-hover table">
+<table class="simpletable table-striped table-hover table">
 <tr>
 <td></td> <th>coef</th> <th>std err</th> <th>t</th> <th>P&gt;|t|</th> <th>[0.025</th> <th>0.975]</th>
 </tr>
@@ -322,7 +322,7 @@ dtype: float64
 <th>Service</th> <td>  135.8375</td> <td>    3.903</td> <td>   34.807</td> <td> 0.000</td> <td>  128.092</td> <td>  143.583</td>
 </tr>
 </table>
-<table class="table-striped simpletable table-hover table">
+<table class="simpletable table-striped table-hover table">
 <tr>
 <th>Omnibus:</th> <td> 3.778</td> <th>  Durbin-Watson:     </th> <td>   2.280</td>
 </tr>
@@ -396,7 +396,7 @@ $$</div>
 <span class="k">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
 <span class="c1">#estimP2.summary()      # Asudruck der vollständigen Zusammenfassung</span>
 </pre></div>
-<div class="highlight"><pre><span></span>&lt;class 'pandas.core.series.Series'&gt;
+<div class="highlight"><pre><span></span>&amp;lt;class 'pandas.core.series.Series'&amp;gt;
 Intercept         6187.365916
 C(Garage)[T.1]      19.007410
 Meilen              -0.031137
@@ -409,7 +409,7 @@ dtype: float64
 <span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 <span class="n">estimP3</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>      <span class="c1"># Asudruck der vollständigen Zusammenfassung</span>
 </pre></div>
-<div class="highlight"><pre><span></span>&lt;class 'pandas.core.series.Series'&gt;
+<div class="highlight"><pre><span></span>&amp;lt;class 'pandas.core.series.Series'&amp;gt;
 Intercept         6197.324575
 C(Garage)[T.1]      20.454997
 C(Farbe)[T.2]      -10.438274
@@ -418,7 +418,7 @@ Meilen              -0.031331
 Service            135.185787
 dtype: float64
 </pre></div>
-<table class="table-striped simpletable table-hover table">
+<table class="simpletable table-striped table-hover table">
 <caption>OLS Regression Results</caption>
 <tr>
 <th>Dep. Variable:</th> <td>Preis</td> <th>  R-squared:         </th> <td>   0.976</td>
@@ -448,7 +448,7 @@ dtype: float64
 <th>Covariance Type:</th> <td>nonrobust</td> <th> </th> <td> </td>
 </tr>
 </table>
-<table class="table-striped simpletable table-hover table">
+<table class="simpletable table-striped table-hover table">
 <tr>
 <td></td> <th>coef</th> <th>std err</th> <th>t</th> <th>P&gt;|t|</th> <th>[0.025</th> <th>0.975]</th>
 </tr>
@@ -471,7 +471,7 @@ dtype: float64
 <th>Service</th> <td>  135.1858</td> <td>    4.197</td> <td>   32.210</td> <td> 0.000</td> <td>  126.852</td> <td>  143.519</td>
 </tr>
 </table>
-<table class="table-striped simpletable table-hover table">
+<table class="simpletable table-striped table-hover table">
 <tr>
 <th>Omnibus:</th> <td> 0.814</td> <th>  Durbin-Watson:     </th> <td>   2.267</td>
 </tr>
@@ -490,7 +490,7 @@ dtype: float64
 <div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">estimP3</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
-<div class="highlight"><pre><span></span>                 sum_sq    df            F        PR(&gt;F)
+<div class="highlight"><pre><span></span>                 sum_sq    df            F        PR(&amp;gt;F)
 C(Garage)  9.362784e+03   1.0     5.606652  1.994089e-02
 C(Farbe)   1.581404e+03   2.0     0.473491  6.243016e-01
 Meilen     3.362746e+06   1.0  2013.690498  2.766973e-65
@@ -501,7 +501,7 @@ Residual   1.569745e+05  94.0          NaN           NaN
 <div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">estimP2</span><span class="p">,</span><span class="n">estimP3</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
-<div class="highlight"><pre><span></span>   df_resid            ssr  df_diff      ss_diff         F    Pr(&gt;F)
+<div class="highlight"><pre><span></span>   df_resid            ssr  df_diff      ss_diff         F    Pr(&amp;gt;F)
 0      96.0  158555.953796      0.0          NaN       NaN       NaN
 1      94.0  156974.549379      2.0  1581.404417  0.473491  0.624302
 </pre></div>

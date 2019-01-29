@@ -237,7 +237,7 @@
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe table-striped table-hover table">
+<table border="1" class="table-hover table-striped dataframe table">
 <thead>
 <tr style="text-align: right;">
 <th></th>
@@ -315,7 +315,7 @@
         vertical-align: top;
     }
 </style>
-<table border="1" class="dataframe table-striped table-hover table">
+<table border="1" class="table-hover table-striped dataframe table">
 <thead>
 <tr>
 <th></th>
@@ -557,27 +557,27 @@
 <span class="k">print</span><span class="p">(</span><span class="s2">"Center = 5"</span><span class="p">);</span>  <span class="k">print</span><span class="p">(</span><span class="n">t_c5</span><span class="p">,</span> <span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
 <div class="highlight"><pre><span></span>Center = 1
-             df        sum_sq      mean_sq         F        PR(&gt;F)
+             df        sum_sq      mean_sq         F        PR(&amp;gt;F)
 trt         1.0   8875.124407  8875.124407  46.97338  8.913676e-11
 Residual  198.0  37410.010029   188.939445       NaN           NaN
 
 Center = 2
-             df        sum_sq      mean_sq          F        PR(&gt;F)
+             df        sum_sq      mean_sq          F        PR(&amp;gt;F)
 trt         1.0   7972.307055  7972.307055  37.239755  5.404231e-09
 Residual  198.0  42387.948440   214.080548        NaN           NaN
 
 Center = 3
-             df        sum_sq      mean_sq          F        PR(&gt;F)
+             df        sum_sq      mean_sq          F        PR(&amp;gt;F)
 trt         1.0   7287.503584  7287.503584  35.809995  1.003735e-08
 Residual  198.0  40293.937324   203.504734        NaN           NaN
 
 Center = 4
-             df        sum_sq      mean_sq          F    PR(&gt;F)
+             df        sum_sq      mean_sq          F    PR(&amp;gt;F)
 trt         1.0   3061.418522  3061.418522  16.464392  0.000071
 Residual  198.0  36816.473763   185.941787        NaN       NaN
 
 Center = 5
-             df        sum_sq      mean_sq          F    PR(&gt;F)
+             df        sum_sq      mean_sq          F    PR(&amp;gt;F)
 trt         1.0   3602.067373  3602.067373  17.787537  0.000038
 Residual  198.0  40096.015373   202.505128        NaN       NaN
 </pre></div>
@@ -603,7 +603,7 @@ $$</div>
 <span class="k">print</span><span class="p">(</span><span class="n">t_pool1</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"PR(&gt;F)"</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="c1"># output table sorted by PR(&gt;F)</span>
 </pre></div>
 <div class="highlight"><pre><span></span>Pool = all
-                df         sum_sq       mean_sq           F        PR(&gt;F)
+                df         sum_sq       mean_sq           F        PR(&amp;gt;F)
 trt            1.0   29523.440890  29523.440890  149.114727  4.754130e-32
 trt:cen        1.0    1047.327006   1047.327006    5.289759  2.165806e-02
 trt:age        1.0     555.765934    555.765934    2.807020  9.416772e-02
@@ -619,7 +619,7 @@ Residual     992.0  196407.518177    197.991450         NaN           NaN
 <span class="n">table</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">anova_lm</span><span class="p">(</span><span class="n">e_pool1</span><span class="p">,</span> <span class="n">e_pool2</span><span class="p">,</span> <span class="n">e_pool3</span><span class="p">,</span> <span class="n">e_pool4</span><span class="p">,</span> <span class="n">typ</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
 </pre></div>
-<div class="highlight"><pre><span></span>   df_resid            ssr  df_diff      ss_diff         F  Pr(&gt;F)
+<div class="highlight"><pre><span></span>   df_resid            ssr  df_diff      ss_diff         F  Pr(&amp;gt;F)
 0     992.0  196407.518177      0.0          NaN       NaN     NaN
 1     995.0  197953.658419     -3.0 -1546.140243  2.587547     NaN
 2     996.0  198479.145133     -1.0  -525.486714  2.638289     NaN

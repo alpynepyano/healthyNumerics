@@ -164,9 +164,11 @@
 </pre></div>
 <h1>Linear Regression</h1>
 <h3>Generate data set</h3>
-<p>It's important to use always to seperated data sets of the same entity:
-- a <strong>trainig data</strong> set is used to train and to adapt the model. The output will be a set of model parameters
-- a <strong>test data</strong> set in order to test how good the model's predictibility is</p>
+<p>It's important to use always to seperated data sets of the same entity:</p>
+<ul>
+<li>a <strong>trainig data</strong> set is used to train and to adapt the model. The output will be a set of model parameters</li>
+<li>a <strong>test data</strong> set in order to test how good the model's predictibility is</li>
+</ul>
 <div class="highlight"><pre><span></span><span class="n">NT</span> <span class="o">=</span> <span class="mi">25</span>
 <span class="n">xtrain</span><span class="p">,</span><span class="n">ytrain</span> <span class="o">=</span> <span class="n">generate_data_1D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span><span class="n">case</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">xtest</span><span class="p">,</span><span class="n">ytest</span> <span class="o">=</span> <span class="n">generate_data_1D</span><span class="p">(</span><span class="n">NT</span><span class="p">,</span><span class="n">case</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -316,7 +318,7 @@ intercepts:  [-0.43771573]
 <ul>
 <li>we have used the historicaly earliest predictive models as an introduction</li>
 <li>there are more advanced models today</li>
-<li>to find a model with a high predictiv power is a core issue</li>
+<li>to find a model with a high predictive power is a core issue</li>
 <li>since most models have some degrees of freedom (e.g. which degree of polynom do we use), we need a strategy to find the best model</li>
 <li>the training of the model depends on the data used too (resulting in overfitting and underfitting). So we need a strategy too for a systematic cross-validation and model fitting process.</li>
 <li>putting all this aspects together gives the learning curve of the algorithm as a guidance how to proceed.</li>

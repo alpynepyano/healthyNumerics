@@ -165,7 +165,7 @@
     <span class="n">step</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">NUTS</span><span class="p">()</span>
     <span class="n">trace</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">step</span><span class="p">,</span> <span class="n">progressbar</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </pre></div>
-<div class="highlight"><pre><span></span>100%|█████████████████████████████████████████████████████████████████████████████| 2000/2000 [00:13&lt;00:00, 146.45it/s]
+<div class="highlight"><pre><span></span><span class="nt">100</span><span class="o">%|</span><span class="err">█████████████████████████████████████████████████████████████████████████████</span><span class="o">|</span> <span class="nt">2000</span><span class="o">/</span><span class="nt">2000</span> <span class="cp">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">13</span><span class="o">&amp;</span><span class="nx nx-Member">lt</span><span class="p">;</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="p">,</span> <span class="mf">146.45</span><span class="nx">it</span><span class="p">/</span><span class="nx">s</span><span class="cp">]</span>
 </pre></div>
 <h3>Evaluation</h3>
 <p>If we take the Maximal Probability (MAP) as final result for slope and intercept, then there are no diffrences to the same paramteres computed by scipy or numpy procedures. The statistics of the MC ouput is given below.</p>
