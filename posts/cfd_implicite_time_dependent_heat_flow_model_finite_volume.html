@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="german">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>An inplicite time dependent finite volume model (FVM) on an irregular grid for heat flow | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/cfd_implicite_time_dependent_heat_flow_model_finite_volume.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="We formulate the discretization of a heat flow model for an implicite finite volume method on an irregular grid and implement it for an 1-dimensional application. We give the detailled derivation from the partial differential equation to the FVM discretization and the implementation with vectorized Python code.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>An inplicite  time dependent finite volume model (FVM) on an irregular grid for heat flow
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2018-10-21T08:30:00+02:00">
+        <i class="fa fa-clock-o"></i>
+        So. 21 Oktober 2018
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/computationalfluiddynamics.html">ComputationalFluidDynamics</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/flow-model.html">#flow model</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/fvm.html">#FVM</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/curvilinear-grid.html">#curvilinear grid</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <h1>Compass notation</h1>
+<p>We introduce a <strong>local compass notation</strong> for the variable <span class="math">\(\mathbf{T}\)</span> and it's coefficients <span class="math">\(\mathbf{D}\)</span>. In compass notation we indicate the grid points with capitals and the faces to the neighbouring cells with small letters.</p>
+<div class="highlight"><pre><span></span>            N  
+            |
+            |
+     nw-----n-----ne
+      |     |     |
+      |     |     |
+W-----w-----P-----e-----E
+      |     |     |
+      |     |     |
+     sw-----s-----se
+            |  
+            |
+            S
+</pre></div>
+<div class="math">$$
+\begin{array}{c|c|c}
+\textrm{Compass notation}\\
+\hline
+T_W = T_{i-1,j} &amp; T_P = T_{i,j} &amp; T_E = T_{i+1,j} \\
+\hline
+D_W = D_{i-1,j} &amp; D_P = D_{i,j} &amp; D_E = D_{i+1,j} \\
+\hline
+\end{array}
+$$</div>
+<h1>Finite Volume Method (FVM) 1-dimensional</h1>
+<h3>The basic equation</h3>
+<p>The stationary diffusion equation may be written as
+</p>
+<div class="math">$$
+\nabla\,(\Gamma\, \nabla T) + f = (\Gamma\,T_{x})_x+ f = 0
+$$</div>
+<p>and the time dependent (= instationary) as
+</p>
+<div class="math">$$
+\begin{align}
+T_t &amp; =   \nabla\,(\Gamma\, \nabla T) + f \\
+             &amp; = (\Gamma\,T_{x})_x+ f \\
+\end{align}
+$$</div>
+<p><span class="math">\(T\)</span> descibes the status of a of quantity, the temperature e.g.,  <span class="math">\(\Gamma\)</span> is the diffusion coefficient, and <span class="math">\(f\)</span> stands for an additional, external source (as solar heating e.g.). The diffusion equation describes the <strong>change of the heat flux</strong>. If <span class="math">\(\mathbf{H}\)</span> is the heat flux, then diffusion is defined by the following generic set of equations:</p>
+<div class="math">$$
+\begin{align}
+\mathbf{H} &amp; = \Gamma \nabla T \\
+\nabla\mathbf{H} &amp; =  \nabla(\Gamma \nabla T) \\
+\end{align}
+$$</div>
+<p>
+which drives the change of <span class="math">\(T\)</span>.</p>
+<h3>Divergence theorem</h3>
+<p>The divergence theorem is the base for the finite volume method (FVM). So let's recapitulate some identities:</p>
+<div class="math">\begin{equation}
+\begin{array}{rclcl}
+\iiint \limits_{\Delta V} \nabla \mathbf{F} \, \mathrm{d}V
+     &amp; = &amp; \iint \limits_{\Delta \Omega} \mathbf{F} \cdot \mathbf{n}\cdot \mathrm{d}S &amp;  &amp; \textrm{Divergence-Theorem} \\
+\overline{\nabla \mathbf{F}}\cdot \Delta V &amp; = &amp; \iint \limits_{\Delta \Omega} \mathbf{F} \cdot \mathbf{n}\cdot \mathrm{d}S \\
+\overline{\nabla \mathbf{F}}  &amp; = &amp; \frac{1}{\Delta V} \iint \limits_{\Delta \Omega} \mathbf{F} \cdot \mathbf{n}\cdot \mathrm{d}S
+\end{array}
+\end{equation}</div>
+<p>Let's have a look at the right hand side: The surface of a control volume (CV) is defined by the straight-line segements of each side. In the 1 dimensional case the CV has 2 sides, <span class="math">\(S_e\)</span>and <span class="math">\(S_w\)</span>. The positive flux of the divergence theorem is defined as the normal outward flux, <span class="math">\(\mathbf{H}_e + \mathbf{H}_w\)</span>. But since we define the  direction of the <span class="math">\(\mathbf{\hat{x}}\)</span> -axis as positive direction the normal outward flux will have the form, <span class="math">\(\mathbf{H}_e - \mathbf{H}_w\)</span>.</p>
+<h3>FVM Ansatz</h3>
+<p>The principle of the <strong>finite volume method FVM</strong> is:</p>
+<ol>
+<li>integrate the equation over the control volume CV</li>
+<li>Use the divergence theorem to replace the divergence terms by the flux through the surface integrated over the surface</li>
+<li>replace the flux by the expression with the temperature gradient</li>
+</ol>
+<div class="math">$$
+\begin{equation}
+\begin{array}{rclcl}
+\nabla(\Gamma\nabla T) + f &amp;=&amp; 0 \\
+\mathbf{F} &amp; := &amp; \Gamma \nabla T \\
+\nabla \mathbf{F} + f &amp;=&amp; 0 \\
+\iiint \limits_{\Delta V} \nabla \mathbf{F} \, \mathrm{d}V  + \iiint \limits_{\Delta V} f \, \mathrm{d}V &amp; = &amp;  
+                \iint \limits_{\Delta \Omega} \mathbf{F} \cdot \mathbf{n}\cdot \mathrm{d}S + \iiint \limits_{\Delta V} f \, \mathrm{d}V \\
+     \overline{\nabla \mathbf{F}}_P \cdot \Delta V_P  + \overline{f_P}  \cdot \Delta V_P &amp; = &amp;  
+                \iint \limits_{\Delta \Omega} \mathbf{F} \cdot \mathbf{n}\cdot \mathrm{d}S + \overline{f_P} \cdot \Delta V_P\\
+\end{array}
+\end{equation}
+$$</div>
+<p>With <span class="math">\(\mathbf{F} = \Gamma \nabla \phi\)</span> this gives for the right hand side of the divergence theorem:</p>
+<div class="math">$$
+\begin{equation}
+\begin{array}{rclcl}
+\iint_{S} \mathbf{F} \cdot d\mathbf{S} &amp; = &amp;
+                \sum_{f=faces} (\mathbf{F} \cdot \mathbf{S})_f \\
+         &amp; = &amp; \mathbf{F}_e \, \mathbf{S}_e   - \mathbf{F}_w \, \mathbf{S}_w   \\
+         &amp; = &amp; (\Gamma \nabla T)_e \, \mathbf{S}_e - (\Gamma \nabla T)_w \, \mathbf{S}_w \\
+         &amp; = &amp; \Gamma_e \frac{\partial T}{\partial x}|_e \, S_e - \Gamma_w \frac{\partial T}{\partial x}|_w \, S_w \\
+         &amp; = &amp; \Gamma_e \frac{T_E - T_P}{d_E} \, S_e - \Gamma_w \frac{T_P - T_W}{d_W} \, S_w
+\end{array}
+\end{equation}
+$$</div>
+<p>and using the compass notation we get the following <strong>stencil for the system matrix</strong></p>
+<div class="math">$$
+\begin{array}{c|c|c|c}
+\hline
+T_W  &amp; T_P  &amp; T_E &amp; b_P\\
+\hline
+D_W = \frac{\Gamma_w S_w}{d_W} &amp; D_P = -D_W - D_E &amp; D_E = \frac{\Gamma_e S_e}{d_E} &amp; \overline{f_P}\cdot \Delta V_P\\
+\hline
+\end{array}
+$$</div>
+<h3>Fixed boundary condition</h3>
+<p>For a <strong>fixed boundary value on face <span class="math">\(w\)</span></strong> at the left/west side of the domain we can write:
+</p>
+<div class="math">$$
+\begin{equation}
+\begin{array}{rclcl}
+     \overline{\nabla \mathbf{F}}_P \cdot \Delta V_P  + \overline{f_P}  \cdot \Delta V_P &amp; = &amp;  
+                \iint \limits_{\Delta \Omega} \mathbf{F} \cdot \mathbf{n}\cdot \mathrm{d}S + \overline{f_P} \cdot \Delta V_P\\
+       &amp; = &amp; \Gamma_e \frac{T_E - T_P}{d_E} \, S_e - \Gamma_{\tilde{w}} \frac{T_P - T_{\tilde{w}}}{d_{\tilde{w}}} \, S_{\tilde{w}}  + \overline{f_P} \cdot \Delta V_P\\
+\end{array}
+\end{equation}
+$$</div>
+<p>We approximate the <span class="math">\(\tilde{w}\)</span>-labeld terms with
+</p>
+<div class="math">$$
+\begin{array}{c c c c}
+\Gamma_{\tilde{w}}=\Gamma_w,  &amp;  S_{\tilde{w}}=S_w,  &amp;  d_{\tilde{w}}=d_w = x_P - x_w &amp; D_w, = \frac{\Gamma_w S_w}{d_w}\\
+\end{array}
+$$</div>
+<p>So we get the following stencil for the system matrix at the west boundary
+</p>
+<div class="math">$$
+\begin{array}{c|c|c|c}
+\hline
+  &amp; T_P  &amp; T_E &amp; b_P\\
+\hline
+ D_W = 0 &amp; D_P = 0 - D_E &amp; D_E = \frac{\Gamma_e S_e}{d_E} &amp; Tfix_w \cdot  D_w + \overline{f_P}\cdot \Delta V_P\\
+\hline
+\end{array}
+$$</div>
+<h3>Flux/gradient boundary condition</h3>
+<p>For a <strong>Neumann boundary condition on face e</strong> the flux has to be prescribed. Since the term <span class="math">\(\Gamma_e \frac{T_E - T_P}{d_E} \, S_e $ is the flux at $e\)</span> it can be replaced by a perscribed value. So we get the following stencil for the system matrix at the east boundary:</p>
+<div class="math">$$
+\begin{array}{c|c|c|c}
+\hline
+T_W  &amp; T_P  &amp; T_E &amp; b_P\\
+\hline
+D_W = \frac{\Gamma_w S_w}{d_W} &amp; D_P = -D_W - 0 &amp; D_E = 0 &amp; Tflux_e + \overline{f_P}\cdot \Delta V_P\\
+\hline
+\end{array}
+$$</div>
+<h3>Implicit (Euler backward) time schema</h3>
+<p>In the implicit time schema the tendency term <span class="math">\(\mathbf{T}_t\)</span> is discretizised as</p>
+<div class="math">$$
+\mathbf{T}_t = \frac{ \mathbf{T}^{n} - \mathbf{T}^{n-1}  }{\Delta t} =  \mathbf{D \, T}^n + \mathbf{f}
+$$</div>
+<p>The unknown quantity <span class="math">\(\mathbf{T}^{n}\)</span> is  on the left side of the equation including the equation system which has to be solved at each time step</p>
+<div class="math">$$
+\begin{align}
+\mathbf{T}^{n} -  \Delta t \, \mathbf{D \, T}^n &amp; = \mathbf{T}^{n-1}  + \Delta t \,\mathbf{f} \\
+(\mathbf{I} -  \Delta t \, \mathbf{D}) \, \mathbf{T}^n &amp; = \mathbf{T}^{n-1}  + \Delta t \,\mathbf{f}
+\end{align}
+$$</div>
+<p>The stencil for the implicit schema is now
+</p>
+<div class="math">$$
+\begin{array}{c|c|c|c}
+\hline
+T_W  &amp; T_P  &amp; T_E &amp; b_P\\
+\hline
+D_W = -\Delta t \frac{\Gamma_w S_w}{d_W} &amp; D_P = 1-(-D_W - D_E) &amp; D_E = -\Delta t \frac{\Gamma_e S_e}{d_E} &amp; \overline{f_P}\cdot \Delta V_P\\
+\hline
+\end{array}
+$$</div>
+<p>Introducing <span class="math">\(\tilde{\mathbf{A}}\)</span> we find the following form of discretisation:</p>
+<div class="math">$$
+\begin{align}
+\tilde{\mathbf{A}} &amp; :=  (\mathbf{I} - \Delta t \,\,\mathbf{D} )  \\
+\tilde{\mathbf{A}} \mathbf{u}^n &amp; = \mathbf{b}^{n-1}
+\end{align}
+$$</div>
+<h1>Implementation</h1>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="kn">as</span> <span class="nn">sps</span>
+<span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">bicgstab</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+<h3>Signals</h3>
+<p>This are auxiliary functions to initialize the parameter values. We have prepared a collection of signals here: https://alpynepyano.github.io/healthyNumerics/posts/ecg-waves-python.html</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">signal</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>            <span class="k">return</span> <span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">/</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">-</span><span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    <span class="k">def</span> <span class="nf">add_noise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">def</span> <span class="nf">line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">uSignal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>          <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wSignal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">dt</span><span class="p">):</span>       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">uSignal</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">uSignal</span><span class="p">(</span><span class="n">t</span><span class="o">-</span><span class="n">dt</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">expSignal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">minus_exp_square</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">t</span><span class="p">):</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+<h3>The FVM grid</h3>
+<p>We generate a 1-dimensional grid with irregular spacing between the grid points. We start with the location of the faces and compute then the grid point in the center.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">grid1D</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nxc</span><span class="p">,</span> <span class="n">Lx</span><span class="p">,</span> <span class="n">sCase</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nxc</span> <span class="o">=</span> <span class="n">nxc</span>                                                         <span class="c1"># number of faces</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Lx</span> <span class="o">=</span> <span class="n">Lx</span>                                                           <span class="c1"># length of x-domain</span>
+        <span class="n">sT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'stretch_regular'</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stretch_regular</span><span class="p">,</span>                          <span class="c1"># mapping of stretching types</span>
+              <span class="s1">'stretch_exp'</span>    <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">stretch_exp</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stretchT</span> <span class="o">=</span> <span class="n">sT</span><span class="p">[</span><span class="n">sCase</span><span class="p">]</span>                                              <span class="c1"># selects the type of stretching</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>                    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">a</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">/</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">-</span><span class="n">a</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="c1"># scaling to [0..1]</span>
+    <span class="k">def</span> <span class="nf">xi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                          <span class="k">return</span>  <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nxc</span><span class="p">)</span> <span class="c1"># logical/computational grid</span>
+    <span class="k">def</span> <span class="nf">stretch_regular</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>             <span class="k">return</span>  <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">nxc</span><span class="p">)</span> <span class="c1"># regular grid, no stretching</span>
+    <span class="k">def</span> <span class="nf">stretch_exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                                                     <span class="c1"># exponantial stretching</span>
+        <span class="n">ix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">xi</span><span class="p">();</span>                    <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ix</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">xc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">stretchT</span><span class="p">()</span>      <span class="c1"># face x-coordinate</span>
+    <span class="k">def</span> <span class="nf">xp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                          <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">centerPoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xc</span><span class="p">())</span>  <span class="c1"># center point coordinate</span>
+    <span class="k">def</span> <span class="nf">dx</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                                                              <span class="c1"># spacing between P's</span>
+        <span class="n">xc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Lx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">stretchT</span><span class="p">()</span>
+        <span class="n">x</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">xc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">centerPoint</span><span class="p">(</span><span class="n">xc</span><span class="p">),</span><span class="n">xc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nxc</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">centerPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">x</span><span class="p">):</span> <span class="n">mx</span><span class="o">=</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span> <span class="k">return</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">mx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">mx</span><span class="p">])</span>    <span class="c1"># center point P method</span>
+    <span class="k">def</span> <span class="nf">Swe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>                          <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nxc</span><span class="p">))</span>          <span class="c1"># areas of the faces west-east</span>
+    <span class="k">def</span> <span class="nf">cvP</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Swe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Swe</span><span class="p">();</span> <span class="n">mx</span><span class="o">=</span><span class="n">Swe</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="k">return</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">Swe</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">mx</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">Swe</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">mx</span><span class="p">])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xc</span><span class="p">())</span>                 <span class="c1"># volumes of the CV</span>
+
+<span class="c1">#--- MAIN -------------------------------------------------------</span>
+<span class="c1">#--- Input ------------------------------------------------------    </span>
+<span class="n">nxc</span> <span class="o">=</span> <span class="mi">28</span>                               <span class="c1"># number of faces/corners</span>
+<span class="n">Lx</span>  <span class="o">=</span> <span class="mf">0.02</span>                             <span class="c1"># length of x-domain</span>
+<span class="c1">#Lx  = 0.3                             # length of x-domain</span>
+<span class="n">nxp</span> <span class="o">=</span> <span class="n">nxc</span><span class="o">-</span><span class="mi">1</span>                            <span class="c1"># number of central points P     </span>
+<span class="c1">#g  = grid1D(nxc,Lx,'stretch_regular') # 2 types</span>
+<span class="n">g</span>   <span class="o">=</span> <span class="n">grid1D</span><span class="p">(</span><span class="n">nxc</span><span class="p">,</span><span class="n">Lx</span><span class="p">,</span><span class="s1">'stretch_exp'</span><span class="p">)</span>     <span class="c1"># type of grid strechting</span>
+</pre></div>
+<h3>Graphics of the grid</h3>
+<div class="highlight"><pre><span></span><span class="c1">#--- Graphics -----------------</span>
+<span class="c1">#--- plot the grid ------------</span>
+<span class="n">xc</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">xc</span><span class="p">()</span>                            <span class="c1"># get the corners/faces points w, e</span>
+<span class="n">xp</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">xp</span><span class="p">()</span>                            <span class="c1"># get the central points P</span>
+
+<span class="k">def</span> <span class="nf">plot_grid</span><span class="p">(</span><span class="n">ax0</span><span class="p">,</span><span class="n">xc</span><span class="p">,</span><span class="n">xp</span><span class="p">,</span> <span class="n">y_base</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">ax0</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xc</span><span class="p">,</span> <span class="n">y_base</span><span class="o">+</span><span class="mi">0</span><span class="o">*</span><span class="n">xc</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">'--'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"|"</span><span class="p">,</span><span class="n">ms</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span> <span class="p">)</span>
+    <span class="n">ax0</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">y_base</span><span class="o">+</span><span class="mi">0</span><span class="o">*</span><span class="n">xp</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fast'</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">plot_grid</span><span class="p">(</span><span class="n">ax0</span><span class="p">,</span><span class="n">xc</span><span class="p">,</span><span class="n">xp</span><span class="p">)</span>
+    <span class="n">grid_legend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">'xc: face points w'</span><span class="p">,</span> <span class="s1">'xp: center grid points P'</span> <span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">grid_legend</span><span class="p">,</span><span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">15</span><span class="p">})</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Finite Volume Grid"</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img5301/output_17_0.png"/></p>
+<h3>Parameters and boundary conditions</h3>
+<p>We will run the following case; which is given here: http://ftp.demec.ufpr.br/disciplinas/TM702/Versteeg_Malalasekera_2ed.pdf :</p>
+<p><strong>Case B</strong></p>
+<ul>
+<li>a plate with thikness: <span class="math">\(L = 2 cm\)</span></li>
+<li>thermal conductivitiy, constant over the domain: <span class="math">\(\Gamma = 0.5 \; W/(m \cdot K)\)</span></li>
+<li>uniform heat generation <span class="math">\(q = 1000\; kW/m^3\)</span></li>
+<li>temperatur at the west boundary, constant: <span class="math">\(T_w = 100^o C\)</span></li>
+<li>temperatur at the east boundary, constant: <span class="math">\(T_e = 200^o C\)</span></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">system1D</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">sig</span><span class="p">,</span><span class="n">case</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nxc</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">nxc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nxp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nxc</span><span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sig</span> <span class="o">=</span> <span class="n">sig</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">=</span> <span class="n">case</span>
+    <span class="k">def</span> <span class="nf">b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nxp</span><span class="p">))</span>             <span class="c1"># initialize local rhs</span>
+    <span class="k">def</span> <span class="nf">DWE</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">g</span><span class="p">):</span>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gam</span><span class="p">()</span><span class="o">*</span><span class="n">g</span><span class="o">.</span><span class="n">Swe</span><span class="p">()</span><span class="o">/</span><span class="n">g</span><span class="o">.</span><span class="n">dx</span><span class="p">()</span>        <span class="c1"># build the non-zero elements of the system matrix  </span>
+    <span class="c1">#----- input section ------------------------------------------------------------------------------</span>
+    <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>         
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="o">==</span><span class="s1">'B'</span><span class="p">:</span>   <span class="k">return</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nxp</span><span class="p">))</span>  <span class="c1"># initial value, random gauss [-0.1 .. +0.1]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="o">==</span><span class="s1">'C'</span><span class="p">:</span>   <span class="k">return</span> <span class="mf">273.0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nxp</span><span class="p">))</span>           
+    <span class="k">def</span> <span class="nf">q</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">g</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="o">==</span><span class="s1">'B'</span><span class="p">:</span>   <span class="k">return</span> <span class="mi">1000</span><span class="o">*</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span><span class="n">g</span><span class="o">.</span><span class="n">cvP</span><span class="p">()</span>       <span class="c1"># set source term</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span><span class="o">==</span><span class="s1">'C'</span><span class="p">:</span>   <span class="k">return</span> <span class="mf">0.00</span>                        <span class="c1"># set source term</span>
+    <span class="k">def</span> <span class="nf">gam</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span><span class="s1">'B'</span><span class="p">:</span>  <span class="k">return</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nxc</span><span class="p">))</span>     <span class="c1"># set diffusion coefficient</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span><span class="s1">'C'</span><span class="p">:</span>  <span class="k">return</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">nxc</span><span class="p">))</span>     <span class="c1"># set diffusion coefficient</span>
+    <span class="k">def</span> <span class="nf">T_west_fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span><span class="s1">'B'</span><span class="p">:</span> <span class="k">return</span> <span class="mf">100.0</span>                       <span class="c1"># set T_fix at w-boundary</span>
+         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span><span class="s1">'C'</span><span class="p">:</span> <span class="k">return</span> <span class="mf">273.0</span>                       <span class="c1"># set T_fix at w-boundary</span>
+    <span class="k">def</span> <span class="nf">T_east_fix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span><span class="s1">'B'</span><span class="p">:</span> <span class="k">return</span> <span class="mf">200.0</span>                       <span class="c1"># set T_fix at e-boundary</span>
+         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">==</span><span class="s1">'C'</span><span class="p">:</span> <span class="k">return</span> <span class="mf">273.0</span>                       <span class="c1"># set T_fix at e-boundary</span>
+
+<span class="k">def</span> <span class="nf">insert_boundary_conditions</span><span class="p">(</span><span class="n">sT</span><span class="p">,</span><span class="n">DWE</span><span class="p">,</span><span class="n">b</span><span class="p">):</span>
+    <span class="c1">#----- input section ------------------------------------------------------------------------------</span>
+    <span class="n">west_fix</span> <span class="o">=</span> <span class="bp">True</span>  <span class="c1">#---- west boundary                       # select type of boundary condition at w</span>
+    <span class="k">if</span> <span class="n">west_fix</span><span class="p">:</span>
+        <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sT</span><span class="o">.</span><span class="n">T_west_fix</span><span class="p">()</span> <span class="o">*</span> <span class="n">DWE</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>  
+    <span class="k">else</span><span class="p">:</span> <span class="n">T_west_flux</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">DWE</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">T_west_flux</span>
+
+    <span class="n">east_fix</span> <span class="o">=</span> <span class="bp">True</span>   <span class="c1">#---- east boundary                      # select type of boundary condition at e</span>
+    <span class="k">if</span> <span class="n">east_fix</span><span class="p">:</span>
+        <span class="n">b</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span>  <span class="n">sT</span><span class="o">.</span><span class="n">T_east_fix</span><span class="p">()</span> <span class="o">*</span> <span class="n">DWE</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">];</span>
+    <span class="k">else</span><span class="p">:</span> <span class="n">DWE</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">return</span> <span class="n">DWE</span><span class="p">,</span><span class="n">b</span>
+</pre></div>
+<h3>The analytical solution</h3>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Tcase_B</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>  
+    <span class="n">L</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">1000</span><span class="o">*</span><span class="mi">10</span><span class="o">**</span><span class="mi">3</span><span class="p">;</span>
+    <span class="n">Tw</span><span class="p">,</span> <span class="n">Te</span> <span class="o">=</span> <span class="mf">100.0</span><span class="p">,</span> <span class="mf">200.0</span><span class="p">;</span>
+    <span class="k">return</span>  <span class="n">Tw</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="p">(</span> <span class="p">(</span><span class="n">Te</span><span class="o">-</span><span class="n">Tw</span><span class="p">)</span><span class="o">/</span><span class="n">L</span> <span class="o">+</span>  <span class="mf">0.5</span><span class="o">*</span><span class="n">Q</span><span class="o">*</span><span class="p">(</span><span class="n">L</span><span class="o">-</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">gamma</span><span class="p">)</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">TB</span> <span class="o">=</span> <span class="n">Tcase_B</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fast'</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">TB</span><span class="p">,</span><span class="s1">'o-'</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Case B: analytical solution'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img5301/output_21_0.png"/></p>
+<h3>The numerical solution</h3>
+<p>The numerical solution hardly differs from the analytical solution. Both are computed on the stretched grid.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">solve_stationary_system</span><span class="p">(</span><span class="n">DWE</span><span class="p">,</span><span class="n">RHS</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">print_convergence</span><span class="p">(</span><span class="n">cc</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cc</span><span class="o">==</span><span class="mi">0</span> <span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s2">"bicg-stab: successful exit --&gt; c ="</span><span class="p">,</span><span class="n">cc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cc</span> <span class="o">&gt;</span><span class="mi">0</span> <span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s2">"bicg-stab: convergence to tolerance not achieved, number of iterations is = "</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cc</span> <span class="o">&lt;</span><span class="mi">0</span> <span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s2">"bicg-stab: illegal input or breakdown --&gt; c ="</span><span class="p">,</span><span class="n">cc</span><span class="p">)</span>
+
+    <span class="c1">#---- center P ----</span>
+    <span class="n">DP</span> <span class="o">=</span> <span class="o">-</span><span class="n">DWE</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">nxp</span><span class="p">]</span> <span class="o">-</span> <span class="n">DWE</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nxc</span><span class="p">];</span>  
+    <span class="c1">#---- system matrix D ----</span>
+    <span class="n">DW</span> <span class="o">=</span>  <span class="n">DWE</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nxp</span><span class="p">];</span>   <span class="n">DE</span> <span class="o">=</span> <span class="n">DWE</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">nxp</span><span class="p">]</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">sps</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span> <span class="n">diagonals</span><span class="o">=</span><span class="p">[</span><span class="n">DW</span><span class="p">,</span> <span class="n">DP</span><span class="p">,</span> <span class="n">DE</span><span class="p">],</span>
+                     <span class="n">offsets</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">],</span>
+                     <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">nxp</span><span class="p">,</span> <span class="n">nxp</span><span class="p">),</span> <span class="n">format</span><span class="o">=</span><span class="s1">'csr'</span><span class="p">)</span>
+    <span class="c1">#---- numerical solver</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">bicgstab</span><span class="p">(</span><span class="n">D</span><span class="p">,</span><span class="o">-</span><span class="n">RHS</span><span class="p">,</span><span class="n">x0</span><span class="o">=</span><span class="n">T</span><span class="p">,</span><span class="n">tol</span><span class="o">=</span><span class="mf">1e-06</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="bp">None</span><span class="p">);</span>  
+    <span class="n">print_convergence</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># X[0] := solved T</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#----- main --------------------</span>
+<span class="n">sig</span>    <span class="o">=</span> <span class="n">signal</span><span class="p">()</span>                               <span class="c1"># get access to the signals</span>
+<span class="n">sT</span>     <span class="o">=</span> <span class="n">system1D</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">sig</span><span class="p">,</span><span class="n">case</span><span class="o">=</span><span class="s1">'B'</span><span class="p">)</span>               <span class="c1"># instantiate a system for this case</span>
+<span class="n">qT</span>     <span class="o">=</span> <span class="n">sT</span><span class="o">.</span><span class="n">q</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>                                <span class="c1"># set the source term</span>
+<span class="c1">#---- main ---------------------</span>
+<span class="n">DWE</span>    <span class="o">=</span> <span class="n">sT</span><span class="o">.</span><span class="n">DWE</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>                              <span class="c1"># build the non-zero elements of the system matrix</span>
+<span class="n">bT</span>     <span class="o">=</span> <span class="n">sT</span><span class="o">.</span><span class="n">b</span><span class="p">()</span>                                 <span class="c1"># initialize the local rhs of this system</span>
+<span class="n">DWE</span><span class="p">,</span><span class="n">bT</span> <span class="o">=</span> <span class="n">insert_boundary_conditions</span><span class="p">(</span><span class="n">sT</span><span class="p">,</span><span class="n">DWE</span><span class="p">,</span><span class="n">bT</span><span class="p">)</span>  <span class="c1"># insert the boundary conditions: changes DWE and b</span>
+<span class="n">RHS</span>    <span class="o">=</span> <span class="n">bT</span><span class="o">+</span><span class="n">qT</span>                                  <span class="c1"># update the right hand side of the complete system</span>
+<span class="n">T</span>      <span class="o">=</span> <span class="n">sT</span><span class="o">.</span><span class="n">T</span><span class="p">()</span>                                 <span class="c1"># initialize T</span>
+<span class="n">T</span>      <span class="o">=</span> <span class="n">solve_stationary_system</span><span class="p">(</span><span class="n">DWE</span><span class="p">,</span><span class="n">RHS</span><span class="p">,</span><span class="n">T</span><span class="p">)</span>     <span class="c1"># run the numerical sover</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="nt">bicg-stab</span><span class="o">:</span> <span class="nt">successful</span> <span class="nt">exit</span> <span class="nt">--</span><span class="o">&amp;</span><span class="nt">gt</span><span class="o">;</span> <span class="nt">c</span> <span class="o">=</span> <span class="nt">0</span>
+</pre></div>
+<h3>Graphics</h3>
+<div class="highlight"><pre><span></span><span class="n">G</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span> <span class="s1">'T numerical'</span><span class="p">:</span><span class="n">T</span><span class="p">,</span>
+                  <span class="s1">'TB analytical'</span><span class="p">:</span><span class="n">TB</span>
+                 <span class="p">})</span>
+<span class="c1">#print('T-TB', T-TB)</span>
+<span class="n">ybase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">-</span><span class="mf">0.1</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fast'</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax0</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span><span class="n">G</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">);</span>
+    <span class="n">plot_grid</span><span class="p">(</span><span class="n">ax0</span><span class="p">,</span><span class="n">xc</span><span class="p">,</span><span class="n">xp</span><span class="p">,</span> <span class="n">y_base</span><span class="o">=</span><span class="n">ybase</span><span class="p">)</span>
+    <span class="n">grid_legend</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">'xc: face points w'</span><span class="p">,</span> <span class="s1">'xp: center grid points P'</span> <span class="p">])</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">G</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">15</span><span class="p">})</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">'y'</span><span class="p">);</span> <span class="c1">#plt.legend(prop={'size': 15})</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">"Case B, Temperature: numerical and analytical solution"</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img5301/output_26_0.png"/></p>
+<p>A time dependent solution is given <a href="cfd-dynamics-of-heat-flux-finite-volume-with-python.html">here</a></p>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/cfd_implicite_time_dependent_heat_flow_model_finite_volume.html';
+    this.page.identifier = 'cfd_implicite_time_dependent_heat_flow_model_finite_volume';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

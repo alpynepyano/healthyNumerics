@@ -9,6 +9,34 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/decorative-mathematical-functions.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/fractal-mountains-with-python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/cfd-dynamics-of-heat-flux-finite-volume-with-python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/cfd_implicite_time_dependent_heat_flow_model_finite_volume.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/mondrian-style-art-generator-with-python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/accelerated-pastel-art-with-python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/fibonacci-curve-with-python.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/convolution-non-linear-regression-python.html</loc>
     <priority>0.8</priority>
   </url>

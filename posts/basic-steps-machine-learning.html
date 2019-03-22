@@ -119,9 +119,9 @@
 <article class="article">
   <header>
     <ul class="list-inline">
-      <li class="list-inline-item text-muted" title="2018-09-25T21:15:00+02:00">
+      <li class="list-inline-item text-muted" title="2018-11-25T21:15:00+01:00">
         <i class="fa fa-clock-o"></i>
-        Di. 25 September 2018
+        So. 25 November 2018
       </li>
       <li class="list-inline-item">
         <i class="fa fa-folder-open-o"></i>
@@ -219,7 +219,7 @@ sTest-sTrain          :  0.16368547555593294
 <p>Don’t get confused by its name! It is a classification not a regression algorithm. It is used to estimate discrete values ( Binary values like 0/1, yes/no, true/false ) based on given set of independent variables.</p>
 <p>To the math: the log odds of the outcome is modeled as a linear combination of the predictor variables.</p>
 <div class="math">$$
-odds := \frac{p}{1-p} =\frac{\text{probability of event occurrence}}{\text{probability of not event occurrence}} 
+odds := \frac{p}{1-p} =\frac{\text{probability of event occurrence}}{\text{probability of not event occurrence}}
 $$</div>
 <div class="math">$$
 ln(odds) = ln(\frac{p}{1-p})
@@ -355,7 +355,7 @@ intercepts:  [-0.43771573]
 </pre></div>
 <h2>--- <em>Python code: Graphics</em></h2>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_gr01</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">xLabel</span><span class="p">,</span><span class="n">yLabel</span><span class="p">,</span><span class="n">grTitel</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span> 
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'fivethirtyeight'</span><span class="p">):</span>
 
          <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">35</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">;</span>
 
@@ -392,7 +392,7 @@ intercepts:  [-0.43771573]
          <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">);</span>
          <span class="n">a1size</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">*</span><span class="mi">200</span><span class="p">;</span>
 
-         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">a1size</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">V</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"winter"</span><span class="p">,</span> 
+         <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">a1size</span><span class="p">,</span>  <span class="n">c</span><span class="o">=</span><span class="n">V</span><span class="p">,</span> <span class="n">edgecolors</span><span class="o">=</span><span class="s1">'k'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s2">"winter"</span><span class="p">,</span>
                      <span class="n">alpha</span><span class="o">=</span><span class="mf">0.85</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'observations'</span><span class="p">);</span>
          <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">Xm</span><span class="p">,</span><span class="n">Ym</span><span class="p">,</span><span class="s1">'r--'</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'decision boundary'</span><span class="p">);</span>
 
@@ -408,7 +408,7 @@ intercepts:  [-0.43771573]
 
          <span class="c1"># Put the result into a color plot</span>
          <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-         <span class="n">ax1</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'winter'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'model prediction'</span><span class="p">)</span> 
+         <span class="n">ax1</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'winter'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'model prediction'</span><span class="p">)</span>
          <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">"lower left"</span><span class="p">,</span> <span class="n">scatterpoints</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">'size'</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
          <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 
@@ -416,7 +416,7 @@ intercepts:  [-0.43771573]
 
 <span class="k">def</span> <span class="nf">flowchart_1</span><span class="p">():</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">'w'</span><span class="p">)</span>
-    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>   <span class="c1"># </span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">axes</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">frameon</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">xticks</span><span class="o">=</span><span class="p">[],</span> <span class="n">yticks</span><span class="o">=</span><span class="p">[])</span>   <span class="c1">#</span>
 
     <span class="n">dpx</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">;</span> <span class="n">dpy</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
     <span class="n">polyF</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -435,7 +435,7 @@ intercepts:  [-0.43771573]
     <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s2">"Features</span><span class="se">\n</span><span class="s2">of the</span><span class="se">\n</span><span class="s2">Objects"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="s2">"Predictive</span><span class="se">\n</span><span class="s2">Model"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">8.5</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span> <span class="s2">"Names,</span><span class="se">\n</span><span class="s2"> Labels </span><span class="se">\n</span><span class="s2"> of the </span><span class="se">\n</span><span class="s2"> Objects</span><span class="se">\n\n</span><span class="s2"> (targets, classes)"</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">margins</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="c1">#flowchart_1()</span>
 </pre></div>
