@@ -75,14 +75,14 @@
           <ul class="list-inline">
             <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
 			<li class="list-inline-item text-muted">|</li>
-            <li class="list-inline-item"><a style="color:#ccccff;" href="http://HSPF.ch/" target="_blank">Health Systems</a></li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://Abdagon.com/" target="_blank">Health Systems</a></li>
 			<li class="list-inline-item text-muted">|</li>
 			
 			
 
 		
 			
-            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher-8aa90a4b/en" target="_blank"></a></li>
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher" target="_blank"></a></li>
             <li class="list-inline-item text-muted">|</li>
 
 		
@@ -256,17 +256,17 @@ ARTICLE_PATHS = STATIC_PATHS
 </pre></div>
 <p>and <span class="math">\(p001\)</span> corresponds to the structure of your content directory</p>
 <p>In order to include the cover, make an extension there where <code>article.summary</code> already is used. I use pelican-theme <strong>alchemy</strong>  (that uses bootstrap) and  <code>article.summary</code> is in <code>index.html</code>. I extended it as follows: </p>
-<div class="highlight"><pre><span></span><span class="x">  &amp;lt;div class="col-sm-8"&amp;gt;</span>
-<span class="x">    &amp;lt;h4 class="title"&amp;gt;&amp;lt;a href="</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="x">/</span><span class="cp">{{</span> <span class="nv">article.url</span> <span class="cp">}}</span><span class="x">"&amp;gt;</span><span class="cp">{{</span> <span class="nv">article.title</span> <span class="cp">}}</span><span class="x">&amp;lt;/a&amp;gt;&amp;lt;/h4&amp;gt;</span>
-<span class="x">    &amp;lt;div class="content"&amp;gt;</span>
-<span class="x">      </span><span class="cp">{{</span> <span class="nv">article.summary</span><span class="o">|</span><span class="nf">striptags</span> <span class="cp">}}</span><span class="x"></span>
-<span class="x">      </span><span class="cp">{%</span> <span class="k">if</span> <span class="nv">article.cover</span> <span class="cp">%}</span><span class="x">           </span>
-<span class="x">         &amp;lt;div class="container"&amp;gt;&amp;lt;div class="col-md-6" style="padding-left: 0px;  padding-right: 0px;"&amp;gt;</span>
-<span class="x">           &amp;lt;img src="</span><span class="cp">{{</span> <span class="nv">article.cover</span> <span class="cp">}}</span><span class="x">" class="img-fluid"&amp;gt;</span>
-<span class="x">           &amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;   </span>
-<span class="x">      </span><span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span><span class="x"> </span>
-<span class="x">    &amp;lt;/div&amp;gt;</span>
-<span class="x">  &amp;lt;/div&amp;gt;</span>
+<div class="highlight"><pre><span></span>  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col-sm-8"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h4</span> <span class="na">class=</span><span class="s">"title"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"</span><span class="cp">{{</span> <span class="nv">SITEURL</span> <span class="cp">}}</span><span class="s">/</span><span class="cp">{{</span> <span class="nv">article.url</span> <span class="cp">}}</span><span class="s">"</span><span class="nt">&gt;</span><span class="cp">{{</span> <span class="nv">article.title</span> <span class="cp">}}</span><span class="nt">&lt;/a&gt;&lt;/h4&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+      <span class="cp">{{</span> <span class="nv">article.summary</span><span class="o">|</span><span class="nf">striptags</span> <span class="cp">}}</span>
+      <span class="cp">{%</span> <span class="k">if</span> <span class="nv">article.cover</span> <span class="cp">%}</span>           
+         <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;&lt;div</span> <span class="na">class=</span><span class="s">"col-md-6"</span> <span class="na">style=</span><span class="s">"padding-left: 0px;  padding-right: 0px;"</span><span class="nt">&gt;</span>
+           <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">"</span><span class="cp">{{</span> <span class="nv">article.cover</span> <span class="cp">}}</span><span class="s">"</span> <span class="na">class=</span><span class="s">"img-fluid"</span><span class="nt">&gt;</span>
+           <span class="nt">&lt;/div&gt;&lt;/div&gt;</span>   
+      <span class="cp">{%</span> <span class="k">endif</span> <span class="cp">%}</span> 
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
 </pre></div>
 <h3>Pages</h3>
 <p>If you create a folder named <code>pages</code> inside the content folder, all the files in it will be used to generate static pages, such as <em>About</em> or <em>Contact</em> pages.</p>

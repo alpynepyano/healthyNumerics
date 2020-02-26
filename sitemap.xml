@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/Switzerlands-285-hospital-locations.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/gradient-descent-algorithm.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/basic-steps-machine-learning.html</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://alpynepyano.github.io/healthyNumerics/posts/time_series_clustering_with_python.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
@@ -61,10 +69,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://alpynepyano.github.io/healthyNumerics/posts/time_series_clustering_with_python.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/solving-the-monti-hall-problem-with-python.html</loc>
     <priority>0.8</priority>
   </url>
@@ -114,14 +118,6 @@
   </url>
   <url>
     <loc>https://alpynepyano.github.io/healthyNumerics/posts/MetaAnalysis_02_decision_tree_intro.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alpynepyano.github.io/healthyNumerics/posts/Meta_Analysis_01_Clinical_multicenter_study_Python.html</loc>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://alpynepyano.github.io/healthyNumerics/posts/CFD-python-diffusion-2dim-FD-explict.html</loc>
     <priority>0.8</priority>
   </url>
   <url>
