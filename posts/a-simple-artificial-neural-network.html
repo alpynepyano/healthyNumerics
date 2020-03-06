@@ -159,20 +159,26 @@ $$</div>
 \Psi_i  =  \sigma(\boldsymbol{\phi}^T_i \cdot \mathbf{w})
 $$</div>
 <h1>Life cycle of an artificial neural network method</h1>
-<p><strong>Training</strong>
-- The phase to evaluate the model weights is called <strong>training</strong>.
-- during the training the model weights <span class="math">\(w\)</span> are the unknown variables.
-- for the training of <span class="math">\(w\)</span> we need data of both sides of the equality sign: input data <span class="math">\(\phi\)</span> and known output data <span class="math">\(\Psi\)</span> sometimes called <em>labeled data</em>.
-- the training algorithm changes the weights <span class="math">\(w\)</span> systematically until we get due to the model a satisfying fit between the input data <span class="math">\(\phi\)</span> and the known output data <span class="math">\(\Psi\)</span> </p>
-<p><strong>Testing</strong>
-- If the training results seem to be satisfying we need a phase of <strong>testing</strong>
-- for the testing again we need data of both sides of the equality sign, input data <span class="math">\(\phi\)</span> and known output data <span class="math">\(\Psi\)</span>, that have not been used for the training of the weights <span class="math">\(w\)</span>.
-- as a result of the testing we get informations about the <strong>qualitiy and error charakteristics of the modell</strong>. For discrete data it's a <strong>confusion matrix</strong>, for continous data it's a curve called <strong>receiver operation characteristic (ROC)</strong></p>
-<p><strong>Application</strong>
-- the model weights <span class="math">\(w\)</span> are fixed now.
-- the algorithm is now a simple vector operation: $\Psi  =  \boldsymbol{\phi}^T \cdot \mathbf{w} $
-- the computed results are valid <strong>subject to the error charakteristics</strong> only.
-- changing quality of the input data will involve a change of quality of the predicted output data too.</p>
+<p><strong>Training</strong></p>
+<ul>
+<li>The phase to evaluate the model weights is called <strong>training</strong>.</li>
+<li>during the training the model weights <span class="math">\(w\)</span> are the unknown variables.</li>
+<li>for the training of <span class="math">\(w\)</span> we need data of both sides of the equality sign: input data <span class="math">\(\phi\)</span> and known output data <span class="math">\(\Psi\)</span> sometimes called <em>labeled data</em>.</li>
+<li>the training algorithm changes the weights <span class="math">\(w\)</span> systematically until we get due to the model a satisfying fit between the input data <span class="math">\(\phi\)</span> and the known output data <span class="math">\(\Psi\)</span> </li>
+</ul>
+<p><strong>Testing</strong></p>
+<ul>
+<li>If the training results seem to be satisfying we need a phase of <strong>testing</strong></li>
+<li>for the testing again we need data of both sides of the equality sign, input data <span class="math">\(\phi\)</span> and known output data <span class="math">\(\Psi\)</span>, that have not been used for the training of the weights <span class="math">\(w\)</span>.</li>
+<li>as a result of the testing we get informations about the <strong>qualitiy and error charakteristics of the modell</strong>. For discrete data it's a <strong>confusion matrix</strong>, for continous data it's a curve called <strong>receiver operation characteristic (ROC)</strong></li>
+</ul>
+<p><strong>Application</strong></p>
+<ul>
+<li>the model weights <span class="math">\(w\)</span> are fixed now.</li>
+<li>the algorithm is now a simple vector operation: <span class="math">\(\Psi  =  \boldsymbol{\phi}^T \cdot \mathbf{w}\)</span></li>
+<li>the computed results are valid <strong>subject to the error charakteristics</strong> only.</li>
+<li>changing quality of the input data will involve a change of quality of the predicted output data too.</li>
+</ul>
 <h1>A task for a most simple but complete neural network</h1>
 <p>We let the NN (neural network) solve the following task:</p>
 <ul>
@@ -257,7 +263,7 @@ input data # ( 8 ):    [1 1 0 0 0 1 0]      --&gt;     output:  [1]
 <div class="math">$$
 \sigma = \frac{1}{1 + e^{-x}}
 $$</div>
-<p>The derivative of the sigmoid function $\sigma^{'} $ is given as 
+<p>The derivative of the sigmoid function <span class="math">\(\sigma^{'}\)</span> is given as 
 </p>
 <div class="math">$$
 \sigma^{'} = \frac{d\sigma}{dx} = \sigma(1-\sigma)
@@ -456,7 +462,7 @@ LpP                 [[0 2 0 0 0 2 2 2 2]]
 </pre></div>
 <p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6104/output_26_1.png"/></p>
 <h2>3.2 Confusion matrix with other Python tools</h2>
-<p>In our <strong><a href="healthyNumerics/posts/confusion-matrix-with-python-tools.html">Post here</a></strong> we try some other Python tools to evaluate and display the error matrix.</p>
+<p>In our <strong><a href="confusion-matrix-with-python-tools.html">Post here</a></strong> we try some other Python tools to evaluate and display the error matrix.</p>
 <p>.</p>
 <h2><em>---- Code of the graphics</em> -----</h2>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphviz</span> <span class="kn">as</span> <span class="nn">gv</span>
