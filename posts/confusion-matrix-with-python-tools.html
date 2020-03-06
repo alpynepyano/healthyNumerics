@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>MachineLearning: The Confusion Matrix in the AI Communitiy | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/confusion-matrix-with-python-tools.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="How good is good enough? How wrong is still an acceptable level? The confusion or error matrix is an important tool. It gives a risk profile we have to deal with when using AI models. It's exactly the same tool that is often used for the evaluation of medical interventions.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://Abdagon.com/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>MachineLearning: The Confusion Matrix in the AI Communitiy
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2020-03-03T10:20:00+01:00">
+        <i class="fa fa-clock-o"></i>
+        Di 03 März 2020
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/machinelearning.html">MachineLearning</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/ai.html">#AI</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/numerical.html">#numerical</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/statistics.html">#statistics</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/machine-learning.html">#machine learning</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#python</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <p>A confusion matrix is a summary of the prediction results on a classification problem. The number of correct and incorrect predictions are summarized with count values and broken down by each class. It gives insight into the types of errors that statistically are being made when running the model.</p>
+<blockquote class="blockquote">
+<p>The confusion matrix shows <strong>how the model is statistically confused when it makes predictions</strong>. </p>
+</blockquote>
+<p>The confusion matrix is also known as <strong>error matrix</strong>. It's exactly the same tool that is often used for the evaluation of medical interventions. A whole range of indicators can be derived from the confusion matrix. An overview with definitions is given <strong><a href="https://en.wikipedia.org/wiki/Confusion_matrix">here</a></strong> (https://en.wikipedia.org/wiki/Confusion_matrix).</p>
+<p>The confusion matrix can be used for binary "yes/no" or "0/1" types of questions. But the output of a AI model or of a dignostic test is often not binary but continuous. In this case the method has to be combined with ROC- and AUC-methods (ROC = receiver operating characteristic; AUC = area under the ROC curve). An illustrative example of th ROC method is given in our <strong><a href="healthyNumerics/posts/evaluating-diagnostic-test-with-continuous-output.html">Post here</a></strong></p>
+<h1>0. The confusion matrix in the AI communitiy</h1>
+<p>Unfortunately different communities arrange the elements of the confusion matrix in different ways. Due to several popular software packages a <em>de facto</em> standard of the confusion matrix in the AI community is given as:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sn</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span>
+<span class="kn">from</span> <span class="nn">pandas_ml</span> <span class="kn">import</span> <span class="n">ConfusionMatrix</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">g_CM</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6103/output_4_0.png"/></p>
+<h1>1. Generate labeled and predicted data</h1>
+<p>We generate two toy data series by random generator.</p>
+<ul>
+<li><span class="math">\(yTrue\)</span> stands for the with gold standard labeled data groundtruth</li>
+<li><span class="math">\(yPred\)</span> stands for a modelled prediction</li>
+</ul>
+<p>We will evaluate and plot the error matrix with different tools.</p>
+<div class="highlight"><pre><span></span><span class="c1">#---- INPUT: size of data set ----</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="mi">58</span>
+
+<span class="c1">#---- generate data as column vectors ----</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">yTrue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">yPred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">'----- Data and predictions --------------'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'yTrue  ='</span><span class="p">,</span> <span class="n">yTrue</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'yPred  ='</span><span class="p">,</span> <span class="n">yPred</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>----- Data and predictions --------------
+yTrue  = [[1 1 0 0 1 1 1 1 1 0 0 1 0 1 1 0 0 1 0 0 0 1 0 0 1 0 0 0 1 0 0 0 1 1 1 1 1 0 0 0 1 1 1 1 1 1 0 1 1 0 0 1 0 0 1 1 1 0]]
+yPred  = [[1 0 0 1 1 0 1 1 1 1 0 0 1 1 0 0 0 0 1 1 1 0 1 0 0 1 1 0 1 1 0 1 0 0 1 1 1 0 1 1 0 1 1 1 1 0 0 0 0 0 1 1 1 1 1 1 1 0]]
+</pre></div>
+<h1>2. Confusion matrix with Numpy and Matplotlib</h1>
+<div class="highlight"><pre><span></span><span class="c1">#print('----- Auxiliary vecotrs --------------')</span>
+<span class="n">yD</span>  <span class="o">=</span> <span class="n">yTrue</span> <span class="o">-</span> <span class="n">yPred</span><span class="p">;</span>    <span class="c1"># print('yD  = yTrue - yPred = ', yD.T)</span>
+<span class="n">LmP</span> <span class="o">=</span> <span class="n">yTrue</span> <span class="o">*</span> <span class="n">yPred</span><span class="p">;</span>    <span class="c1"># print('LmP = yTrue * yPred =', LmP.T)</span>
+<span class="n">LpP</span> <span class="o">=</span> <span class="n">yTrue</span> <span class="o">+</span> <span class="n">yPred</span><span class="p">;</span>    <span class="c1"># print('LpP = yTrue + yPred =', LpP.T); print()</span>
+
+<span class="c1">#---- this methods gives the inidces of aD, LmP, LpP ---</span>
+<span class="n">TP</span><span class="p">,</span> <span class="n">FP</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">LmP</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">yD</span><span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">FN</span><span class="p">,</span> <span class="n">TN</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">yD</span><span class="o">==</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">LpP</span><span class="o">==-</span><span class="mi">0</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ConfusionMatrixNumpy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">len</span><span class="p">(</span><span class="n">TN</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">FP</span><span class="p">)],</span> 
+                                 <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">FN</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">TP</span><span class="p">)]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'----- ConfusionMatrixNumpy --------------'</span><span class="p">);</span> 
+<span class="k">print</span><span class="p">(</span><span class="n">ConfusionMatrixNumpy</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Confusion Matrix ---------------------'</span><span class="p">)</span>
+<span class="n">plot_ConfusionMatrix</span><span class="p">(</span><span class="n">ConfusionMatrixNumpy</span><span class="p">,</span><span class="n">ts</span><span class="o">=</span><span class="s1">'15'</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>----- ConfusionMatrixNumpy --------------
+[[11 16]
+ [13 18]]
+
+---- Confusion Matrix ---------------------
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6103/output_8_1.png"/></p>
+<h1>3. Confusion matrix with Sklearn and Seaborn</h1>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="n">ConfusionMatrixSklearn</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">yTrue</span><span class="p">,</span><span class="n">yPred</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'----- ConfusionMatrixSklearn --------------'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">ConfusionMatrixSklearn</span><span class="p">)</span>
+
+<span class="n">Report</span> <span class="o">=</span> <span class="n">classification_report</span><span class="p">(</span><span class="n">yTrue</span><span class="p">,</span><span class="n">yPred</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'----- Classification Report --------------'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">Report</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Confusion Matrix ---------------------'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">sn</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">sn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">ConfusionMatrixSklearn</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"size"</span><span class="p">:</span><span class="mi">20</span><span class="p">},</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'magma'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Predicted'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Data'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Confusion Matrix with Sklearn and Seaborn'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>----- ConfusionMatrixSklearn --------------
+[[11 16]
+ [13 18]]
+----- Classification Report --------------
+              precision    recall  f1-score   support
+
+           0       0.46      0.41      0.43        27
+           1       0.53      0.58      0.55        31
+
+   micro avg       0.50      0.50      0.50        58
+   macro avg       0.49      0.49      0.49        58
+weighted avg       0.50      0.50      0.50        58
+
+---- Confusion Matrix ---------------------
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6103/output_10_1.png"/></p>
+<h1>4. Confusion matrix with Pandas and Seaborn</h1>
+<div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'Data'</span><span class="p">:</span>      <span class="n">yTrue</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+        <span class="s1">'Predicted'</span><span class="p">:</span> <span class="n">yPred</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="p">}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'Data'</span><span class="p">,</span><span class="s1">'Predicted'</span><span class="p">])</span>
+
+<span class="n">ConfusionMatrixPandas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'Data'</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Predicted'</span><span class="p">],</span> <span class="n">rownames</span><span class="o">=</span><span class="p">[</span><span class="s1">'Data'</span><span class="p">],</span> <span class="n">colnames</span><span class="o">=</span><span class="p">[</span><span class="s1">'Predicted'</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'----- ConfusionMatrixPandas --------------'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">ConfusionMatrixPandas</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Confusion Matrix ---------------------'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">sn</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">sn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">ConfusionMatrixPandas</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"size"</span><span class="p">:</span><span class="mi">20</span><span class="p">},</span><span class="n">linecolor</span><span class="o">=</span><span class="s1">'lightgrey'</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'inferno'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Confusion Matrix with Pandas and Seaborn'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>----- ConfusionMatrixPandas --------------
+Predicted   0   1
+Data             
+0          11  16
+1          13  18
+
+---- Confusion Matrix ---------------------
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6103/output_12_1.png"/></p>
+<h1>5. Confusion matrix with Pandas_ML and Matplotlib</h1>
+<div class="highlight"><pre><span></span><span class="n">ConfusionMatrixPML</span> <span class="o">=</span> <span class="n">ConfusionMatrix</span><span class="p">(</span><span class="n">yTrue</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">yPred</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'----- Classification Report --------------'</span><span class="p">);</span> 
+<span class="n">ConfusionMatrixPML</span><span class="o">.</span><span class="n">print_stats</span><span class="p">();</span> <span class="k">print</span><span class="p">()</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">'---- Confusion Matrix ---------------------'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span> 
+    <span class="c1">#plt.figure(figsize=(8, 4));</span>
+    <span class="n">ConfusionMatrixPML</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'cividis'</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Confusion Matrix with Pandas_ML and matplotlib'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+<div class="highlight"><pre><span></span>----- Classification Report --------------
+population: 58
+P: 31
+N: 27
+PositiveTest: 34
+NegativeTest: 24
+TP: 18
+TN: 11
+FP: 16
+FN: 13
+TPR: 0.5806451612903226
+TNR: 0.4074074074074074
+PPV: 0.5294117647058824
+NPV: 0.4583333333333333
+FPR: 0.5925925925925926
+FDR: 0.47058823529411764
+FNR: 0.41935483870967744
+ACC: 0.5
+F1_score: 0.5538461538461539
+MCC: -0.012100190051917559
+informedness: -0.01194743130227005
+markedness: -0.01225490196078427
+prevalence: 0.5344827586206896
+LRP: 0.9798387096774195
+LRN: 1.0293255131964811
+DOR: 0.9519230769230769
+FOR: 0.5416666666666666
+
+---- Confusion Matrix ---------------------
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6103/output_14_1.png"/></p>
+<div class="highlight"><pre><span></span>
+</pre></div>
+<h1><em>Code of the graphics</em></h1>
+<div class="highlight"><pre><span></span><span class="n">sn</span><span class="o">.</span><span class="n">palplot</span><span class="p">(</span><span class="n">sn</span><span class="o">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">21</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">);</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="output_17_0.png"/></p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">g_CM</span><span class="p">():</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="p">((</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">),</span> <span class="p">(</span><span class="n">ax3</span><span class="p">,</span> <span class="n">ax4</span><span class="p">))</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">constrained_layout</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">tSize</span><span class="p">,</span> <span class="n">sSize</span> <span class="o">=</span><span class="mi">70</span><span class="p">,</span> <span class="mi">20</span>
+    <span class="n">xt</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.35</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span>
+    <span class="n">Ax</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax1</span><span class="p">,</span><span class="n">ax2</span><span class="p">,</span><span class="n">ax3</span><span class="p">,</span><span class="n">ax4</span><span class="p">]</span>
+    <span class="n">TF</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'TN'</span><span class="p">,</span><span class="s1">'FP'</span><span class="p">,</span><span class="s1">'FN'</span><span class="p">,</span><span class="s1">'TP'</span><span class="p">]</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'True Negative'</span><span class="p">,</span><span class="s1">'False Positive'</span><span class="p">,</span><span class="s1">'False Negative'</span><span class="p">,</span><span class="s1">'True Positive'</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">ip</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">Ax</span><span class="p">[</span><span class="n">ip</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">TF</span><span class="p">[</span><span class="n">ip</span><span class="p">],</span> <span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">tSize</span><span class="p">));</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">tf</span><span class="p">[</span><span class="n">ip</span><span class="p">],</span> <span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">sSize</span><span class="p">));</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Predicted'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Data Truth'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([]);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">'Confusion Matrix in AI'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'b'</span><span class="p">)</span>        
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="n">g_CM</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_ConfusionMatrix</span><span class="p">(</span><span class="n">ConfusionMatrixNumpy</span><span class="p">,</span> <span class="n">ts</span><span class="o">=</span><span class="s1">'20'</span><span class="p">):</span>
+    <span class="c1"># ts: text size</span>
+    <span class="n">y_axis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"0"</span><span class="p">,</span> <span class="s2">"1"</span> <span class="p">]</span>
+    <span class="n">x_axis</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"0"</span><span class="p">,</span> <span class="s2">"1"</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'default'</span><span class="p">):</span> 
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+
+        <span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">ConfusionMatrixNumpy</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_axis</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_axis</span><span class="p">)):</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">ConfusionMatrixNumpy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span>
+                               <span class="n">ha</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">"center"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"grey"</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">ts</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_axis</span><span class="p">)))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y_axis</span><span class="p">)))</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">x_axis</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">y_axis</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+
+        <span class="c1">#ax.grid(which="both",color="w", linestyle='-', linewidth=1)</span>
+        <span class="n">cbar</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">im</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Predicted'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">ts</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Data'</span><span class="p">,</span><span class="n">size</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Confusion Matrix with Numpy and Matplotlib'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">ts</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+
+<span class="c1">#plot_ConfusionMatrix(ConfusionMatrixNumpy, ts='18')</span>
+</pre></div>
+<div class="highlight"><pre><span></span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/confusion-matrix-with-python-tools.html';
+    this.page.identifier = 'confusion-matrix-with-python-tools';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags always come first -->
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>MachineLearning: A simple but complete artificial Neural Network | HealthyNumerics
+</title>
+  <link rel="canonical" href="https://alpynepyano.github.io/healthyNumerics/posts/a-simple-artificial-neural-network.html">
+
+
+  <link rel="apple-touch-icon" href="https://alpynepyano.github.io/healthyNumerics/apple-touch-icon.png" sizes="180x180">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-32x32.png" sizes="32x32">
+  <link rel="icon" type="image/png" href="https://alpynepyano.github.io/healthyNumerics/favicon-16x16.png" sizes="16x16">
+  <link rel="manifest" href="https://alpynepyano.github.io/healthyNumerics/manifest.json">
+  <meta name="theme-color" content="#333333">
+
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/pygments/default.min.css">
+  <link rel="stylesheet" href="https://alpynepyano.github.io/healthyNumerics/theme/css/style.css">
+ 
+
+<meta name="description" content="Artificial Neural Networks "learn" to perform tasks by considering examples. They do this without any prior knowledge. Instead, they automatically generate identifying characteristics from the examples that they process. Beside the success of an AI model the confusion or error matrix is an important tool. It gives a risk profile we have to deal with when using AI models.">
+<!-- base href="http://localhost:8000/output/images" / -->
+<!-- base href="http://localhost:8000/" -->
+<!--base href="/" / -->
+</head>
+
+<body>
+
+
+
+       <!-- 
+	   <div class="container-fluid"> <img class="img-fluid" src= "h01.jpg"> </div>
+	   <div style="background-image: url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) </div>
+	   <style> body { background: #ffffff url("http://localhost:8000/images/b04.jpg") no-repeat center top; } </style>	 
+	   <body background="bgimage.jpg">	   
+	   body { background-image: url("img_tree.gif"), url("img_flwr.gif");
+              background-color: #cccccc;
+              }
+	   -->
+
+	  
+
+  <header class="header">
+    <div class="container">
+      <div class="row">
+	  
+        <style> body { background: #ffffff 
+		               url(https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg) no-repeat center top; }
+		</style>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p>
+		<p class="text-hide"> .</p> <p class="text-hide"> .</p> <p class="text-hide"> .</p>
+        <!--img  src="https://alpynepyano.github.io/healthyNumerics/siteImages/b04.jpg"-->		
+  
+		
+        <div class="col-sm-4">
+          <a href="https://alpynepyano.github.io/healthyNumerics">
+            <img class="img-fluid" src=https://alpynepyano.github.io/healthyNumerics/siteImages/profile.png alt="HealthyNumerics">
+          </a>
+        </div>
+        <div class="col-sm-8">
+		
+      
+		  <h1 class="title"   > <a style=" color:white" href="https://alpynepyano.github.io/healthyNumerics">HealthyNumerics</a> </h1>
+		  
+		  
+		  <p style="color:white; font-size:16pt;"  > HealthPoliticsEconomics  |  Quant Analytics  |  Numerics </p>
+
+		  
+          <ul class="list-inline">
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://derProjektor.ch/" target="_blank">der Projektor</a></li>
+			<li class="list-inline-item text-muted">|</li>
+            <li class="list-inline-item"><a style="color:#ccccff;" href="http://Abdagon.com/" target="_blank">Health Systems</a></li>
+			<li class="list-inline-item text-muted">|</li>
+			
+			
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-linkedin" style=" color:white;"   href="https://ch.linkedin.com/in/peter-schuhmacher" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+
+		
+			
+            <li class="list-inline-item"><a class="fa fa-twitter" style=" color:white;"   href="https://twitter.com/PeSchuh" target="_blank"></a></li>
+            <li class="list-inline-item text-muted">|</li>
+          </ul>
+        </div>
+		
+		
+		
+		
+        <div class="col-sm-8">
+		<ul class="list-inline">
+		  <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+			<li class="list-inline-item text-muted">|</li>
+          <li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+		  <li class="list-inline-item text-muted">|</li>
+			<li class="list-inline-item"><a style="color:white" href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+          </ul>
+        </div>
+		
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <div class="container">
+      <h1>MachineLearning: A simple but complete artificial Neural Network
+</h1>
+      <hr>
+<article class="article">
+  <header>
+    <ul class="list-inline">
+      <li class="list-inline-item text-muted" title="2020-03-03T17:15:00+01:00">
+        <i class="fa fa-clock-o"></i>
+        Di 03 März 2020
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/category/machinelearning.html">MachineLearning</a>
+      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-user-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/author/peter-schuhmacher.html">Peter Schuhmacher</a>      </li>
+      <li class="list-inline-item">
+        <i class="fa fa-files-o"></i>
+        <a href="https://alpynepyano.github.io/healthyNumerics/tag/ai.html">#AI</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/numerical.html">#numerical</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/statistics.html">#statistics</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/machine-learning.html">#machine learning</a>,         <a href="https://alpynepyano.github.io/healthyNumerics/tag/python.html">#python</a>      </li>
+    </ul>
+  </header>
+  <div class="content">
+    <div class="highlight"><pre><span></span><span class="n">nn_1</span><span class="p">()</span>
+</pre></div>
+<p><img alt="svg" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6104/output_1_0.svg"/></p>
+<h1>The general idea</h1>
+<p>Artificial intelligence (AI), machine learning (ML), neural networks (NN) are statistical methods. The core business or the key question of this methods is:</p>
+<blockquote class="blockquote">
+<p>Given some data <span class="math">\(\phi_i\)</span> ,
+can we draw some conclusions about an other topic <span class="math">\(\Psi\)</span>?</p>
+</blockquote>
+<p>The structure of the mathematical model that should compute the predictive result is an <em>a priori</em> setting and is not too complicated usually. The main task however is how to find appropriate weights or parameters of the model. A typical form of a statistical AI- or ML- or NN-model is e.g.:</p>
+<div class="math">$$
+\begin{array}{rclll}
+\boldsymbol{\phi} &amp; = &amp; \begin{bmatrix} {\phi}_0 &amp; {\phi}_1 &amp; {\phi}_2 &amp; ...... &amp;{\phi}_n \end{bmatrix} &amp;\text{φ: input data} \\
+\mathbf{w}        &amp; = &amp; \begin{bmatrix} w_0 &amp; w_1 &amp; w_2 &amp; ...... &amp;w_n \end{bmatrix} &amp;\text{w: model weights}\\
+\boldsymbol{\phi} &amp;  \longrightarrow &amp; \Psi  &amp;\text{Ψ: target value to be predicted}\\
+                  &amp;   &amp; \Psi  =  \boldsymbol{\phi}^T \cdot \mathbf{w} =  w_0 \phi_0 + w_1 \phi_1 + w_2 \phi_2 + ....w_n \phi_n &amp;\text{model: scalar product &lt;φ,w&gt;}
+\end{array}
+$$</div>
+<p>In practice the result of <span class="math">\(\boldsymbol{\phi}^T \cdot \mathbf{w}\)</span> is damped by the sigmoid function <span class="math">\(\sigma\)</span> (but there are other approaches too). The result is therefore scaled to the interval <span class="math">\([0..1]\)</span>. So during the itrative process of the training phase the model equation is</p>
+<div class="math">$$
+\Psi_i  =  \sigma(\boldsymbol{\phi}^T_i \cdot \mathbf{w})
+$$</div>
+<h1>Life cycle of an artificial neural network method</h1>
+<p><strong>Training</strong>
+- The phase to evaluate the model weights is called <strong>training</strong>.
+- during the training the model weights <span class="math">\(w\)</span> are the unknown variables.
+- for the training of <span class="math">\(w\)</span> we need data of both sides of the equality sign: input data <span class="math">\(\phi\)</span> and known output data <span class="math">\(\Psi\)</span> sometimes called <em>labeled data</em>.
+- the training algorithm changes the weights <span class="math">\(w\)</span> systematically until we get due to the model a satisfying fit between the input data <span class="math">\(\phi\)</span> and the known output data <span class="math">\(\Psi\)</span> </p>
+<p><strong>Testing</strong>
+- If the training results seem to be satisfying we need a phase of <strong>testing</strong>
+- for the testing again we need data of both sides of the equality sign, input data <span class="math">\(\phi\)</span> and known output data <span class="math">\(\Psi\)</span>, that have not been used for the training of the weights <span class="math">\(w\)</span>.
+- as a result of the testing we get informations about the <strong>qualitiy and error charakteristics of the modell</strong>. For discrete data it's a <strong>confusion matrix</strong>, for continous data it's a curve called <strong>receiver operation characteristic (ROC)</strong></p>
+<p><strong>Application</strong>
+- the model weights <span class="math">\(w\)</span> are fixed now.
+- the algorithm is now a simple vector operation: $\Psi  =  \boldsymbol{\phi}^T \cdot \mathbf{w} $
+- the computed results are valid <strong>subject to the error charakteristics</strong> only.
+- changing quality of the input data will involve a change of quality of the predicted output data too.</p>
+<h1>A task for a most simple but complete neural network</h1>
+<p>We let the NN (neural network) solve the following task:</p>
+<ul>
+<li>input is a vetcor <span class="math">\(\boldsymbol{\phi}\)</span> which has <span class="math">\(0\)</span> and <span class="math">\(1\)</span> as elements</li>
+<li>the NN algorithm has to predict a property <span class="math">\(\Psi\)</span> of this input</li>
+<li>for this example we choose that the property <span class="math">\(\Psi\)</span> is the first element of input vetcor <span class="math">\(\boldsymbol{\phi}\)</span></li>
+</ul>
+<div class="math">$$
+\begin{array}{rclll}
+\text{given data set} &amp; = &amp; \begin{bmatrix} {\phi}_0 ,&amp; {\phi}_1 ,&amp; {\phi}_2  \end{bmatrix}_i &amp; \longrightarrow &amp;\Psi_i &amp;\text{output to predict} \\
+\text{example data} &amp; = &amp; \begin{bmatrix} 1 ,&amp; 0 ,&amp; 0  \end{bmatrix} &amp; \longrightarrow &amp; 1 &amp;\text{output to predict} \\
+\text{example data} &amp; = &amp; \begin{bmatrix} 0 ,&amp; 1 ,&amp; 1  \end{bmatrix} &amp; \longrightarrow &amp; 0 &amp;\text{output to predict}
+\end{array}
+$$</div>
+<h1>1. Training</h1>
+<h2>1.1 Generate training data</h2>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">classification_report</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sn</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">180</span><span class="p">)</span>
+
+<span class="c1">#---- INPUT: set the diemsnioan of the data set</span>
+<span class="n">nx</span><span class="p">,</span> <span class="n">ny</span> <span class="o">=</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">7</span>
+
+<span class="c1">#---- initialize the training arrays</span>
+<span class="n">phi_inp_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">psi_out_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+<p>We generate a set of <strong>training input data</strong></p>
+<div class="highlight"><pre><span></span><span class="c1">#---- define the training input data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">phi_inp_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'phi_inp_train'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">phi_inp_train</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>phi_inp_train
+[[0 0 1 1 0 0 0]
+ [1 1 1 0 1 1 1]
+ [0 1 1 0 0 0 0]
+ [1 1 0 0 0 1 0]
+ [0 0 0 1 0 1 1]
+ [0 1 0 0 1 1 0]
+ [0 1 0 1 0 1 1]
+ [1 1 0 1 0 0 1]
+ [1 1 0 0 0 1 0]]
+</pre></div>
+<p>During the training each input data set has to have a known <strong>output training data</strong> set. Sometimes this is called as "The (input) data set must be labeled". We have decided that the first element of the input data set is the output/property/label.</p>
+<div class="highlight"><pre><span></span><span class="c1">#---- label the training input data as training output data</span>
+<span class="n">psi_out_train</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">phi_inp_train</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">psi_out_train</span>
+</pre></div>
+<div class="highlight"><pre><span></span>array([[0],
+       [1],
+       [0],
+       [1],
+       [0],
+       [0],
+       [0],
+       [1],
+       [1]])
+</pre></div>
+<p>The <strong>training data set</strong> is now:</p>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">();</span> <span class="k">print</span><span class="p">(</span><span class="s1">'---------- Training data set ------------------------------------------------------------'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nx</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">'input data # ('</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="s1">'):   '</span><span class="p">,</span> <span class="n">phi_inp_train</span><span class="p">[</span><span class="n">j</span><span class="p">,:],</span><span class="s1">'     --&gt;     output: '</span><span class="p">,</span> <span class="n">psi_out_train</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+</pre></div>
+<div class="highlight"><pre><span></span>---------- Training data set ------------------------------------------------------------
+input data # ( 0 ):    [0 0 1 1 0 0 0]      --&gt;     output:  [0]
+input data # ( 1 ):    [1 1 1 0 1 1 1]      --&gt;     output:  [1]
+input data # ( 2 ):    [0 1 1 0 0 0 0]      --&gt;     output:  [0]
+input data # ( 3 ):    [1 1 0 0 0 1 0]      --&gt;     output:  [1]
+input data # ( 4 ):    [0 0 0 1 0 1 1]      --&gt;     output:  [0]
+input data # ( 5 ):    [0 1 0 0 1 1 0]      --&gt;     output:  [0]
+input data # ( 6 ):    [0 1 0 1 0 1 1]      --&gt;     output:  [0]
+input data # ( 7 ):    [1 1 0 1 0 0 1]      --&gt;     output:  [1]
+input data # ( 8 ):    [1 1 0 0 0 1 0]      --&gt;     output:  [1]
+</pre></div>
+<p>.</p>
+<h2>1.2 A mathematical function</h2>
+<p>During the traning the result of <span class="math">\(\boldsymbol{\phi}^T \cdot \mathbf{w}\)</span> will be damped to the interval <span class="math">\([0..1]\)</span> by the <strong>sigmoid</strong> function <span class="math">\(\sigma\)</span>.
+</p>
+<div class="math">$$
+\sigma = \frac{1}{1 + e^{-x}}
+$$</div>
+<p>The derivative of the sigmoid function $\sigma^{'} $ is given as 
+</p>
+<div class="math">$$
+\sigma^{'} = \frac{d\sigma}{dx} = \sigma(1-\sigma)
+$$</div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>  
+    <span class="k">return</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">sigmoid_deriv</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">7.5</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'ggplot'</span><span class="p">):</span>       
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="p">;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s1">'$\sigma$'</span><span class="p">);</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">sigmoid_deriv</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">"$\sigma^{'}$"</span><span class="p">);</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'sigmoid function and derivative'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">);</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6104/output_14_0.png"/></p>
+<h2>1.3 The way to change the model weights</h2>
+<p>The basic cycle to train a NN-model is:</p>
+<ol>
+<li>Guess some initial values for the model weights <span class="math">\(\boldsymbol{w}^n\)</span></li>
+<li>Compute with the given training data and the model weights a predicted output value <span class="math">\(\Psi_{predicted}^n\)</span>. This step is called <strong>forward propagation</strong>.</li>
+<li>Determine how usefull this model prediction was with <span class="math">\(\Delta_{Output} = \Psi_{predicted}^n - \Psi_{training \, data}\)</span></li>
+<li>Use the error <span class="math">\(E = \Delta_{Output}\)</span> in order to find some improved model weights <span class="math">\(\boldsymbol{w}^{n+1}\)</span>. This step is called <strong>backward propagation</strong></li>
+</ol>
+<p>The <strong>backwardward propagation</strong> is the master piece of any NN-algorithm and there are different methods for this task which we will descibe in a later post. For the moment we summarize the core idea:</p>
+<ol>
+<li>Given the error <span class="math">\(E = \Delta_{Output}\)</span>, which of the model weights <span class="math">\(\boldsymbol{w}^n\)</span> have contributed to it and how much? An approach is: Large weights contribute largely to the error, small weights only a little. With that rule the error <span class="math">\(E = \Delta_{Output}\)</span> is split proportionaly and allocated to the different weights.</li>
+<li>If we know the output error and the (estimated) contribution to the error of each weight, in which direction shall we change the weights in order to get an improved model output ? An approach is: we can identify the tendency of the error in dependency of the weights by building its derivative 
+<span class="math">\(\frac{\partial E_i}{\partial w_i}\)</span>. The direction of improvment is counter this gradient. The weights are therefore updated with</li>
+</ol>
+<div class="math">$$
+\begin{array}{rclll}
+\boldsymbol{w}^{n+1} &amp; = &amp; \boldsymbol{w}^{n1} - \alpha \frac{\partial \boldsymbol{E} }{\partial \boldsymbol{w}} \\
+                     &amp; = &amp; \boldsymbol{w}^{n1} - \boldsymbol{\phi}^T \, \cdot \, (\boldsymbol{E} \cdot \sigma^{'}(\Psi_{predicted}^n))
+\end{array}
+$$</div>
+<p>Note that it is not straight forward to find this last formula. A basis  are the methods of <em>Newton iteration</em> and <em>Gradient descent</em>. An illustrative example of the <em>Gradient descent</em>-method is given in our <strong><a href="healthyNumerics/posts/gradient-descent-algorithm.html">Post here</a></strong>.</p>
+<p>.</p>
+<h1>1.4 The training algorithm</h1>
+<p>The inital values of the <strong>model weights</strong> are set by random choice in the interval <span class="math">\([0..1]\)</span></p>
+<div class="highlight"><pre><span></span><span class="c1">#---- initialize the model weights [-1..+1) by random</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>                         
+<span class="n">model_weights</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">ny</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'inital model_weights.T:'</span><span class="p">,</span> <span class="n">model_weights</span><span class="o">.</span><span class="n">T</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>inital model_weights.T: [[-0.166  0.441 -1.    -0.395 -0.706 -0.815 -0.627]]
+</pre></div>
+<p>The <strong>training algorithm</strong> runs iteratively through following steps:</p>
+<ol>
+<li>predict an output by the model: <span class="math">\(\Psi_{predicted}^n = \sigma(\boldsymbol{\phi}^T \cdot \mathbf{w}^n)\)</span></li>
+<li>compare the predicted output with the labeled training output data: <span class="math">\(\Delta_{Output} = \Psi_{predicted}^n - \Psi_{training \, data}\)</span></li>
+<li>find the direction of improvement with the error weighted derivative: <span class="math">\(\delta_{weights} = \boldsymbol{\phi}^T \, \cdot \, (\Delta_{Output} \cdot \sigma^{'}(\Psi_{predicted}^n))\)</span></li>
+<li>update the weights: <span class="math">\(\boldsymbol{w}^{n+1} = \boldsymbol{w}^{n} + \delta_{weights}\)</span></li>
+<li>repeat this proces until the change of error <span class="math">\(\epsilon\)</span> becomes small: <span class="math">\(\epsilon = (\Delta_{Output}^{n+1} - \Delta_{Output}^{n})/\Delta_{Output}^{n+1}\)</span></li>
+</ol>
+<div class="highlight"><pre><span></span><span class="c1">#---- run the training of the model weights -------------------</span>
+<span class="n">dOutput</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>                     <span class="c1"># ΔOutput = Ψdata - Ψpredicted, initial value</span>
+
+<span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>                                                       <span class="c1"># running index in the while loop</span>
+<span class="n">epsN</span> <span class="o">=</span> <span class="mf">1.1</span>                                                          <span class="c1"># norm(error), initial value</span>
+<span class="n">epsToler</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span> <span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>                                            <span class="c1"># error level to stop the while-itertaions</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{:6d}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">),</span>  <span class="s1">'{:06.4e}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsN</span><span class="p">),</span>  <span class="s1">'{:06.4e}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsToler</span><span class="p">)</span> <span class="p">)</span> <span class="p">;</span><span class="k">print</span><span class="p">()</span>
+
+<span class="k">while</span> <span class="p">(</span><span class="n">epsN</span> <span class="o">&gt;</span> <span class="n">epsToler</span><span class="p">):</span>                                            <span class="c1"># run the model until change of error is small</span>
+    <span class="n">W_times_I</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi_inp_train</span><span class="p">,</span> <span class="n">model_weights</span><span class="p">)</span>                <span class="c1"># compute the model training_data * weights</span>
+    <span class="n">psi_predicted</span>    <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">W_times_I</span><span class="p">)</span>                           <span class="c1"># sigmoid function for that</span>
+    <span class="n">dO_old</span> <span class="o">=</span> <span class="n">dOutput</span>
+    <span class="n">dOutput</span>   <span class="o">=</span> <span class="p">(</span><span class="n">psi_out_train</span> <span class="o">-</span> <span class="n">psi_predicted</span><span class="p">)</span>                     <span class="c1"># compare the labeled data with the computed result</span>
+    <span class="n">gradient</span>  <span class="o">=</span> <span class="n">psi_predicted</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">psi_predicted</span><span class="p">)</span>                 <span class="c1"># gradient of the sigmoid function </span>
+    <span class="n">model_weights</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi_inp_train</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>  <span class="n">dOutput</span><span class="o">*</span><span class="n">gradient</span><span class="p">)</span>     <span class="c1"># update the weights</span>
+    <span class="n">epsV</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">dOutput</span><span class="o">-</span><span class="n">dO_old</span><span class="p">)</span><span class="o">/</span><span class="n">dOutput</span><span class="p">)</span>                         <span class="c1"># vector of relative error between two iterations</span>
+    <span class="n">epsN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">epsV</span><span class="p">)</span>                                     <span class="c1"># norm(error)</span>
+    <span class="k">if</span> <span class="n">iteration</span> <span class="o">%</span> <span class="mi">10000</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="s1">'{:6d}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">),</span>  <span class="s1">'{:06.4e}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsN</span><span class="p">),</span>  <span class="s1">'{:06.4e}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsN</span><span class="o">-</span><span class="n">epsToler</span><span class="p">)</span> <span class="p">)</span> 
+    <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'{:6d}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">iteration</span><span class="p">),</span>  <span class="s1">'{:06.4e}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsN</span><span class="p">),</span>  <span class="s1">'{:06.4e}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epsN</span><span class="o">-</span><span class="n">epsToler</span><span class="p">)</span> <span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'==&gt; trained model_weights: '</span><span class="p">,</span> <span class="n">model_weights</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>     0 1.1000e+00 3.0000e-05
+
+     0 3.0556e+01 3.0556e+01
+ 10000 1.6818e-04 1.3818e-04
+ 20000 8.3832e-05 5.3832e-05
+ 30000 5.5810e-05 2.5810e-05
+ 40000 4.1822e-05 1.1822e-05
+ 50000 3.3438e-05 3.4381e-06
+
+ 55717 3.0000e-05 -2.1815e-10
+
+==&gt; trained model_weights:  [[12.09  -2.832 -2.746 -5.038 -0.092 -2.835  2.139]]
+</pre></div>
+<h1>2. Testing</h1>
+<h2>2.1 Generate testing data</h2>
+<p>We generate some test input data and output data that we can use to test the NN-model.</p>
+<div class="highlight"><pre><span></span><span class="c1">#---- initialize the testing arrays</span>
+<span class="n">phi_inp_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="n">ny</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">psi_out_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1">#---- Generate test input data</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">222</span><span class="p">)</span>
+<span class="n">phi_inp_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'phi_inp_test'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">phi_inp_test</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+
+<span class="c1">#---- label the test input data as test output data</span>
+<span class="n">psi_out_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">phi_inp_test</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'psi_out_test'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">psi_out_test</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>phi_inp_test
+[[0 1 1 0 0 0 0]
+ [1 0 1 1 1 1 0]
+ [0 0 0 1 0 0 0]
+ [0 0 1 1 1 1 0]
+ [0 1 1 1 1 0 1]
+ [1 0 0 1 1 1 1]
+ [1 1 0 1 1 0 1]
+ [1 1 1 0 1 1 1]
+ [1 1 0 0 0 0 0]]
+
+psi_out_test
+[[0]
+ [1]
+ [0]
+ [0]
+ [0]
+ [1]
+ [1]
+ [1]
+ [1]]
+</pre></div>
+<h2>2.2 Run the NN model</h2>
+<div class="highlight"><pre><span></span><span class="c1">#---- compute the model: test_data * weights</span>
+<span class="n">W_times_I</span>           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">phi_inp_test</span><span class="p">,</span> <span class="n">model_weights</span><span class="p">)</span>                
+<span class="n">psi_predicted_raw</span>   <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">W_times_I</span><span class="p">)</span>
+<span class="n">psi_predicted_round</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">psi_predicted_raw</span> <span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> 
+
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'----------------'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'raw result      :  psi_predicted ='</span><span class="p">,</span> <span class="n">psi_predicted_raw</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'rounded result  :  psi_predicted ='</span><span class="p">,</span> <span class="n">psi_predicted_round</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'test data       :  psi_out_test  ='</span><span class="p">,</span> <span class="n">psi_out_test</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>----------------
+raw result      :  psi_predicted = [[3.767e-03 7.990e-01 6.448e-03 2.232e-05 1.901e-04 9.981e-01 9.981e-01 9.967e-01 9.999e-01]]
+rounded result  :  psi_predicted = [[0 1 0 0 0 1 1 1 1]]
+test data       :  psi_out_test  = [[0 1 0 0 0 1 1 1 1]]
+</pre></div>
+<h1>3.  Error analysis</h1>
+<h2>3.1 Confusion matrix with Numpy</h2>
+<p>We we build some auxiliary arrays as indermediate results to determin the elements of the confusion matrix with vectorized operations.</p>
+<ul>
+<li>dPsi = Ψdata - Ψpredicted</li>
+<li>LmP  = Ψdata * Ψpredicted</li>
+<li>LpP  = Ψdata + Ψpredicted</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="s1">'---- Auxiliary arrays --------------------------'</span><span class="p">)</span>
+<span class="n">dPsi</span>  <span class="o">=</span> <span class="n">psi_out_test</span> <span class="o">-</span> <span class="n">psi_predicted_round</span>
+<span class="n">LmP</span>   <span class="o">=</span> <span class="n">psi_out_test</span> <span class="o">*</span> <span class="n">psi_predicted_round</span>
+<span class="n">LpP</span>   <span class="o">=</span> <span class="n">psi_out_test</span> <span class="o">+</span> <span class="n">psi_predicted_round</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">'psi_out_test       '</span><span class="p">,</span> <span class="n">psi_out_test</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'psi_predicted_round'</span><span class="p">,</span> <span class="n">psi_predicted_round</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'dPsi               '</span><span class="p">,</span> <span class="n">dPsi</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'LmP                '</span><span class="p">,</span> <span class="n">LmP</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'LpP                '</span><span class="p">,</span> <span class="n">LpP</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+</pre></div>
+<div class="highlight"><pre><span></span>---- Auxiliary arrays --------------------------
+psi_out_test        [[0 1 0 0 0 1 1 1 1]]
+psi_predicted_round [[0 1 0 0 0 1 1 1 1]]
+dPsi                [[0 0 0 0 0 0 0 0 0]]
+LmP                 [[0 1 0 0 0 1 1 1 1]]
+LpP                 [[0 2 0 0 0 2 2 2 2]]
+</pre></div>
+<div class="highlight"><pre><span></span><span class="c1">#---- this methods gives the inidces of aD, LmP, LpP</span>
+<span class="n">TP</span><span class="p">,</span> <span class="n">FP</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">LmP</span> <span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dPsi</span><span class="o">==-</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">FN</span><span class="p">,</span> <span class="n">TN</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dPsi</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>  <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">LpP</span> <span class="o">==-</span><span class="mi">0</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">ConfusionMatrixNy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="nb">len</span><span class="p">(</span><span class="n">TN</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">FP</span><span class="p">)],</span>
+                             <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">FN</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">TP</span><span class="p">)]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">'----- ConfusionMatrixNumpy --------------'</span><span class="p">);</span> <span class="k">print</span><span class="p">(</span><span class="n">ConfusionMatrixNy</span><span class="p">);</span> <span class="k">print</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">context</span><span class="p">(</span><span class="s1">'seaborn'</span><span class="p">):</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+    <span class="n">sn</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">sn</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">ConfusionMatrixNy</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">annot_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">"size"</span><span class="p">:</span><span class="mi">20</span><span class="p">},</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'winter'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'Predicted'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Data'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'equal'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Confusion Matrix with Numpy and Seaborn'</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">'bold'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>----- ConfusionMatrixNumpy --------------
+[[4 0]
+ [0 5]]
+</pre></div>
+<p><img alt="png" class="img-fluid" src="https://alpynepyano.github.io/healthyNumerics/posts/img6104/output_26_1.png"/></p>
+<h2>3.2 Confusion matrix with other Python tools</h2>
+<p>In our <strong><a href="healthyNumerics/posts/confusion-matrix-with-python-tools.html">Post here</a></strong> we try some other Python tools to evaluate and display the error matrix.</p>
+<p>.</p>
+<h2><em>---- Code of the graphics</em> -----</h2>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphviz</span> <span class="kn">as</span> <span class="nn">gv</span>
+
+<span class="k">def</span> <span class="nf">nn_1</span><span class="p">():</span>
+    <span class="n">d1</span> <span class="o">=</span> <span class="n">gv</span><span class="o">.</span><span class="n">Digraph</span><span class="p">(</span><span class="n">format</span><span class="o">=</span><span class="s1">'png'</span><span class="p">,</span><span class="n">engine</span><span class="o">=</span><span class="s1">'dot'</span><span class="p">)</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="n">rankdir</span><span class="o">=</span><span class="s1">'LR'</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'cornflowerblue'</span><span class="p">,</span><span class="s1">'orangered'</span><span class="p">,</span><span class="s1">'orange'</span><span class="p">,</span><span class="s1">'chartreuse'</span><span class="p">,</span><span class="s1">'lightgrey'</span><span class="p">,</span><span class="s1">'violet'</span><span class="p">,</span><span class="s1">'white'</span><span class="p">]</span>
+
+    <span class="n">d1</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'d1'</span><span class="p">,</span><span class="s1">'φ1'</span><span class="p">,</span>    <span class="n">style</span><span class="o">=</span><span class="s1">'filled'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'d2'</span><span class="p">,</span><span class="s1">'φ2'</span><span class="p">,</span>    <span class="n">style</span><span class="o">=</span><span class="s1">'filled'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'d3'</span><span class="p">,</span><span class="s1">'....'</span><span class="p">,</span>    <span class="n">style</span><span class="o">=</span><span class="s1">'filled'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'d4'</span><span class="p">,</span><span class="s1">'φ(n-1)'</span><span class="p">,</span>   <span class="n">style</span><span class="o">=</span><span class="s1">'filled'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'d5'</span><span class="p">,</span><span class="s1">'φ(n)'</span><span class="p">,</span>   <span class="n">style</span><span class="o">=</span><span class="s1">'filled'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">attr</span><span class="p">(</span><span class="s1">'node'</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">'box'</span><span class="p">)</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">node</span><span class="p">(</span><span class="s1">'T'</span><span class="p">,</span><span class="s1">'Ψ: what is that ?'</span><span class="p">,</span>    <span class="n">style</span><span class="o">=</span><span class="s1">'filled'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+    <span class="n">d1</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'d1'</span><span class="p">,</span><span class="s1">'T'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'w1=?'</span><span class="p">)</span> 
+    <span class="n">d1</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'d2'</span><span class="p">,</span><span class="s1">'T'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'w2=?'</span><span class="p">)</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'d3'</span><span class="p">,</span><span class="s1">'T'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'w...=?'</span><span class="p">)</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'d4'</span><span class="p">,</span><span class="s1">'T'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'w(n-1)=?'</span><span class="p">)</span>
+    <span class="n">d1</span><span class="o">.</span><span class="n">edge</span><span class="p">(</span><span class="s1">'d5'</span><span class="p">,</span><span class="s1">'T'</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">'w(n)=?'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d1</span>
+<span class="c1"># nn_1()</span>
+</pre></div>
+<div class="highlight"><pre><span></span>
+</pre></div>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+</article>
+<hr>
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function() {
+    this.page.url = 'https://alpynepyano.github.io/healthyNumerics/posts/a-simple-artificial-neural-network.html';
+    this.page.identifier = 'a-simple-artificial-neural-network';
+  };
+  (function() {
+    var d = document;
+    var s = d.createElement('script');
+    s.src = '//healthynumerics.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript class="text-muted">
+  Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+       <ul class="col-sm-6 list-inline">
+	      <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/categories.html">Categories</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/tags.html">Tags</a></li>
+          <li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/archives.html">Archives</a></li>
+			<li class="list-inline-item"><a href="https://alpynepyano.github.io/healthyNumerics/authors.html">Authors</a></li>
+        </ul>	
+        <p style="color:#C0C0C0;"> 
+		    Generated by <a href="https://github.com/getpelican/pelican" target="_blank">Pelican</a> 
+		    based on the <a href="https://github.com/nairobilug/pelican-alchemy" target="_blank">alchemy &#x2728;</a> theme
+           </p>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
